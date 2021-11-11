@@ -1,0 +1,48 @@
+taxonID,scientificName,treeType,mycorrhizal
+ACRU,Acer rubrum L.,Deciduous,AM
+QURU,Quercus rubra L.,Deciduous,ECM
+PIST,Pinus strobus L.,Evergreen,ECM
+PICEA,Picea sp.,Evergreen,ECM
+QUAL,Quercus alba L.,Deciduous,ECM
+ACSA3,Acer saccharum Marshall,Deciduous,AM
+QUVE,Quercus velutina Lam.,Deciduous,ECM
+FRAM2,Fraxinus americana L.,Deciduous,AM
+ACSAS,Acer saccharum Marshall var. saccharum,Deciduous,AM
+FRAXI,Fraxinus sp.,Deciduous,AM
+TSCA,Tsuga canadensis (L.) Carri√®re,Evergreen,ECM
+BELE,Betula lenta L.,Deciduous,ECM
+CAOV2,Carya ovata (Mill.) K. Koch,Deciduous,ECM
+BEPA,Betula papyrifera Marshall,Deciduous,ECM
+PIRI,Pinus rigida Mill.,Evergreen,ECM
+BEAL2,Betula alleghaniensis Britton,Deciduous,ECM
+VACO,Vaccinium corymbosum L.,Deciduous,Ericoid
+NYSY,Nyssa sylvatica Marshall,Deciduous,AM
+PINUS,Pinus sp.,Evergreen,ECM
+HAVI4,Hamamelis virginiana L.,Deciduous,AM
+PIAB,Picea abies (L.) Karst.,Evergreen,ECM
+PRSES,Prunus serotina Ehrh. var. serotina,Deciduous,AM
+ACPE,Acer pensylvanicum L.,Deciduous,AM
+FAGR,Fagus grandifolia Ehrh.,Deciduous,ECM
+CAGL8,Carya glabra (Mill.) Sweet,Deciduous,ECM
+OSVI,Ostrya virginiana (Mill.) K. Koch,Deciduous,ECM
+ILEX,Ilex sp.,Evergreen,AM
+KALMI,Kalmia sp.,Deciduous,Ericoid
+BEPO,Betula populifolia Marshall,Deciduous,ECM
+ACSA2,Acer saccharinum L.,Deciduous,AM
+CACAV,Carpinus caroliniana Walter ssp. virginiana (Marshall) Furlow,Deciduous,ECM
+CASTA,Castanea sp.,Deciduous,ECM
+CATO6,Carya tomentosa (Lam.) Nutt.,Deciduous,ECM
+LIST2,Liquidambar styraciflua L.,Deciduous,AM
+LITU,Liriodendron tulipifera L.,Deciduous,AM
+MAGNO,Magnolia sp.,Deciduous,AM
+OXAR,Oxydendrum arboreum (L.) DC.,Deciduous,Ericoid
+PIPA2,Pinus palustris Mill.,Evergreen,ECM
+PITA,Pinus taeda L.,Evergreen,ECM
+PRUM,Prunus umbellata Elliott,Deciduous,AM
+QUERC,Quercus sp.,Deciduous,ECM
+QUFA,Quercus falcata Michx.,Deciduous,ECM
+QULA2,Quercus laevis Walter,Deciduous,ECM
+QUMI,Quercus michauxii Nutt.,Deciduous,ECM
+QUMO4,Quercus montana Willd.,Deciduous,ECM
+QUNI,Quercus nigra L.,Deciduous,ECM
+QUST,Quercus stellata Wangenh.,Deciduous,ECM
