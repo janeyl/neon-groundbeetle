@@ -42,8 +42,8 @@ BeetleTALL<- loadByProduct(dpID="DP1.10022.001", site="TALL",
 BeetleJERC<- loadByProduct(dpID="DP1.10022.001", site="JERC", 
                            package="expanded", check.size=T) 
 
-Mycorrhizal.df<-read.csv ("yourfilepath/plantSpecies.csv", header=TRUE)
-
+#Mycorrhizal.df<-read.csv ("yourfilepath/plantSpecies.csv", header=TRUE)
+Mycorrhizal.df<-read.csv ("/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/plantSpecies.csv", header=TRUE)
 
 # -----------------------------------------------------------
 # Create new tidy data sets HARV
@@ -377,7 +377,7 @@ if(TRUE){
     group_by(plotID)%>%                                          #designate basal area of each species into columns, grouped by plotID
     pivot_wider(names_from = "taxonID", values_from = "basalAreaCm2", values_fn = list(basalAreaCm2 = sum))%>%
     replace(is.na(.),0)
-  species.df<-BasalAreaTALL.df[,10:27]                               #CHECK EACH SITE:for vegan package, subset species into columns for diversity
+  species.df<-BasalAreaTALL.df[,10:25]                               #CHECK EACH SITE:for vegan package, subset species into columns for diversity
   BasalAreaTALL.df$ShannonPlant<-diversity(species.df, index = "shannon")      #Shannon Diversity Index
   BasalAreaTALL.df$SimpsonPlant<-diversity(species.df, index = "simpson")      #Simpson Diversity Index
   BasalAreaTALL.df<-BasalAreaTALL.df%>%         
@@ -432,7 +432,7 @@ if(TRUE){
     group_by(plotID)%>%                                         #regroup by plotID and place each species into columns
     pivot_wider(names_from = "taxonID", values_from = "stemCount", values_fn = list(stemCount = sum))%>%
     replace(is.na(.),0)
-  speciesStems.df<-StemsTALL.df[,10:27]                             #CHECK SITE: Harv has 10 species, so subset columns 10-20
+  speciesStems.df<-StemsTALL.df[,10:25]                             #CHECK SITE: Harv has 10 species, so subset columns 10-20
   StemsTALL.df$ShannonPlant<-diversity(speciesStems.df, index = "shannon")        #Shannon Diversity Index
   StemsTALL.df$SimpsonPlant<-diversity(speciesStems.df, index = "simpson")        #Simpson Diversity Index
   StemsTALL.df<-StemsTALL.df%>%                                         
@@ -475,6 +475,7 @@ if(TRUE){
 # -----------------------------------------------------------
 # Descriptive Statistics PLOT level
 # -----------------------------------------------------------
+library(plotrix)
 if(TRUE){
   PlotStatsTALL.df<-BasalAreaTALL.df%>%                                          #create a df with descriptive statists at the plot level
     select(plotID,                                                       #select parameters based on basal area
@@ -718,6 +719,7 @@ if(TRUE){
     na.omit()
 }
 
+
 # -----------------------------------------------------------
 # Density PlotID-EventID grouping
 # -----------------------------------------------------------
@@ -855,6 +857,7 @@ if(TRUE){
   diversityPlotYr_HARV.df$siteID<- "HARV"
   rm(speciesPlotYR.df)
 }
+
 
 # -----------------------------------------------------------
 #  density of most abundant beetle species at plotID-Year level
@@ -1952,6 +1955,22 @@ m <- nlme::lme(density ~ totalBA, random = ~1| siteID/plotID,
                data = vegB.df);summary(m); shapiro.test(resid(m))
 
 # -----------------------------------------------------------
+#diversity predicted by tree density
+# -----------------------------------------------------------
+m <- nlme::lme(density ~ totalStems,random = ~1| siteID/plotID, 
+               data = vegB.df);summary(m); shapiro.test(resid(m))
+m <- nlme::lme(density ~ totalBA,random = ~1| siteID/plotID, 
+               data = vegB.df);summary(m); shapiro.test(resid(m))
+m <- nlme::lme(ShannonBeetle ~totalBA, random = ~1| siteID/plotID, 
+               data = vegB.df);summary(m); shapiro.test(resid(m))
+m <- nlme::lme(ShannonBeetle ~ totalStems,random = ~1| siteID/plotID, 
+               data = vegB.df);summary(m); shapiro.test(resid(m))
+
+m <- nlme::lme(SimpsonBeetle ~totalBA, random = ~1| siteID/plotID, 
+               data = vegB.df);summary(m); shapiro.test(resid(m))
+m <- nlme::lme(SimpsonBeetle ~ totalStems,random = ~1| siteID/plotID, 
+               data = vegB.df);summary(m); shapiro.test(resid(m))
+# -----------------------------------------------------------
 #Top 5 
 #m<-nlme::lme(Species1 ~ PerEG_BA, random = ~1| siteID/plotID,data= ?);summary(m);shapiro.test(resid(m))
 
@@ -2031,7 +2050,23 @@ m <- nlme::lme(log(SimpsonBeetle) ~ Sim_BA,random = ~1| siteID/plotID,
                data = vegB.df);summary(m); shapiro.test(resid(m))
 m <- nlme::lme(log(density) ~ totalBA, random = ~1| siteID/plotID, 
                data = vegB.df);summary(m); shapiro.test(resid(m))
+# -----------------------------------------------------------
+#log version diversity predicted by tree density
+# -----------------------------------------------------------
+m <- nlme::lme(log(density) ~ totalStems,random = ~1| siteID/plotID, 
+               data = vegB.df);summary(m); shapiro.test(resid(m))
+m <- nlme::lme(log(density) ~ totalBA,random = ~1| siteID/plotID, 
+               data = vegB.df);summary(m); shapiro.test(resid(m))
+m <- nlme::lme(log(ShannonBeetle) ~totalBA, random = ~1| siteID/plotID, 
+               data = vegB.df);summary(m); shapiro.test(resid(m))
+m <- nlme::lme(log(ShannonBeetle) ~ totalStems,random = ~1| siteID/plotID, 
+               data = vegB.df);summary(m); shapiro.test(resid(m))
 
+m <- nlme::lme(log(SimpsonBeetle) ~totalBA, random = ~1| siteID/plotID, 
+               data = vegB.df);summary(m); shapiro.test(resid(m))
+m <- nlme::lme(log(SimpsonBeetle) ~ totalStems,random = ~1| siteID/plotID, 
+               data = vegB.df);summary(m); shapiro.test(resid(m))
+# -----------------------------------------------------------
 
 
 # -----------------------------------------------------------
@@ -2501,10 +2536,29 @@ dev.off()
 
 }
 
+vegB.df
+write_csv(vegB.df, "/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/vegB.df.csv")
+
 # -----------------------------------------------------------
 #  ordination
 # -----------------------------------------------------------
 
+#save files needed for ordination
+#write_csv(paraTax_TALL, "/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/Ordination/paraTax_TALL.csv")
+
+#write_csv(allTALL.df, "/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/Ordination/allTALL.df.csv")
+
+#write_csv(paraTax_HARV, "/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/Ordination/paraTax_HARV.csv")
+
+#write_csv(BasalAreaHARV.df, "/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/Ordination/BasalAreaHARV.df.csv")
+
+ordinationTALL.df
+write_csv(ordinationTALL.df, "/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/ordinationTALL.df.csv")
+ordinationHARV.df
+write_csv(ordinationHARV.df, "/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/ordinationHARV.df.csv")
+
+
+rm(ordinationTALL.df)
 if(TRUE){
 #ord stats and figures 
 ordinationTALL.df<-paraTax_TALL%>%                                               
@@ -2696,3 +2750,4 @@ head(spp.fit)
 }
 
 
+write.csv(vegB.df, "/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/vegB.csv")
