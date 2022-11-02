@@ -3,6 +3,15 @@
 #  ordination
 # -----------------------------------------------------------
 
+library(tidyverse)
+library(vegan)
+
+paraTax_TALL = read_csv("Ordination/data/paraTax_TALL.csv")
+allTALL.df = read_csv("Ordination/data/allTALL.df.csv")
+
+paraTax_HARV = read_csv("Ordination/data/paraTax_HARV.csv")
+BasalAreaHARV.df = read_csv("Ordination/data/BasalAreaHARV.df.csv")
+
 if(TRUE){
   #ord stats and figures 
   ordinationTALL.df<-paraTax_TALL%>%                                               
@@ -18,7 +27,8 @@ if(TRUE){
     select(plotID,
            nlcdClass,
            PerEG_BA,
-           Shan_BA)%>%
+           Shan_BA,
+           totalBA)%>%
     left_join(ordinationTALL.df, by = "plotID")
   #remove species that are 0? because in some cases veg is missing?
   
@@ -38,7 +48,10 @@ if(TRUE){
     select(!SELFAT)%>%
     select(!SELPAL)%>%
     select(!SELCON2)
-  species.df<-ordinationTALL.df[,5:37]                        
+  species.df<-ordinationTALL.df[,6:38]                        
+  
+  # Remove singletons:
+  species.df = species.df[,colSums(species.df) > 1]
   
   my_nmds_result <- species.df%>% 
     vegan::metaMDS()
@@ -53,7 +66,8 @@ if(TRUE){
   ordinationTALL.df<-ordinationTALL.df%>%
     select(!nlcdClass)%>%
     select(!PerEG_BA)%>%
-    select(!Shan_BA)
+    select(!Shan_BA) %>%
+    select(!totalBA)
   
   en = envfit(my_nmds_result, ordinationTALL.df, permutations = 999, na.rm = TRUE)
   
@@ -63,8 +77,9 @@ if(TRUE){
   data.scores<-veg.df%>%
     select(plotID,
            nlcdClass,
-           PerEG_BA)%>%
-    left_join(., data.scores)
+           PerEG_BA,
+           totalBA)%>%
+    left_join(., data.scores, by = "plotID")
   
   
   #with o lines
@@ -93,6 +108,9 @@ if(TRUE){
   per2<- adonis2(species.df ~ plotID, data = data.scores, permutations = 999, method="bray")
   per2
   
+  per3<- adonis2(species.df ~ EG, data = data.scores %>% mutate(EG = nlcdClass == "evergreenForest"), permutations = 999, method="bray")
+  per3
+  
   #print
   ordinationTALL.df$siteID<-"TALL"
   
@@ -105,8 +123,12 @@ if(TRUE){
     pivot_wider(names_from = "taxonID.y", values_from = "individualCount", values_fn = length, values_fill = 0)
   species.df<-ordinationHARV.df[,2:34]                                            # 2388 species
   
+  # Remove singletons:
+  species.df = species.df[,colSums(species.df) > 1]
+  
   
   veg.df<-BasalAreaHARV.df
+  
   ordinationHARV.df<-ordinationHARV.df%>%
     left_join(veg.df, by = "plotID")
   
@@ -176,10 +198,10 @@ if(TRUE){
   dev.off()
   
   # PERMANOVA 
-  per1<- adonis2(species.df ~ perEvergreen, data = data.scores, permutations = 999, method="bray")
+  per1<- adonis2(species.df ~ EG, data = data.scores %>% mutate(EG = nlcdClass == "evergreenForest"), permutations = 999, method="bray")
   per1
   #no sig
-  per2<- adonis2(species.df ~ plotID, data = data.scores, permutations = 999, method="bray")
+  per2<- adonis2(species.df ~ perEvergreen, data = data.scores, permutations = 999, method="bray")
   per2
   #no sig
   
