@@ -1,18 +1,17 @@
 
-# -----------------------------------------------------------
-#  ordination
-# -----------------------------------------------------------
-
+#Packages-------------------------------------------------
 library(tidyverse)
 library(vegan)
-
+library(cowplot)
+#Load data-------------------------------------------------
 paraTax_TALL = read_csv("Ordination/data/paraTax_TALL.csv")
 allTALL.df = read_csv("Ordination/data/allTALL.df.csv")
 
 paraTax_HARV = read_csv("Ordination/data/paraTax_HARV.csv")
 BasalAreaHARV.df = read_csv("Ordination/data/BasalAreaHARV.df.csv")
 
-#if(TRUE){
+
+#TALL-------------------------------------------------
   #ord stats and figures 
   ordinationTALL.df<-paraTax_TALL%>%                                               
     select(taxonID.y,
@@ -83,9 +82,8 @@ BasalAreaHARV.df = read_csv("Ordination/data/BasalAreaHARV.df.csv")
   
   #with o lines
   gg3 = ggplot(data = data.scores, aes(x = NMDS1, y = NMDS2)) + 
-    geom_point(data = data.scores, aes(shape = nlcdClass), size = 3)+ #per EG
-   # scale_fill_gradient2()+ 
-    #geom_point(data = en_coord_cont, aes(x = NMDS1, y = NMDS2), size = .5, colour = "red")+
+    geom_polygon(data=data.scores,aes(x=NMDS1,y=NMDS2,fill=nlcdClass),alpha=0.30) + # add the convex hulls
+    geom_point(data = data.scores, aes(shape = nlcdClass), size = 3)+ 
     geom_text(data = en_coord_cont, aes(x = NMDS1, y = NMDS2), colour = "red", #species name
               fontface = "bold", label = row.names(en_coord_cont), size = 2, check_overlap= TRUE) + 
     theme(axis.title = element_text(size = 10, face = "bold", colour = "grey30"), 
@@ -93,7 +91,8 @@ BasalAreaHARV.df = read_csv("Ordination/data/BasalAreaHARV.df.csv")
           axis.ticks = element_blank(), axis.text = element_blank(), legend.key = element_blank(), 
           legend.title = element_text(size = 10, face = "bold", colour = "grey30"), 
           legend.text = element_text(size = 9, colour = "grey30")) +
-    labs(shape = "Site ID")
+    labs(shape = "Site ID", fill = "Site ID", title = "Talledega Stress = 0.076")+
+    theme(plot.title = element_text(hjust = 0.5))
   gg3
   pdf("/Users/JaneyLienau/Desktop/TALL_Ord3.pdf", width = 7, height = 7)
   plot(gg3)
@@ -110,8 +109,8 @@ BasalAreaHARV.df = read_csv("Ordination/data/BasalAreaHARV.df.csv")
   
   #print
   ordinationTALL.df$siteID<-"TALL"
-  
-  
+
+#HARV-------------------------------------------------
   ordinationHARV.df<-paraTax_HARV%>%                                               
     select(taxonID.y,
            individualCount,
@@ -176,9 +175,8 @@ BasalAreaHARV.df = read_csv("Ordination/data/BasalAreaHARV.df.csv")
   
   #with o lines
   gg4 = ggplot(data = data.scores, aes(x = NMDS1, y = NMDS2)) + 
-    geom_point(data = data.scores, aes(shape = nlcdClass), size = 3)+ #per EG
-    #scale_fill_gradient2()+ 
-    #geom_point(data = en_coord_cont, aes(x = NMDS1, y = NMDS2), size = .5, colour = "red")+
+    geom_polygon(data=data.scores,aes(x=NMDS1,y=NMDS2,fill=nlcdClass),alpha=0.30) + # add the convex hulls
+    geom_point(data = data.scores, aes(shape = nlcdClass), size = 3)+ 
     geom_text(data = en_coord_cont, aes(x = NMDS1, y = NMDS2), colour = "red", #species name
               fontface = "bold", label = row.names(en_coord_cont), size = 2, check_overlap= TRUE) + 
     theme(axis.title = element_text(size = 10, face = "bold", colour = "grey30"), 
@@ -186,7 +184,9 @@ BasalAreaHARV.df = read_csv("Ordination/data/BasalAreaHARV.df.csv")
           axis.ticks = element_blank(), axis.text = element_blank(), legend.key = element_blank(), 
           legend.title = element_text(size = 10, face = "bold", colour = "grey30"), 
           legend.text = element_text(size = 9, colour = "grey30")) +
-    labs(shape = "Site ID")
+    labs(shape = "Site ID", fill = "Site ID", title = "Harvard Stress = 0.099")+
+    theme(plot.title = element_text(hjust = 0.5))
+  
   gg4
   pdf("/Users/JaneyLienau/Desktop/HARV_Ord3.pdf", width = 7, height = 7)
   plot(gg4)
@@ -208,14 +208,35 @@ BasalAreaHARV.df = read_csv("Ordination/data/BasalAreaHARV.df.csv")
   #species driving site distribution
   spp.fit <- envfit(my_nmds_result, ordinationHARV.df, permutations = 999)
   head(spp.fit)
-  library(cowplot)
-  #cow plot to stack omnivore/predator count plots
- supp<-plot_grid(gg3, gg4, labels = c('A', 'B'), label_size = 20, ncol = 2)
- supp
+  
+#Supp Figure-----------------------------------------------------
+  
+  
+  # extract the legend from one of the plots
+  legend <- get_legend(
+    # create some space to the left of the legend
+    gg3 + theme(legend.box.margin = margin(0, 0, 0, 12))
+  )
+  
+  prow <- plot_grid(
+    gg3 + theme(legend.position="none"),
+    gg4 + theme(legend.position="none"),
+    align = 'vh',
+    labels = c("A", "B"),
+    hjust = -1,
+    nrow = 1
+  )
+  prow
+ 
+  # add the legend to the row we made earlier. Give it one-third of 
+  # the width of one plot (via rel_widths).
+ p <-  plot_grid(prow, legend, rel_widths = c(2, .4))
+  p
+#PDF-------------------------------------------------------------
   pdf("/Users/JaneyLienau/Desktop/supp.pdf", width = 14, height = 7)
-  plot(supp)
+  plot(p)
   dev.off()
   
-}
+
 
 

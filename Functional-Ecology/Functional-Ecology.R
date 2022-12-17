@@ -1,8 +1,6 @@
-
-# -----------------------------------------------------------
-#  functional ecology
-# -----------------------------------------------------------
-
+#________________________________________________________________________
+#Packages---------------------------
+#________________________________________________________________________
 library(dplyr)
 library(nlme)
 library(tidyverse)
@@ -10,19 +8,20 @@ library(car)
 library(RColorBrewer)
 library(cowplot)
 
-# -----------------------------------------------------------
-#  read in data
-# -----------------------------------------------------------
+#________________________________________________________________________
+#Raw data-------------------
+#________________________________________________________________________
 HARV.df <- read.csv("Functional-Ecology/diversityPlotYr_HARV.csv")
 
 TALL.df <- read.csv("Functional-Ecology/SpeciesPlotYr_TALL.csv")
 
-vegB.df <- read.csv("vegB.csv")
+vegB.df <- read.csv("/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/vegB.csv")
 
 function.df <- read.csv("/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/Functional-Ecology/function-table-dec.csv")
-# -----------------------------------------------------------
-#  Data cleaning
-# -----------------------------------------------------------
+
+#________________________________________________________________________
+#Data Cleaning -----------------------------
+#________________________________________________________________________
 function.df <- function.df%>% #cleaning data frame a bit
   select(-scientificName)%>%
   select(-DP.filght)%>%
@@ -125,10 +124,15 @@ harvtall.df <- harvtall.df%>%
 sum(harvtall.df$PreDensity)#76.12991
 sum(harvtall.df$OmnDensity)#18.76887 - predators were 4.06 times more dense than omnivore speces
 
-# -----------------------------------------------------------
-#  lme models - Feeding group by nlcdClass
-# -----------------------------------------------------------
-#
+##proportion density
+harvtall.df <- harvtall.df%>%
+  mutate(., PerOmnivoreDensity = OmnDensity/(OmnDensity+PreDensity)*100,
+         PerPredatorDensity = PreDensity/(OmnDensity+PreDensity)*100)
+
+#________________________________________________________________________
+#lnlcd Class lme-----------------------------------------------------------
+#________________________________________________________________________
+
 m <- nlme::lme(OmnDensity ~ nlcdClass, random = ~1| siteID/plotID, 
                data = harvtall.df);summary(m); shapiro.test(resid(m));Anova(m)
 m <- nlme::lme(PreDensity ~ nlcdClass, random = ~1| siteID/plotID, 
@@ -142,7 +146,9 @@ m <- nlme::lme(log(PreDensity) ~ nlcdClass, random = ~1| siteID/plotID,
 harvtall.df$LOGOmnDensity <- log(harvtall.df$OmnDensity)
 harvtall.df <- harvtall.df%>%
   mutate(LOGOmnDensity = na_if(LOGOmnDensity, "-Inf"))
-
+#________________________________________________________________________
+##nlcd class plots----
+#________________________________________________________________________
 #omnivore count plot
 p1 <- ggplot(harvtall.df, aes(x=nlcdClass, y=OmnDensity, fill=nlcdClass)) + 
   geom_boxplot(alpha=0.42)+
@@ -209,12 +215,10 @@ p1p2
 pdf("/Users/JaneyLienau/Desktop/p1p2.pdf", width = 7, height = 14)
 plot(p1p2)
 dev.off()
-
-
-# -----------------------------------------------------------
-# 3 variables ~ Tdiv, %EG, %ECM EG sig predictor of all version predator + omnivore except "Predator"
-# -----------------------------------------------------------
-
+#________________________________________________________________________
+#Tree diversity lme----
+#3 variables ~ Tdiv, %EG, %ECM EG sig predictor of all version predator + omnivore except "Predator"
+#________________________________________________________________________
 m <- nlme::lme(OmnDensity ~ Shan_BA + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
                data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
 m <- nlme::lme(PreDensity ~ Shan_BA + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
@@ -224,7 +228,9 @@ m <- nlme::lme(LOGOmnDensity ~ Shan_BA + PerEG_BA+PerECM_BA, random = ~1| siteID
                data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
 m <- nlme::lme(log(PreDensity) ~ Shan_BA + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
                data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
-
+#________________________________________________________________________
+##%EG plot~----
+#________________________________________________________________________
 p3<-ggplot(harvtall.df,aes(x=PerEG_BA, y=OmnDensity))+
   geom_smooth(method = 'lm', formula = 'y ~ x') +
   geom_point(aes(color = siteID))+
@@ -242,13 +248,14 @@ p3<-ggplot(harvtall.df,aes(x=PerEG_BA, y=OmnDensity))+
   theme(axis.ticks.length=unit(-0.25, "cm"))+
   theme(axis.ticks = element_line(colour = "black", size = 0.4))+
   theme(axis.ticks.x = element_blank())+
+  labs(shape = "Site ID")+
   theme(
     axis.text=element_blank(),
     title=element_text(size=rel(1.5)),
     legend.text=element_text(size=rel(1.5)),
     legend.position="top",
     legend.direction="horizontal")+
-  guides(color=FALSE)
+  scale_y_continuous(breaks = seq(0, 3, by = .5))
 p3
 
 p4<-ggplot(harvtall.df,aes(x=PerEG_BA, y=PreDensity))+
@@ -274,7 +281,8 @@ p4<-ggplot(harvtall.df,aes(x=PerEG_BA, y=PreDensity))+
     legend.text=element_text(size=rel(1.5)),
     legend.position="right",
     legend.direction="vertical")+
-  guides(color=FALSE)
+  guides(color=FALSE)+
+  scale_y_continuous(breaks = seq(0, 2, by = .5))
 p4
 
 #cow plot to stack omnivore/predator percent plots
@@ -284,10 +292,12 @@ pdf("/Users/JaneyLienau/Desktop/p3p4.pdf", width = 7, height = 14)
 plot(p3p4)
 dev.off()
 
-# -----------------------------------------------------------
-# 3 variables ~ Tden, %EG, %ECM - EG sig predictor of predator + omnivore
-# -----------------------------------------------------------
-
+#________________________________________________________________________
+#Tree density------
+#3 variables ~ Tden, %EG, %ECM - EG sig predictor of predator + omnivore
+#________________________________________________________________________
+##  Tden, %EG, %ECM ----
+#________________________________________________________________________
 m <- nlme::lme(OmnDensity ~ totalBA + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
                data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
 m <- nlme::lme(LOGOmnDensity ~ totalBA + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
@@ -309,10 +319,9 @@ m <- nlme::lme(PreDensity ~ totalStems + PerEG_BA+PerECM_BA,random = ~1| siteID/
 m <- nlme::lme(log(PreDensity) ~ totalStems + PerEG_BA+PerECM_BA,random = ~1| siteID/plotID, 
                data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
 
-
-# -----------------------------------------------------------
-#diversity predicted by tree density - NS
-# -----------------------------------------------------------
+#________________________________________________________________________
+##  Tden----
+#________________________________________________________________________
 m <- nlme::lme(OmnDensity ~ totalBA,random = ~1| siteID/plotID, 
                data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
 m <- nlme::lme(LOGOmnDensity ~ totalBA,random = ~1| siteID/plotID, 
@@ -332,13 +341,6 @@ m <- nlme::lme(PreDensity ~totalStems, random = ~1| siteID/plotID,
 m <- nlme::lme(log(PreDensity) ~totalStems, random = ~1| siteID/plotID, 
                data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
 
-# -----------------------------------------------------------
-
-
-
-# -----------------------------------------------------------
-#figure, gb feeding mode predicted by % tree cover 
-# -----------------------------------------------------------
 
 ##BEFORE YOU RUN THIS CODE!!! Make sure the harvtall.df you use is a version that doesn't exclude the species for the functional analysis
 m <- nlme::lme(density ~totalStems, random = ~1| siteID/plotID.x, 
@@ -350,13 +352,15 @@ m <- nlme::lme(density ~totalBA, random = ~1| siteID/plotID.x,
                data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m)) #ns
 m <- nlme::lme(log(density) ~totalBA, random = ~1| siteID/plotID.x, 
                data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m)) #ns
-
+#________________________________________________________________________
+##Tden plot--------
+#________________________________________________________________________
 p5<-ggplot(harvtall.df,aes(x=totalBA, y=density))+
   geom_smooth(method = 'lm', formula = 'y ~ x') +
   geom_point(aes(color = siteID))+
-  theme(legend.position = "right")+
+  theme(legend.position = "top")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = 'Relative Abundance of Trees\n (Basal Area)', y = 'Ground Beetle Density\n(Individuals/Cup)', color='Site')+
+  labs(x = 'Relative Abundance of Trees\n (Basal Area)', y = 'Ground Beetle Density', color='Site')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
@@ -368,13 +372,6 @@ p5<-ggplot(harvtall.df,aes(x=totalBA, y=density))+
   theme(axis.ticks.length=unit(-0.25, "cm"))+
   theme(axis.ticks = element_line(colour = "black", size = 0.4))+
   theme(axis.ticks.x = element_blank())
-  #theme(
-    axis.text=element_blank(),
-    title=element_text(size=rel(1.5)),
-    legend.text=element_text(size=rel(1.5)),
-    legend.position="right",
-    legend.direction="vertical")+
-  guides(color=FALSE)
 p5
 
 pdf("/Users/JaneyLienau/Desktop/p5.pdf", width = 7, height = 7)
@@ -385,9 +382,9 @@ dev.off()
 p6<-ggplot(harvtall.df,aes(x=totalStems, y=density))+
   geom_smooth(method = 'lm', formula = 'y ~ x') +
   geom_point(aes(color = siteID))+
-  theme(legend.position = "right")+
+  theme(legend.position = "top")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = 'Relative Abundance of Trees\n (Total Stems)', y = 'Ground Beetle Density\n(Individuals/Cup)', color='Site')+
+  labs(x = 'Relative Abundance of Trees\n (Total Stems)', y = 'Ground Beetle Density', color='Site')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
@@ -399,17 +396,76 @@ p6<-ggplot(harvtall.df,aes(x=totalStems, y=density))+
   theme(axis.ticks.length=unit(-0.25, "cm"))+
   theme(axis.ticks = element_line(colour = "black", size = 0.4))+
   theme(axis.ticks.x = element_blank())
-#theme(
-axis.text=element_blank(),
-title=element_text(size=rel(1.5)),
-legend.text=element_text(size=rel(1.5)),
-legend.position="right",
-legend.direction="vertical")+
-  guides(color=FALSE)
 p6
 
 pdf("/Users/JaneyLienau/Desktop/p6.pdf", width = 7, height = 7)
 plot(p6)
+dev.off()
+
+#________________________________________________________________________
+# Prop. by %EG plot----
+#________________________________________________________________________
+
+
+p7<-ggplot(harvtall.df,aes(x=PerEG_BA, y=PerOmnivoreDensity))+
+  geom_smooth(method = 'lm', formula = 'y ~ x') +
+  geom_point(aes(color = siteID))+
+  theme(legend.position = "right")+
+  scale_fill_brewer(palette="Dark2")+
+  labs(x = NULL, y = 'Proportion of Omnivore Density\n (Proportion (%))', color='Site')+
+  theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
+        axis.title.y = element_text(margin = margin(l = 5, r=5)), 
+        axis.text.x=element_text(margin = margin(t=10)), 
+        axis.text.y=element_text(margin = margin(r = 10)))+
+  theme(axis.title.x=element_text(size=20), 
+        axis.title.y=element_text(size=20), 
+        axis.text.x=element_text(size=18), 
+        axis.text.y=element_text(size=18))+
+  theme(axis.ticks.length=unit(-0.25, "cm"))+
+  theme(axis.ticks = element_line(colour = "black", size = 0.4))+
+  theme(axis.ticks.x = element_blank())+
+  labs(shape = "Site ID")+
+  theme(
+    axis.text=element_blank(),
+    title=element_text(size=rel(1.5)),
+    legend.text=element_text(size=rel(1.5)),
+    legend.position="top",
+    legend.direction="horizontal")+
+  scale_y_continuous(breaks = seq(0, 100, by = 10))
+p7
+
+p8<-ggplot(harvtall.df,aes(x=PerEG_BA, y=PerPredatorDensity))+
+  geom_smooth(method = 'lm', formula = 'y ~ x') +
+  geom_point(aes(color = siteID))+
+  theme(legend.position = "right")+
+  scale_fill_brewer(palette="Dark2")+
+  labs(x = 'Relative Abundance\n of Evergreen Trees (%)', y = 'Proportion of Predator Density\n (Proportion (%))', color='Site')+
+  theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
+        axis.title.y = element_text(margin = margin(l = 5, r=5)), 
+        axis.text.x=element_text(margin = margin(t=10)), 
+        axis.text.y=element_text(margin = margin(r = 10)))+
+  theme(axis.title.x=element_text(size=20), 
+        axis.title.y=element_text(size=20), 
+        axis.text.x=element_text(size=18), 
+        axis.text.y=element_text(size=18))+
+  theme(axis.ticks.length=unit(-0.25, "cm"))+
+  theme(axis.ticks = element_line(colour = "black", size = 0.4))+
+  theme(axis.ticks.x = element_blank())+
+  theme(
+    axis.text=element_blank(),
+    title=element_text(size=rel(1.5)),
+    legend.text=element_text(size=rel(1.5)),
+    legend.position="right",
+    legend.direction="vertical")+
+  guides(color=FALSE)+
+  scale_y_continuous(breaks = seq(0, 99, by = 10))
+p8
+
+#cow plot to stack omnivore/predator count plots
+p7p8<-plot_grid(p7, p8, labels = c('A', 'B'), label_size = 20, ncol = 1)
+p7p8
+pdf("/Users/JaneyLienau/Desktop/p7p8.pdf", width = 7, height = 14)
+plot(p7p8)
 dev.off()
 
 
