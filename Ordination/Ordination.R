@@ -12,7 +12,7 @@ allTALL.df = read_csv("Ordination/data/allTALL.df.csv")
 paraTax_HARV = read_csv("Ordination/data/paraTax_HARV.csv")
 BasalAreaHARV.df = read_csv("Ordination/data/BasalAreaHARV.df.csv")
 
-if(TRUE){
+#if(TRUE){
   #ord stats and figures 
   ordinationTALL.df<-paraTax_TALL%>%                                               
     select(taxonID.y,
@@ -57,10 +57,9 @@ if(TRUE){
     vegan::metaMDS()
   
   # plot stress
-  my_nmds_result$stress ## [1] 0.0773343 great (>0.05 is excellen <.2 is poor)
+  my_nmds_result$stress ## [1] 0.07596668 great (>0.05 is excellen <.2 is poor)
   
-  
-  data.scores = as.data.frame(scores(my_nmds_result))
+  data.scores = as.data.frame(scores(my_nmds_result, display = "sites", "species"))
   data.scores$plotID = ordinationTALL.df$plotID #need for plot
   
   ordinationTALL.df<-ordinationTALL.df%>%
@@ -84,8 +83,8 @@ if(TRUE){
   
   #with o lines
   gg3 = ggplot(data = data.scores, aes(x = NMDS1, y = NMDS2)) + 
-    geom_point(data = data.scores, aes(colour = PerEG_BA, shape = nlcdClass), size = 3)+ #per EG
-    scale_fill_gradient2()+ 
+    geom_point(data = data.scores, aes(shape = nlcdClass), size = 3)+ #per EG
+   # scale_fill_gradient2()+ 
     #geom_point(data = en_coord_cont, aes(x = NMDS1, y = NMDS2), size = .5, colour = "red")+
     geom_text(data = en_coord_cont, aes(x = NMDS1, y = NMDS2), colour = "red", #species name
               fontface = "bold", label = row.names(en_coord_cont), size = 2, check_overlap= TRUE) + 
@@ -94,11 +93,9 @@ if(TRUE){
           axis.ticks = element_blank(), axis.text = element_blank(), legend.key = element_blank(), 
           legend.title = element_text(size = 10, face = "bold", colour = "grey30"), 
           legend.text = element_text(size = 9, colour = "grey30")) +
-    labs(colour = "Percent Evergreen", shape = "Site ID")+
-    guides(colour = guide_colourbar(order = 1),
-           shape = guide_legend(order = 2))
+    labs(shape = "Site ID")
   gg3
-  pdf("/Users/yourfilepath/Desktop/Model_Graphs/TALL_Ord3.pdf", width = 7, height = 7)
+  pdf("/Users/JaneyLienau/Desktop/TALL_Ord3.pdf", width = 7, height = 7)
   plot(gg3)
   dev.off()
   
@@ -109,7 +106,7 @@ if(TRUE){
   per2
   
   per3<- adonis2(species.df ~ EG, data = data.scores %>% mutate(EG = nlcdClass == "evergreenForest"), permutations = 999, method="bray")
-  per3
+  per3 #sig EG 0.036
   
   #print
   ordinationTALL.df$siteID<-"TALL"
@@ -136,9 +133,9 @@ if(TRUE){
     vegan::metaMDS()
   
   # plot stress
-  my_nmds_result$stress ## [1] 0.1066321 ok (>0.05 is excellen <.2 is poor)
+  my_nmds_result$stress ## [1] 0.09850331 ok (>0.05 is excellen <.2 is poor)
   goodness(my_nmds_result)
-  inertcomp(my_nmds_result)
+  #inertcomp(my_nmds_result)
   #
   ordinationHARV.df<-ordinationHARV.df%>%
     select(!perECM)%>%
@@ -161,7 +158,7 @@ if(TRUE){
     select(!perEvergreen)
   
   
-  data.scores = as.data.frame(scores(my_nmds_result))
+  data.scores = as.data.frame(scores(my_nmds_result, display = "sites", "species"))
   data.scores$plotID = ordinationHARV.df$plotID #need for plot
   
   en = envfit(my_nmds_result, ordinationHARV.df, permutations = 999, na.rm = TRUE)
@@ -178,9 +175,9 @@ if(TRUE){
   
   
   #with o lines
-  gg3 = ggplot(data = data.scores, aes(x = NMDS1, y = NMDS2)) + 
-    geom_point(data = data.scores, aes(colour = perEvergreen, shape = nlcdClass), size = 3)+ #per EG
-    scale_fill_gradient2()+ 
+  gg4 = ggplot(data = data.scores, aes(x = NMDS1, y = NMDS2)) + 
+    geom_point(data = data.scores, aes(shape = nlcdClass), size = 3)+ #per EG
+    #scale_fill_gradient2()+ 
     #geom_point(data = en_coord_cont, aes(x = NMDS1, y = NMDS2), size = .5, colour = "red")+
     geom_text(data = en_coord_cont, aes(x = NMDS1, y = NMDS2), colour = "red", #species name
               fontface = "bold", label = row.names(en_coord_cont), size = 2, check_overlap= TRUE) + 
@@ -189,12 +186,10 @@ if(TRUE){
           axis.ticks = element_blank(), axis.text = element_blank(), legend.key = element_blank(), 
           legend.title = element_text(size = 10, face = "bold", colour = "grey30"), 
           legend.text = element_text(size = 9, colour = "grey30")) +
-    labs(colour = "Percent Evergreen", shape = "Site ID")+
-    guides(colour = guide_colourbar(order = 1),
-           shape = guide_legend(order = 2))
-  gg3
-  pdf("/Users/yourfilepath/Desktop/Model_Graphs/HARV_Ord3.pdf", width = 7, height = 7)
-  plot(gg3)
+    labs(shape = "Site ID")
+  gg4
+  pdf("/Users/JaneyLienau/Desktop/HARV_Ord3.pdf", width = 7, height = 7)
+  plot(gg4)
   dev.off()
   
   # PERMANOVA 
@@ -213,6 +208,14 @@ if(TRUE){
   #species driving site distribution
   spp.fit <- envfit(my_nmds_result, ordinationHARV.df, permutations = 999)
   head(spp.fit)
+  library(cowplot)
+  #cow plot to stack omnivore/predator count plots
+ supp<-plot_grid(gg3, gg4, labels = c('A', 'B'), label_size = 20, ncol = 2)
+ supp
+  pdf("/Users/JaneyLienau/Desktop/supp.pdf", width = 14, height = 7)
+  plot(supp)
+  dev.off()
+  
 }
 
 
