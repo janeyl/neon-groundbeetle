@@ -11,21 +11,29 @@ write.csv(diversityPlotYr_TALL.df, "/Users/JaneyLienau/Desktop/GitHubRepository/
 # -----------------------------------------------------------
 #  read in data
 # -----------------------------------------------------------
-HARV.df <- read.csv("/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/diversityPlotYr_HARV.csv")
+HARV.df <- read.csv("/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/Functional-Ecology/diversityPlotYr_HARV.csv")
 
-TALL.df <- read.csv("/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/SpeciesPlotYr_TALL.csv")
+TALL.df <- read.csv("/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/Functional-Ecology/SpeciesPlotYr_TALL.csv")
 
 vegB.df <- read.csv("/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/vegB.csv")
+
+SpeciesCodes.df <- read.csv("/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/Functional-Ecology/SpeciesCodes.df.csv")
+
+function.df <- read.csv("/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/Functional-Ecology/gb-functional-groups.csv")
+
 
 # -----------------------------------------------------------
 #  Functional Data
 # -----------------------------------------------------------
 
+#test.df <- left_join(SpeciesCodes.df, function.df, by = "scientificName")
 
 
+test <- colSums(HARV.df[,5:37])
+test
 
-
-
+test1 <- colSums(TALL.df[,5:50])
+test1
 
 
 
@@ -40,13 +48,10 @@ m <- nlme::lme("functional group" ~ nlcdClass, random = ~1| siteID/plotID,
 # -----------------------------------------------------------
 # 3 variables ~ nlcdClass
 # -----------------------------------------------------------
+#make density of each functional group predicted by nlcdClass
+m <- nlme::lme(density of feeding mode and other groups~ nlcdClass, random = ~1| siteID/plotID, 
+               data = vegB.df);summary(m); shapiro.test(resid(m));Anova(m)
 
-m <- nlme::lme(ShannonBeetle ~ nlcdClass, random = ~1| siteID/plotID, 
-               data = vegB.df);summary(m); shapiro.test(resid(m));Anova(m)
-m <- nlme::lme(SimpsonBeetle ~ nlcdClass,random = ~1| siteID/plotID, 
-               data = vegB.df);summary(m); shapiro.test(resid(m));Anova(m)
-m <- nlme::lme(density ~ nlcdClass, random = ~1| siteID/plotID, 
-               data = vegB.df);summary(m); shapiro.test(resid(m));Anova(m);lsmeans(m, pairwise~nlcdClass, adjust="tukey")   
 
 # -----------------------------------------------------------
 # 3 variables ~ Tdiv, %EG, %ECM
