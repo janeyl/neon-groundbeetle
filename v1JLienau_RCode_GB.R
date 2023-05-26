@@ -89,10 +89,10 @@ if(TRUE){
     left_join(., perplotperyear_HARV.df, by = "plotID")%>%                     #join in sampleing area
     left_join(., mappingandtagging_HARV.df, by = "individualID")%>%            #add species ID and names
     left_join(., Mycorrhizal.df, by = "taxonID")%>%                           #fungal associations and leaf habit
-    mutate(taxonID=recode(taxonID, 'ACSA3' = 'ACSA2'),                         #check for same species
-           taxonID=recode(taxonID, 'ACSAS' = 'ACSA2'), 
-           scientificName=recode(scientificName, 'Acer saccharum Marshall' = 'Acer saccharinum L.'),
-           scientificName=recode(scientificName, 'Acer saccharum Marshall var. saccharum' = 'Acer saccharinum L.'),
+    mutate(taxonID=dplyr::recode(taxonID, 'ACSA3' = 'ACSA2'),                         #check for same species
+           taxonID=dplyr::recode(taxonID, 'ACSAS' = 'ACSA2'), 
+           scientificName=dplyr::recode(scientificName, 'Acer saccharum Marshall' = 'Acer saccharinum L.'),
+           scientificName=dplyr::recode(scientificName, 'Acer saccharum Marshall var. saccharum' = 'Acer saccharinum L.'),
            basalAreaCm2=(3.142*((stemDiameter/2)^2)))                          #calculate the basal area of each tree from the stem diameter
 }
 # -----------------------------------------------------------
