@@ -8,13 +8,16 @@ APELUC2,Apenes lucidula,ModerateFlight,NA
 CARGOR,Carabus goryi,NoFlight,Predator
 CARSER,Carabus serratus,ModerateFlight,Omnivore
 CARSYL,Carabus sylvosus,NoFlight,Predator
+CHLEMA,Chlaenius emarginatus,,Omnivore
 CICPUN,Cicindela punctulata,GoodFlight,Predator
 CYCCON2,Cyclotrachelus convivus,NoFlight,Predator
 CYCFRE,Cyclotrachelus freitagi,NoFlight,Predator
 CYLUNI,Cylindera unipunctata,Flight,Predator
 CYMCRI,Cymindis cribricollis,ModerateFlight,Omnivore
 CYMNEG,Cymindis neglecta,ModerateFlight,Omnivore
+CYMLIM,Cymindis limbata,,NA
 CYMPLA2,Cymindis platicollis,Flight,Predator
+CLIBAL,Clinidium baldufi,,NA
 DICAMB,Dicaelus ambiguus,NoFlight,Predator
 DICDIL5,Dicaelus dilatatus,NoFlight,Predator
 DICFUR1,Dicaelus furvus,NoFlight,Predator
