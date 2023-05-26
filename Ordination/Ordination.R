@@ -1,53 +1,41 @@
 
-# -----------------------------------------------------------
-#  ordination
-# -----------------------------------------------------------
+#Packages-------------------------------------------------
+library(tidyverse)
+library(vegan)
+library(cowplot)
+#Load data-------------------------------------------------
 
-if(TRUE){
+
+#TALL-------------------------------------------------
   #ord stats and figures 
-  ordinationTALL.df<-paraTax_TALL%>%                                               
-    select(taxonID.y,
-           individualCount,
-           plotID)%>%
-    group_by(plotID, taxonID.y)%>%                                        
-    pivot_wider(names_from = "taxonID.y", values_from = "individualCount", values_fn = length, values_fill = 0)
+ordinationTALL.df <- TALL_data.df%>%
+  select(plotID,AGOCON:PASPUN)
+ordinationTALL.df <- ordinationTALL.df%>%
+  group_by(plotID)%>%
+  summarise(across(everything(), sum))%>%
+  rowwise()
+
+veg.df<-allTALL.df
+
+ordinationTALL.df<-allTALL.df%>%
+  select(plotID,
+         nlcdClass,
+         PerEG_BA,
+         Shan_BA)%>%
+  left_join(ordinationTALL.df, by = "plotID")
+
+species.df<-ordinationTALL.df[,5:37]                       
   
-  veg.df<-allTALL.df
-  
-  ordinationTALL.df<-allTALL.df%>%
-    select(plotID,
-           nlcdClass,
-           PerEG_BA,
-           Shan_BA)%>%
-    left_join(ordinationTALL.df, by = "plotID")
-  #remove species that are 0? because in some cases veg is missing?
-  
-  ordinationTALL.df<-ordinationTALL.df%>%
-    select(!STEPLE)%>%
-    select(!CICPUN)%>%
-    select(!TETCAR2)%>%
-    select(!CRADUB)%>%
-    select(!AMBMEX)%>%
-    select(!TETVIR)%>%
-    select(!HARKAT)%>%
-    select(!ACUTES)%>%
-    select(!NOTSAY)%>%
-    select(!NOTTER)%>%
-    select(!LEBPUL)%>%
-    select(!SELFOS)%>%
-    select(!SELFAT)%>%
-    select(!SELPAL)%>%
-    select(!SELCON2)
-  species.df<-ordinationTALL.df[,5:37]                        
+  # Remove singletons:
+  species.df = species.df[,colSums(species.df) > 1]
   
   my_nmds_result <- species.df%>% 
     vegan::metaMDS()
   
   # plot stress
-  my_nmds_result$stress ## [1] 0.0773343 great (>0.05 is excellen <.2 is poor)
+  my_nmds_result$stress ## [1] 0.08367846 great (>0.05 is excellen <.2 is poor)
   
-  
-  data.scores = as.data.frame(scores(my_nmds_result))
+  data.scores = as.data.frame(scores(my_nmds_result, display = "sites", "species"))
   data.scores$plotID = ordinationTALL.df$plotID #need for plot
   
   ordinationTALL.df<-ordinationTALL.df%>%
@@ -63,50 +51,67 @@ if(TRUE){
   data.scores<-veg.df%>%
     select(plotID,
            nlcdClass,
-           PerEG_BA)%>%
-    left_join(., data.scores)
+           PerEG_BA,
+           totalBA)%>%
+    left_join(., data.scores, by = "plotID")
   
   
   #with o lines
-  gg3 = ggplot(data = data.scores, aes(x = NMDS1, y = NMDS2)) + 
-    geom_point(data = data.scores, aes(colour = PerEG_BA, shape = nlcdClass), size = 3)+ #per EG
-    scale_fill_gradient2()+ 
-    #geom_point(data = en_coord_cont, aes(x = NMDS1, y = NMDS2), size = .5, colour = "red")+
+  gg1 = ggplot(data = data.scores, aes(x = NMDS1, y = NMDS2)) + 
+    geom_polygon(data=data.scores,aes(x=NMDS1,y=NMDS2,fill=nlcdClass),alpha=0.30) + # add the convex hulls
+    geom_point(data = data.scores, aes(shape = nlcdClass), size = 3)+ 
     geom_text(data = en_coord_cont, aes(x = NMDS1, y = NMDS2), colour = "red", #species name
-              fontface = "bold", label = row.names(en_coord_cont), size = 2, check_overlap= TRUE) + 
+              fontface = "bold", label = row.names(en_coord_cont), size = 2, check_overlap = FALSE) + 
     theme(axis.title = element_text(size = 10, face = "bold", colour = "grey30"), 
           panel.background = element_blank(), panel.border = element_rect(fill = NA, colour = "grey30"), 
           axis.ticks = element_blank(), axis.text = element_blank(), legend.key = element_blank(), 
           legend.title = element_text(size = 10, face = "bold", colour = "grey30"), 
           legend.text = element_text(size = 9, colour = "grey30")) +
-    labs(colour = "Percent Evergreen", shape = "Site ID")+
-    guides(colour = guide_colourbar(order = 1),
-           shape = guide_legend(order = 2))
-  gg3
-  pdf("/Users/yourfilepath/Desktop/Model_Graphs/TALL_Ord3.pdf", width = 7, height = 7)
-  plot(gg3)
+    labs(shape = "Site ID", fill = "Site ID", title = "Talledega Stress = 0.084")+
+    theme(plot.title = element_text(hjust = 0.5))
+  gg1
+  pdf("/Users/JaneyLienau/Desktop/Model_Graphs/TALL_Ord.pdf", width = 7, height = 7)
+  plot(gg1)
   dev.off()
   
   # PERMANOVA 
   per1<- adonis2(species.df ~ PerEG_BA, data = data.scores, permutations = 999, method="bray")
-  per1 # sig
+  per1 # sig 0.07 PerEG_BA
   per2<- adonis2(species.df ~ plotID, data = data.scores, permutations = 999, method="bray")
   per2
   
+  per3<- adonis2(species.df ~ EG, data = data.scores %>% mutate(EG = nlcdClass == "evergreenForest"), permutations = 999, method="bray")
+  per3 #sig EG 0.032
+  
   #print
   ordinationTALL.df$siteID<-"TALL"
+
+#HARV-------------------------------------------------
+  ordinationHARV.df <- HARV_data.df%>%
+    select(plotID,ACUHYD:TRIAUT)
   
+  ordinationHARV.df <- ordinationHARV.df%>%
+    group_by(plotID)%>%
+    summarise(across(everything(), sum))%>%
+    rowwise()
   
-  ordinationHARV.df<-paraTax_HARV%>%                                               
-    select(taxonID.y,
-           individualCount,
-           plotID)%>%
-    group_by(plotID, taxonID.y)%>%                                        
-    pivot_wider(names_from = "taxonID.y", values_from = "individualCount", values_fn = length, values_fill = 0)
-  species.df<-ordinationHARV.df[,2:34]                                            # 2388 species
+  veg.df<-allHARV.df
+  
+  ordinationHARV.df<-allHARV.df%>%
+    select(plotID,
+           nlcdClass,
+           PerEG_BA,
+           Shan_BA)%>%
+    left_join(ordinationHARV.df, by = "plotID")
+  
+  species.df<-ordinationHARV.df[,5:37]                                         
+  sum(species.df)
+  # Remove singletons:
+  species.df = species.df[,colSums(species.df) > 1]
   
   
   veg.df<-BasalAreaHARV.df
+  
   ordinationHARV.df<-ordinationHARV.df%>%
     left_join(veg.df, by = "plotID")
   
@@ -114,9 +119,9 @@ if(TRUE){
     vegan::metaMDS()
   
   # plot stress
-  my_nmds_result$stress ## [1] 0.1066321 ok (>0.05 is excellen <.2 is poor)
+  my_nmds_result$stress ## [1] 0.1295496 ok (>0.05 is excellen <.2 is poor)
   goodness(my_nmds_result)
-  inertcomp(my_nmds_result)
+  #inertcomp(my_nmds_result)
   #
   ordinationHARV.df<-ordinationHARV.df%>%
     select(!perECM)%>%
@@ -130,7 +135,7 @@ if(TRUE){
     select(!AM)
   
   ordinationHARV.df <- ordinationHARV.df%>%
-    select(!nlcdClass)
+    select(!nlcdClass.y)
   
   ordinationHARV.df <- ordinationHARV.df%>%
     select(!ECM)
@@ -138,8 +143,14 @@ if(TRUE){
   ordinationHARV.df <- ordinationHARV.df%>%
     select(!perEvergreen)
   
+  ordinationHARV.df <- ordinationHARV.df%>%
+    select(!PerEG_BA)
   
-  data.scores = as.data.frame(scores(my_nmds_result))
+  ordinationHARV.df <- ordinationHARV.df%>%
+    select(!Shan_BA)
+  
+  
+  data.scores = as.data.frame(scores(my_nmds_result, display = "sites", "species"))
   data.scores$plotID = ordinationHARV.df$plotID #need for plot
   
   en = envfit(my_nmds_result, ordinationHARV.df, permutations = 999, na.rm = TRUE)
@@ -152,36 +163,32 @@ if(TRUE){
            nlcdClass,
            perEvergreen)%>%
     left_join(., data.scores)%>%
-    filter(!plotID=="HARV_025")
+    filter(!plotID == "HARV_025")
   
-  
+
   #with o lines
-  gg3 = ggplot(data = data.scores, aes(x = NMDS1, y = NMDS2)) + 
-    geom_point(data = data.scores, aes(colour = perEvergreen, shape = nlcdClass), size = 3)+ #per EG
-    scale_fill_gradient2()+ 
-    #geom_point(data = en_coord_cont, aes(x = NMDS1, y = NMDS2), size = .5, colour = "red")+
+  gg2 = ggplot(data = data.scores, aes(x = NMDS1, y = NMDS2)) + 
+    geom_polygon(data=data.scores,aes(x=NMDS1,y=NMDS2,fill=nlcdClass),alpha=0.30) + # add the convex hulls
+    geom_point(data = data.scores, aes(shape = nlcdClass), size = 3)+ 
     geom_text(data = en_coord_cont, aes(x = NMDS1, y = NMDS2), colour = "red", #species name
-              fontface = "bold", label = row.names(en_coord_cont), size = 2, check_overlap= TRUE) + 
+              fontface = "bold", label = row.names(en_coord_cont), size = 2, check_overlap= FALSE) + 
     theme(axis.title = element_text(size = 10, face = "bold", colour = "grey30"), 
           panel.background = element_blank(), panel.border = element_rect(fill = NA, colour = "grey30"), 
           axis.ticks = element_blank(), axis.text = element_blank(), legend.key = element_blank(), 
           legend.title = element_text(size = 10, face = "bold", colour = "grey30"), 
           legend.text = element_text(size = 9, colour = "grey30")) +
-    labs(colour = "Percent Evergreen", shape = "Site ID")+
-    guides(colour = guide_colourbar(order = 1),
-           shape = guide_legend(order = 2))
-  gg3
-  pdf("/Users/yourfilepath/Desktop/Model_Graphs/HARV_Ord3.pdf", width = 7, height = 7)
-  plot(gg3)
+    labs(shape = "Site ID", fill = "Site ID", title = "Harvard Stress = 0.129")+
+    theme(plot.title = element_text(hjust = 0.5))
+  
+  gg2
+  pdf("/Users/JaneyLienau/Desktop/Model_Graphs/HARV_Ord.pdf", width = 7, height = 7)
+  plot(gg2)
   dev.off()
   
   # PERMANOVA 
-  per1<- adonis2(species.df ~ perEvergreen, data = data.scores, permutations = 999, method="bray")
-  per1
-  #no sig
-  per2<- adonis2(species.df ~ plotID, data = data.scores, permutations = 999, method="bray")
-  per2
-  #no sig
+  per4<- adonis2(species.df ~ EG, data = data.scores %>% mutate(EG = nlcdClass == "evergreenForest"), permutations = 999, method="bray")
+  per4 #sig EG 0.045
+
   
   
   #print
@@ -191,6 +198,171 @@ if(TRUE){
   #species driving site distribution
   spp.fit <- envfit(my_nmds_result, ordinationHARV.df, permutations = 999)
   head(spp.fit)
-}
+  
+
+#JERC-------------------------------------------------
+  #ord stats and figures 
+  ordinationJERC.df <- JERC_data.df%>%
+    select(plotID,AGOCON:SELGRA)
+  ordinationJERC.df <- ordinationJERC.df%>%
+    group_by(plotID)%>%
+    summarise(across(everything(), sum))%>%
+    rowwise()
+  nlcdClass <- JERC_data.df%>%
+    select(plotID, nlcdClass)%>%
+    distinct()
+  
+  ordinationJERC.df<-ordinationJERC.df%>%
+    left_join(nlcdClass, by = "plotID")
+  
+  species.df<-ordinationJERC.df[,2:49]                       
+  
+  # Remove singletons:
+  species.df = species.df[,colSums(species.df) > 1]
+  
+  my_nmds_result <- species.df%>% 
+    vegan::metaMDS()
+  
+  # plot stress
+  my_nmds_result$stress ## [1] 0.08736128 great (>0.05 is excellen <.2 is poor)
+  
+  data.scores = as.data.frame(scores(my_nmds_result, display = "sites", "species"))
+  data.scores$plotID = ordinationJERC.df$plotID #need for plot
+  
+  
+  en = envfit(my_nmds_result, ordinationJERC.df, permutations = 999, na.rm = TRUE)
+  
+  en_coord_cont = as.data.frame(scores(en, "vectors")) * ordiArrowMul(en) #ordiarrowmul = for arrows
+  en_coord_cat = as.data.frame(scores(en, "factors")) * ordiArrowMul(en) #plotID - need to keep nlcdClass off
+  
+  data.scores<-nlcdClass%>%
+    left_join(., data.scores, by = "plotID")
+  
+  
+  #with o lines
+  gg3 = ggplot(data = data.scores, aes(x = NMDS1, y = NMDS2)) + 
+    geom_polygon(data=data.scores,aes(x=NMDS1,y=NMDS2,fill=nlcdClass),alpha=0.30) + # add the convex hulls
+    geom_point(data = data.scores, aes(shape = nlcdClass), size = 3)+ 
+    geom_text(data = en_coord_cont, aes(x = NMDS1, y = NMDS2), colour = "red", #species name
+              fontface = "bold", label = row.names(en_coord_cont), size = 2, check_overlap= FALSE) + 
+    theme(axis.title = element_text(size = 10, face = "bold", colour = "grey30"), 
+          panel.background = element_blank(), panel.border = element_rect(fill = NA, colour = "grey30"), 
+          axis.ticks = element_blank(), axis.text = element_blank(), legend.key = element_blank(), 
+          legend.title = element_text(size = 10, face = "bold", colour = "grey30"), 
+          legend.text = element_text(size = 9, colour = "grey30")) +
+    labs(shape = "Site ID", fill = "Site ID", title = "The Jones Center At Ichauway Stress = 0.087")+
+    theme(plot.title = element_text(hjust = 0.5))
+  gg3
+  pdf("/Users/JaneyLienau/Desktop/Model_Graphs/JERC_Ord.pdf", width = 7, height = 7)
+  plot(gg3)
+  dev.off()
+  
+
+  
+  per4<- adonis2(species.df ~ EG, data = data.scores %>% mutate(EG = nlcdClass == "evergreenForest"), permutations = 999, method="bray")
+  per4 #not sig EG 0.603
+  
+  #print
+  ordinationJERC.df$siteID<-"JERC"
 
 
+  
+  #BART-------------------------------------------------
+  #ord stats and figures 
+  ordinationBART.df <- BART_data.df%>%
+    select(plotID,AGORET:SYNIMP)
+  ordinationBART.df <- ordinationBART.df%>%
+    group_by(plotID)%>%
+    summarise(across(everything(), sum))%>%
+    rowwise()
+  nlcdClass <- BART_data.df%>%
+    select(plotID, nlcdClass)%>%
+    distinct()
+  
+  ordinationBART.df<-ordinationBART.df%>%
+    left_join(nlcdClass, by = "plotID")
+  
+  species.df<-ordinationBART.df[,2:29]                       
+  
+  # Remove singletons:
+  species.df = species.df[,colSums(species.df) > 1]
+  
+  my_nmds_result <- species.df%>% 
+    vegan::metaMDS()
+  
+  # plot stress
+  my_nmds_result$stress ## [1] 0.1024429 great (>0.05 is excellen <.2 is poor)
+  
+  data.scores = as.data.frame(scores(my_nmds_result, display = "sites", "species"))
+  data.scores$plotID = ordinationBART.df$plotID #need for plot
+  
+  
+  en = envfit(my_nmds_result, ordinationBART.df, permutations = 999, na.rm = TRUE)
+  
+  en_coord_cont = as.data.frame(scores(en, "vectors")) * ordiArrowMul(en) #ordiarrowmul = for arrows
+  en_coord_cat = as.data.frame(scores(en, "factors")) * ordiArrowMul(en) #plotID - need to keep nlcdClass off
+  
+  data.scores<-nlcdClass%>%
+    left_join(., data.scores, by = "plotID")
+  
+  
+  #with o lines
+  gg4 = ggplot(data = data.scores, aes(x = NMDS1, y = NMDS2)) + 
+    geom_polygon(data=data.scores,aes(x=NMDS1,y=NMDS2,fill=nlcdClass),alpha=0.30) + # add the convex hulls
+    geom_point(data = data.scores, aes(shape = nlcdClass), size = 3)+ 
+    geom_text(data = en_coord_cont, aes(x = NMDS1, y = NMDS2), colour = "red", #species name
+              fontface = "bold", label = row.names(en_coord_cont), size = 2, check_overlap= TRUE) + 
+    theme(axis.title = element_text(size = 10, face = "bold", colour = "grey30"), 
+          panel.background = element_blank(), panel.border = element_rect(fill = NA, colour = "grey30"), 
+          axis.ticks = element_blank(), axis.text = element_blank(), legend.key = element_blank(), 
+          legend.title = element_text(size = 10, face = "bold", colour = "grey30"), 
+          legend.text = element_text(size = 9, colour = "grey30")) +
+    labs(shape = "Site ID", fill = "Site ID", title = "Bartlett Stress = 0.102")+
+    theme(plot.title = element_text(hjust = 0.5))
+  gg4
+  pdf("/Users/JaneyLienau/Desktop/Model_Graphs/BART_Ord.pdf", width = 7, height = 7)
+  plot(gg4)
+  dev.off()
+  
+
+  per4<- adonis2(species.df ~ EG, data = data.scores %>% mutate(EG = nlcdClass == "evergreenForest"), permutations = 999, method="bray")
+  per4 #not sig EG 0.113
+  
+  #print
+  ordinationBART.df$siteID<-"BART"
+  
+  #Supp Figure-----------------------------------------------------
+  
+  
+  # extract the legend from one of the plots
+  legend <- get_legend(
+    # create some space to the left of the legend
+    gg3 + theme(legend.box.margin = margin(0, 0, 0, 12))
+  )
+  
+  prow <- plot_grid(
+    gg1 + theme(legend.position="none"),
+    gg2 + theme(legend.position="none"),
+    gg3 + theme(legend.position="none"),
+    gg4 + theme(legend.position="none"),
+    align = 'vh',
+    labels = c("A", "B", "C","D"),
+    hjust = -1,
+    nrow = 2
+  )
+  prow
+  
+  # add the legend to the row we made earlier. Give it one-third of 
+  # the width of one plot (via rel_widths).
+  p <-  plot_grid(prow, legend, rel_widths = c(2, .4))
+  p
+  #PDF-------------------------------------------------------------
+  pdf("/Users/JaneyLienau/Desktop/Model_Graphs/hlepsupp.pdf", width = 14, height = 10)
+  plot(p)
+  dev.off()
+  
+  
+  
+  #------Trying JERC and BART
+  
+  
