@@ -47,6 +47,10 @@ TALL.df <- pivot_longer(TALL.df, 2:34, values_to = "count")%>% #reformatting dat
          taxonID)
 sum(TALL.df$count) #470
 
+HARV.df <- pivot_longer(HARV.df, 5:37, values_to = "count")%>% #reformatting data
+ rename(., taxonID = "name")%>%
+  select(-X)
+sum(HARV.df$count) #2389
 
 harvtall.df <- rbind(TALL.df, HARV.df)#joining the data sets from both sites
 
@@ -129,6 +133,8 @@ harvtall.df <- harvtall.df%>%
   mutate(., PerOmnivore = Omnivore/(Omnivore+Predator)*100,
          PerPredator = Predator/(Omnivore+Predator)*100)
 
+sum(harvtall.df$PreDensity)#76.12991
+sum(harvtall.df$OmnDensity)#18.76887 - predators were 4.06 times more dense than omnivore speces
 
 harvtall.df <- left_join(harvtall.df, vegB.df, by = "plotIDyear")
 #calculate density count/cups

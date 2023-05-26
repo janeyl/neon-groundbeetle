@@ -41,7 +41,8 @@ species.df<-ordinationTALL.df[,5:37]
   ordinationTALL.df<-ordinationTALL.df%>%
     select(!nlcdClass)%>%
     select(!PerEG_BA)%>%
-    select(!Shan_BA)
+    select(!Shan_BA) %>%
+    select(!totalBA)
   
   en = envfit(my_nmds_result, ordinationTALL.df, permutations = 999, na.rm = TRUE)
   

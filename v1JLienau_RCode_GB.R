@@ -1,6 +1,6 @@
-# -----------------------------------------------------------
-# library
-# -----------------------------------------------------------
+#__________________________________________
+# library----
+#__________________________________________
 
 library(tidyverse)
 library(car)       #Anova (not anova)
@@ -17,9 +17,9 @@ rm(list=ls(all=TRUE))
 # Set global option to NOT convert all character variables to factors
 options(stringsAsFactors=F)
 
-# -----------------------------------------------------------
-# Read in relevant raw data sets
-# -----------------------------------------------------------
+#__________________________________________
+# Read in relevant raw data sets----
+#__________________________________________
 
 PlantHARV <-loadByProduct(dpID="DP1.10098.001", site="HARV", 
                           package="expanded", check.size=T)
@@ -42,12 +42,11 @@ BeetleTALL<- loadByProduct(dpID="DP1.10022.001", site="TALL",
 BeetleJERC<- loadByProduct(dpID="DP1.10022.001", site="JERC", 
                            package="expanded", check.size=T) 
 
-#Mycorrhizal.df<-read.csv ("yourfilepath/plantSpecies.csv", header=TRUE)
-Mycorrhizal.df<-read.csv ("/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/plantSpecies.csv", header=TRUE)
+Mycorrhizal.df<-read.csv ("plantSpecies.csv", header=TRUE)
 
-# -----------------------------------------------------------
-# Create new tidy data sets HARV
-# -----------------------------------------------------------
+#__________________________________________
+# Create new tidy data sets HARV----
+#__________________________________________
 if(TRUE){
   Mycorrhizal.df<-Mycorrhizal.df%>%                                            #dataset with leaf habit and fungal association by taxonID
     select(taxonID,                                                            # download from:
@@ -95,9 +94,9 @@ if(TRUE){
            scientificName=dplyr::recode(scientificName, 'Acer saccharum Marshall var. saccharum' = 'Acer saccharinum L.'),
            basalAreaCm2=(3.142*((stemDiameter/2)^2)))                          #calculate the basal area of each tree from the stem diameter
 }
-# -----------------------------------------------------------
-# Create new data frame based on basal area 
-# -----------------------------------------------------------
+#__________________________________________
+# Create new data frame based on basal area ----
+#__________________________________________
 if(TRUE){
   BasalAreaHARV.df<-apparentindividual_HARV.df%>%                              #make a df with calculations based on basal area
     spread(treeType, basalAreaCm2)%>%                                          #making a column for leaf habits, and the basal area of each tree to category
@@ -149,9 +148,9 @@ if(TRUE){
   rm(species.df)                                                               #remove the species df
 }
 
-# -----------------------------------------------------------
-# Create new data frame based on number of stems
-# -----------------------------------------------------------
+#__________________________________________
+# Create new data frame based on number of stems----
+#__________________________________________
 if(TRUE){
   StemsHARV.df<-apparentindividual_HARV.df%>%                                  #make a df with calculations based on stems of each species
     mutate(stemCount=(replace(basalAreaCm2, values = 1)))%>%                   #count each stem 
@@ -204,9 +203,9 @@ if(TRUE){
            SimpsonPlant)
   rm(speciesStems.df)
 }
-# -----------------------------------------------------------
-# Descriptive Statistics SITE level
-# -----------------------------------------------------------
+#__________________________________________
+# Descriptive Statistics SITE level----
+#__________________________________________
 if(TRUE){
   SiteStatsHARV.df<-apparentindividual_HARV.df%>%                              #look at abundance of each species at HARV by stem and basal area
     select(.,plotID,
@@ -228,9 +227,9 @@ if(TRUE){
     mutate(relAbunBA = basalAreaCm2/sum(SiteStatsHARV.df$basalAreaCm2)*100,    #calculate the relative adundance of a species at HARV
            relAbunSt = stems/sum(SiteStatsHARV.df$stems)*100)                  #relative abundance = 1 species/ total species at site
 }
-# -----------------------------------------------------------
-# Descriptive Statistics PLOT level
-# -----------------------------------------------------------
+#__________________________________________
+# Descriptive Statistics PLOT level----
+#__________________________________________
 if(TRUE){
   PlotStatsHARV.df<-BasalAreaHARV.df%>%                                        #create a df with descriptive statists at the plot level
     select(plotID,                                                             #select parameters based on basal area
@@ -296,9 +295,9 @@ if(TRUE){
                  names_to = "HARV", 
                  values_to = "Value")
 }
-# -----------------------------------------------------------
-# Create new tidy data sets TALL
-# -----------------------------------------------------------
+#__________________________________________
+# Create new tidy data sets TALL----
+#__________________________________________
 if(TRUE){
   plots_TALL.df<-BeetleTALL$bet_fielddata%>%
     distinct(plotID, .keep_all = FALSE)            #beetle pitfall trap sampling locations
@@ -341,9 +340,9 @@ if(TRUE){
     distinct()
   
 }
-# -----------------------------------------------------------
-# Create new data frame based on basal area 
-# -----------------------------------------------------------
+#__________________________________________
+# Create new data frame based on basal area ----
+#__________________________________________
 if(TRUE){
   BasalAreaTALL.df<-apparentindividual_TALL.df%>%                    #make a df with calculations based on basal area
     spread(treeType, basalAreaCm2)%>%                           #making a column for leaf habits, and the basal area of each tree to category
@@ -394,9 +393,9 @@ if(TRUE){
            SimpsonPlant)
   rm(species.df)                                                #remove the species df
 }
-# -----------------------------------------------------------
-# Create new data frame based on number of stems
-# -----------------------------------------------------------
+#__________________________________________
+# Create new data frame based on number of stems----
+#__________________________________________
 if(TRUE){
   StemsTALL.df<-apparentindividual_TALL.df%>%                       #make a df with calculations based on stems of each species
     mutate(stemCount=(replace(basalAreaCm2, values = 1)))%>%    #count each stem 
@@ -448,9 +447,9 @@ if(TRUE){
            SimpsonPlant)
   rm(speciesStems.df)
 }
-# -----------------------------------------------------------
-# Descriptive Statistics SITE level
-# -----------------------------------------------------------
+#__________________________________________
+# Descriptive Statistics SITE level----
+#__________________________________________
 if(TRUE){
   SiteStatsTALL.df<-apparentindividual_TALL.df%>%                      #look at abundance of each species at HARV by stem and basal area
     select(.,plotID,
@@ -472,9 +471,9 @@ if(TRUE){
     mutate(relAbunBA = basalAreaCm2/sum(SiteStatsTALL.df$basalAreaCm2)*100,  #calculate the relative adundance of a species at HARV
            relAbunSt = stems/sum(SiteStatsTALL.df$stems)*100)                #relative abundance = 1 species/ total species at site
 }
-# -----------------------------------------------------------
-# Descriptive Statistics PLOT level
-# -----------------------------------------------------------
+#__________________________________________
+# Descriptive Statistics PLOT level----
+#__________________________________________
 library(plotrix)
 if(TRUE){
   PlotStatsTALL.df<-BasalAreaTALL.df%>%                                          #create a df with descriptive statists at the plot level
@@ -541,18 +540,18 @@ if(TRUE){
                  names_to = "TALL", 
                  values_to = "Value")
 }
-# -----------------------------------------------------------
+#__________________________________________
 # Remove unwanted df
-# -----------------------------------------------------------
+#__________________________________________
 if(TRUE){
   rm(apparentindividual_TALL.df,
      mappingandtagging_TALL.df,
      perplotperyear_TALL.df,
      plots_TALL.df)}
 
-# -----------------------------------------------------------
-# join stem and BA into one df
-# -----------------------------------------------------------
+#__________________________________________
+# join stem and BA into one df----
+#__________________________________________
 if(TRUE){
   allHARV.df<-left_join(BasalAreaHARV.df, StemsHARV.df, by = "plotID")%>%
     rename(., DF_BA = Deciduous.x,
@@ -597,9 +596,9 @@ if(TRUE){
 allVeg.df<-bind_rows(allTALL.df,
                      allHARV.df)
 
-# -----------------------------------------------------------
+#__________________________________________
 # Remove unwanted df
-# -----------------------------------------------------------
+#__________________________________________
 if(TRUE){
   rm(BasalAreaTALL.df,
      StemsHARV.df,
@@ -609,14 +608,13 @@ if(TRUE){
 
 
 
-# ------------------------------------------------------------------------------
-# BEETLE
-# ------------------------------------------------------------------------------
+#__________________________________________
+# BEETLE----
+#__________________________________________
 
-
-# -----------------------------------------------------------
-# Read in relevant raw data sets HARV
-# -----------------------------------------------------------
+#__________________________________________
+# Read in relevant raw data sets HARV----
+#__________________________________________
 
 sort_HARV.df <- BeetleHARV$bet_sorting%>%
   filter(collectDate < "2019-12-31",                                           # incomple sampling year
@@ -720,9 +718,9 @@ if(TRUE){
 }
 
 
-# -----------------------------------------------------------
-# Density PlotID-EventID grouping
-# -----------------------------------------------------------
+#__________________________________________
+# Density PlotID-EventID grouping----
+#__________________________________________
 if(TRUE){
   density_HARV.df<-paraTax_HARV%>%                                               # make a density calculation by plotID and eventID
     group_by(plotIDeventID)%>%
@@ -750,9 +748,9 @@ if(TRUE){
     mutate(plotID = plotID.x,
            nlcdClass = nlcdClass.x)
 }
-# -----------------------------------------------------------
-# Diversity plotID-eventID grouping
-# -----------------------------------------------------------
+#__________________________________________
+# Diversity plotID-eventID grouping----
+#__________________________________________
 if(TRUE){
   diversityHARV.df<-paraTax_HARV%>%                                              # make a diversity df from the transformed pin df
     select(plotIDeventID,
@@ -776,9 +774,9 @@ if(TRUE){
            SimpsonBeetle)                                                        # retain necessary columns
   rm(species.df)
 }
-# -----------------------------------------------------------
-#  Density and Diversity df at plotID level
-# -----------------------------------------------------------
+#__________________________________________
+#  Density and Diversity df at plotID level----
+#__________________________________________
 
 if(TRUE){
   densityPLOT_HARV.df<-density_HARV.df%>%                                        # density calculation
@@ -812,9 +810,9 @@ if(TRUE){
   rm(speciesPLOT.df)
 }
 
-# -----------------------------------------------------------
-#  Density and Diversity at plotID-Year level
-# -----------------------------------------------------------
+#__________________________________________
+#  Density and Diversity at plotID-Year level----
+#__________________________________________
 if(TRUE){
   densityPlotYr_HARV.df<-density_HARV.df%>%                                      # density df 
     mutate(year = format(collectDate, format="%Y"))%>%                           # make a year column
@@ -859,9 +857,9 @@ if(TRUE){
 }
 
 
-# -----------------------------------------------------------
-#  density of most abundant beetle species at plotID-Year level
-# -----------------------------------------------------------
+#__________________________________________
+#  density of most abundant beetle species at plotID-Year level----
+#__________________________________________
 speciesDensityPlotYr_HARV.df<-density_HARV.df%>%                                       
   mutate(year = format(collectDate, format="%Y"))%>%                            #grab year from collectDate
   group_by(year, plotID)%>%
@@ -911,9 +909,9 @@ speciesDensityPlotYr_HARV.df<-speciesDensityPlotYr_HARV.df%>%
          PerECM_BA)
 
 
-# -----------------------------------------------------------
-# TALL                              
-# -----------------------------------------------------------
+#__________________________________________
+# TALL                              ----
+#__________________________________________
 
 
 sort_TALL.df <- BeetleTALL$bet_sorting%>%
@@ -1008,9 +1006,9 @@ if(TRUE){
   #total 755 individuals with clean data
 }
 
-# -----------------------------------------------------------
-# Density at plotIDeventID level                                                
-# -----------------------------------------------------------
+#__________________________________________
+# Density at plotIDeventID level   ----                                             
+#__________________________________________
 if(TRUE){
   densityTALL.df<-paraTax_TALL%>%  
     group_by(plotIDeventID)%>%
@@ -1040,9 +1038,9 @@ if(TRUE){
   sum(densityTALL.df$BeetleCount) #correct!
 }
 
-# -----------------------------------------------------------
-#  density and diversity at plotID-Year level
-# -----------------------------------------------------------
+#__________________________________________
+#  density and diversity at plotID-Year level----
+#__________________________________________
 if(TRUE){
   densityPlotYr_TALL.df<-densityTALL.df%>%                                       
     mutate(year = format(collectDate, format="%Y"))%>%                            #grab year from collectDate
@@ -1084,9 +1082,9 @@ if(TRUE){
   rm(speciesPlotYR.df)
 }
 
-# -----------------------------------------------------------
-#  density of most abundant beetle species at plotID-Year level
-# -----------------------------------------------------------
+#__________________________________________
+#  density of most abundant beetle species at plotID-Year level----
+#__________________________________________
 speciesDensityPlotYr_TALL.df<-densityTALL.df%>%                                       
   mutate(year = format(collectDate, format="%Y"))%>%                            #grab year from collectDate
   group_by(year, plotID)%>%
@@ -1139,9 +1137,9 @@ speciesDensityPlotYr_TALL.df<-speciesDensityPlotYr_TALL.df%>%
 
 
 
-# -----------------------------------------------------------
-# Read in relevant raw data sets JERC 
-# -----------------------------------------------------------
+#__________________________________________
+# Read in relevant raw data sets JERC ----
+#__________________________________________
 
 sort_JERC.df <- BeetleJERC$bet_sorting%>%
   filter(collectDate > "2013-12-31",                                           #remove 2013 data: incomplete data 
@@ -1235,9 +1233,9 @@ if(TRUE){
   #total 417 species with clean data
 }
 
-# -----------------------------------------------------------
-# Density
-# -----------------------------------------------------------
+#__________________________________________
+# Density----
+#__________________________________________
 if(TRUE){
   density.df<-paraTax_JERC%>%  
     group_by(plotIDeventID)%>%
@@ -1266,9 +1264,9 @@ if(TRUE){
            nlcdClass = nlcdClass.x)
   sum(density.df$BeetleCount) #correcto!
 }
-# -----------------------------------------------------------
-# Diversity plotIDeventID level
-# -----------------------------------------------------------
+#__________________________________________
+# Diversity plotIDeventID level----
+#__________________________________________
 if(TRUE){
   diversityJERC.df<-paraTax_JERC%>%
     select(plotIDeventID,
@@ -1292,9 +1290,9 @@ if(TRUE){
            SimpsonBeetle)
   rm(species.df)
 }
-# -----------------------------------------------------------
-#  plotID level denstiy 
-# -----------------------------------------------------------
+#__________________________________________
+#  plotID level denstiy ----
+#__________________________________________
 
 if(TRUE){
   densityPLOT.df<-density.df%>%
@@ -1327,9 +1325,9 @@ if(TRUE){
            BeetleCount)
   rm(speciesPLOT.df)
 }
-# -----------------------------------------------------------
-#  diversity & density plotID-Year level
-# -----------------------------------------------------------
+#__________________________________________
+#  diversity & density plotID-Year level----
+#__________________________________________
 if(TRUE){
   densityPlotYr_JERC.df<-density.df%>%
     mutate(year = format(collectDate, format="%Y"))%>%
@@ -1371,9 +1369,9 @@ if(TRUE){
   rm(speciesPlotYR.df)
 }
 
-# -----------------------------------------------------------
-# Read in relevant raw data sets # BART
-# -----------------------------------------------------------
+#__________________________________________
+# Read in relevant data BART----
+#__________________________________________
 
 # BART 
 sort_BART.df <- BeetleBART$bet_sorting%>%
@@ -1470,9 +1468,9 @@ if(TRUE){
   #total 3771 species with clean data
 }
 
-# -----------------------------------------------------------
-# Density
-# -----------------------------------------------------------
+#__________________________________________
+# Density----
+#__________________________________________
 if(TRUE){
   densityBART.df<-paraTax_BART%>%  
     group_by(plotIDeventID)%>%
@@ -1501,9 +1499,9 @@ if(TRUE){
            nlcdClass = nlcdClass.x)
   sum(densityBART.df$BeetleCount) #correcto!
 }
-# -----------------------------------------------------------
-# Diversity plotIDeventID level
-# -----------------------------------------------------------
+#__________________________________________
+# Diversity plotIDeventID level----
+#__________________________________________
 if(TRUE){
   diversityBART.df<-paraTax_BART%>%
     select(plotIDeventID,
@@ -1527,9 +1525,9 @@ if(TRUE){
            SimpsonBeetle)
   rm(species.df)
 }
-# -----------------------------------------------------------
-#  plotID level denstiy 
-# -----------------------------------------------------------
+#__________________________________________
+#  plotID level denstiy ----
+#__________________________________________
 
 if(TRUE){
   densityPLOT_BART.df<-densityBART.df%>%
@@ -1562,9 +1560,9 @@ if(TRUE){
            BeetleCount)
   rm(speciesPLOT.df)
 }
-# -----------------------------------------------------------
-#  diversity plotID-Year level
-# -----------------------------------------------------------
+#__________________________________________
+#  diversity plotID-Year level----
+#__________________________________________
 if(TRUE){
   densityPlotYr_BART.df<-densityBART.df%>%
     mutate(year = format(collectDate, format="%Y"))%>%
@@ -1606,9 +1604,9 @@ if(TRUE){
   rm(speciesPlotYR.df)
 }
 
-# -----------------------------------------------------------
-#Descriptive Stats
-# -----------------------------------------------------------
+#__________________________________________
+#Descriptive Stats----
+#__________________________________________
 if(TRUE){
 
 BART.df<-diversityPlotYr_BART.df
@@ -1616,9 +1614,9 @@ TALL.df<-diversityPlotYr_TALL.df
 HARV.df<-diversityPlotYr_HARV.df
 JERC.df<-diversityPlotYr_JERC.df
 
-# -----------------------------------------------------------
-# BART
-# -----------------------------------------------------------
+#__________________________________________
+# BART stats----
+#__________________________________________
 
 statsBART.df<-BART.df%>%                                        #create a df with descriptive statists at the plot level
   select(plotID,                                                             #select parameters based on basal area
@@ -1654,9 +1652,9 @@ statsBART.df<-statsBART.df%>%
                names_to = "BART", 
                values_to = "Value")
 
-# -----------------------------------------------------------
-#HARV
-# -----------------------------------------------------------
+#__________________________________________
+#HARV stats----
+#__________________________________________
 
 statsHARV.df<-HARV.df%>%                                        #create a df with descriptive statists at the plot level
   select(plotID,                                                             #select parameters based on basal area
@@ -1692,9 +1690,9 @@ statsHARV.df<-statsHARV.df%>%
                names_to = "HARV", 
                values_to = "Value")
 
-# -----------------------------------------------------------
-# JERC
-# -----------------------------------------------------------
+#__________________________________________
+# JERC stats----
+#__________________________________________
 
 statsJERC.df<-JERC.df%>%                                        #create a df with descriptive statists at the plot level
   select(plotID,                                                             #select parameters based on basal area
@@ -1730,9 +1728,9 @@ statsJERC.df<-statsJERC.df%>%
                names_to = "JERC", 
                values_to = "Value")
 
-# -----------------------------------------------------------
-# TALL
-# -----------------------------------------------------------
+#__________________________________________
+# TALL stats----
+#__________________________________________
 
 
 statsTALL.df<-TALL.df%>%                                        #create a df with descriptive statists at the plot level
@@ -1772,9 +1770,9 @@ statsTALL.df<-statsTALL.df%>%
 
 }
 
-# -----------------------------------------------------------
-# Figure 1: Shan/Sim/ D BEETLE Y ~ X nlcdClass
-# -----------------------------------------------------------
+#__________________________________________
+# Figure 1: Shan/Sim/ D BEETLE Y ~ X nlcdClass----
+#__________________________________________
 if(TRUE){
   
 
@@ -1882,9 +1880,9 @@ dev.off()
 }
 
 
-# -----------------------------------------------------------
-# stats and graphs
-# -----------------------------------------------------------
+#__________________________________________
+# stats and graphs----
+#__________________________________________
 
 if(TRUE){
 veg.df<-allVeg.df
@@ -1902,9 +1900,9 @@ vegB.df<-beetle.df%>%
   mutate(PerAM_BA=AM_BA/totalBA*100,
          PerAM_ST=AM_ST/totalStems*100)
 
-# -----------------------------------------------------------
+#__________________________________________
 # 3 variables ~ nlcdClass
-# -----------------------------------------------------------
+#__________________________________________
 
 m <- nlme::lme(ShannonBeetle ~ nlcdClass, random = ~1| siteID/plotID, 
                data = vegB.df);summary(m); shapiro.test(resid(m));Anova(m)
@@ -1913,9 +1911,9 @@ m <- nlme::lme(SimpsonBeetle ~ nlcdClass,random = ~1| siteID/plotID,
 m <- nlme::lme(density ~ nlcdClass, random = ~1| siteID/plotID, 
                data = vegB.df);summary(m); shapiro.test(resid(m));Anova(m);lsmeans(m, pairwise~nlcdClass, adjust="tukey")   
 
-# -----------------------------------------------------------
+#__________________________________________
 # 3 variables ~ Tdiv, %EG, %ECM
-# -----------------------------------------------------------
+#__________________________________________
 
 m <- nlme::lme(ShannonBeetle ~ Shan_BA + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
                data = vegB.df);summary(m); shapiro.test(resid(m))
@@ -1930,9 +1928,9 @@ m <- nlme::lme(SimpsonBeetle ~ Sim_ST + PerEG_BA+PerECM_BA,random = ~1| siteID/p
                data = vegB.df);summary(m); shapiro.test(resid(m))
 
 
-# -----------------------------------------------------------
+#__________________________________________
 # 3 variables ~ Tden, %EG, %ECM
-# -----------------------------------------------------------
+#__________________________________________
 
 m <- nlme::lme(ShannonBeetle ~ totalBA + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
                data = vegB.df);summary(m); shapiro.test(resid(m))
@@ -1943,9 +1941,9 @@ m <- nlme::lme(density ~ totalBA + PerEG_BA+PerECM_BA, random = ~1| siteID/plotI
 m <- nlme::lme(density ~ totalStems + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
                data = vegB.df);summary(m); shapiro.test(resid(m))
 
-# -----------------------------------------------------------
+#__________________________________________
 #diversity begets diversity, density begets density
-# -----------------------------------------------------------
+#__________________________________________
 
 m <- nlme::lme(ShannonBeetle ~Shan_BA, random = ~1| siteID/plotID, 
                data = vegB.df);summary(m); shapiro.test(resid(m))
@@ -1954,9 +1952,9 @@ m <- nlme::lme(SimpsonBeetle ~ Sim_BA,random = ~1| siteID/plotID,
 m <- nlme::lme(density ~ totalBA, random = ~1| siteID/plotID, 
                data = vegB.df);summary(m); shapiro.test(resid(m))
 
-# -----------------------------------------------------------
+#__________________________________________
 #diversity predicted by tree density
-# -----------------------------------------------------------
+#__________________________________________
 m <- nlme::lme(density ~ totalStems,random = ~1| siteID/plotID, 
                data = vegB.df);summary(m); shapiro.test(resid(m))
 m <- nlme::lme(density ~ totalBA,random = ~1| siteID/plotID, 
@@ -1970,7 +1968,7 @@ m <- nlme::lme(SimpsonBeetle ~totalBA, random = ~1| siteID/plotID,
                data = vegB.df);summary(m); shapiro.test(resid(m))
 m <- nlme::lme(SimpsonBeetle ~ totalStems,random = ~1| siteID/plotID, 
                data = vegB.df);summary(m); shapiro.test(resid(m))
-# -----------------------------------------------------------
+#__________________________________________
 #Top 5 
 #m<-nlme::lme(Species1 ~ PerEG_BA, random = ~1| siteID/plotID,data= ?);summary(m);shapiro.test(resid(m))
 
@@ -1978,12 +1976,12 @@ m <- nlme::lme(SimpsonBeetle ~ totalStems,random = ~1| siteID/plotID,
 #Species3~ PerEG_BA
 #Species4~ PerEG_BA
 #Species5~ PerEG_BA
-# -----------------------------------------------------------
+#__________________________________________
 
 
-# -----------------------------------------------------------
-#LOG versions
-# -----------------------------------------------------------
+#__________________________________________
+#LOG versions----
+#__________________________________________
 #
 #
 #
@@ -1995,17 +1993,17 @@ m <- nlme::lme(SimpsonBeetle ~ totalStems,random = ~1| siteID/plotID,
 #
 #
 
-# -----------------------------------------------------------
+#__________________________________________
 #Log Transformed BeetleDiversity ~ Percent Evergreen
-# -----------------------------------------------------------
+#__________________________________________
 
 vegB.df$log<-log(vegB.df$ShannonBeetle)
 vegB.df<-vegB.df%>%
   filter(!log == "-Inf") #sometimes one data point comes back -Inf
 
-# -----------------------------------------------------------
+#__________________________________________
 # 3 variables ~ nlcdClass
-# -----------------------------------------------------------
+#__________________________________________
 
 m <- nlme::lme(log(ShannonBeetle) ~ nlcdClass, random = ~1| siteID/plotID, 
                data = vegB.df);summary(m); shapiro.test(resid(m))
@@ -2014,9 +2012,9 @@ m <- nlme::lme(log(SimpsonBeetle) ~ nlcdClass,random = ~1| siteID/plotID,
 m <- nlme::lme(log(density) ~ nlcdClass, random = ~1| siteID/plotID, 
                data = vegB.df);summary(m); shapiro.test(resid(m))
 
-# -----------------------------------------------------------
+#__________________________________________
 # 3 variables ~ Tdiv, %EG, %ECM
-# -----------------------------------------------------------
+#__________________________________________
 
 m <- nlme::lme(log(ShannonBeetle) ~ Shan_BA + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
                data = vegB.df);summary(m); shapiro.test(resid(m))
@@ -2026,9 +2024,9 @@ m <- nlme::lme(log(density) ~ Shan_BA + PerEG_BA+PerECM_BA, random = ~1| siteID/
                data = vegB.df);summary(m); shapiro.test(resid(m))
 
 
-# -----------------------------------------------------------
+#__________________________________________
 # 3 variables ~ Tden, %EG, %ECM
-# -----------------------------------------------------------
+#__________________________________________
 
 m <- nlme::lme(log(ShannonBeetle) ~ totalBA + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
                data = vegB.df);summary(m); shapiro.test(resid(m))
@@ -2040,9 +2038,9 @@ m <- nlme::lme(log(density) ~ totalBA + PerEG_BA+PerECM_BA, random = ~1| siteID/
 m <- nlme::lme(log(density) ~ totalStems + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
                data = vegB.df);summary(m); shapiro.test(resid(m))
 
-# -----------------------------------------------------------
+#__________________________________________
 #diversity begets diversity, density begets density
-# -----------------------------------------------------------
+#__________________________________________
 
 m <- nlme::lme(log(ShannonBeetle) ~Shan_BA, random = ~1| siteID/plotID, 
                data = vegB.df);summary(m); shapiro.test(resid(m))
@@ -2050,9 +2048,9 @@ m <- nlme::lme(log(SimpsonBeetle) ~ Sim_BA,random = ~1| siteID/plotID,
                data = vegB.df);summary(m); shapiro.test(resid(m))
 m <- nlme::lme(log(density) ~ totalBA, random = ~1| siteID/plotID, 
                data = vegB.df);summary(m); shapiro.test(resid(m))
-# -----------------------------------------------------------
+#__________________________________________
 #log version diversity predicted by tree density
-# -----------------------------------------------------------
+#__________________________________________
 m <- nlme::lme(log(density) ~ totalStems,random = ~1| siteID/plotID, 
                data = vegB.df);summary(m); shapiro.test(resid(m))
 m <- nlme::lme(log(density) ~ totalBA,random = ~1| siteID/plotID, 
@@ -2066,12 +2064,12 @@ m <- nlme::lme(log(SimpsonBeetle) ~totalBA, random = ~1| siteID/plotID,
                data = vegB.df);summary(m); shapiro.test(resid(m))
 m <- nlme::lme(log(SimpsonBeetle) ~ totalStems,random = ~1| siteID/plotID, 
                data = vegB.df);summary(m); shapiro.test(resid(m))
-# -----------------------------------------------------------
+#__________________________________________
 
 
-# -----------------------------------------------------------
-# Figure 2: ShanBEETLE Y ~ X %EG
-# -----------------------------------------------------------
+#__________________________________________
+# Figure 2: ShanBEETLE Y ~ X %EG----
+#__________________________________________
 
 p<-ggplot(vegB.df,aes(x=PerEG_BA, y=ShannonBeetle))+
   geom_smooth(method = 'lm', formula = 'y ~ x') +
@@ -2104,9 +2102,9 @@ pdf("/Users/yourfilepath/Desktop/Model_Graphs/ShanB_PerEF.pdf", width = 7, heigh
 plot(p)
 dev.off()
 
-# -----------------------------------------------------------
-# Figure 3: DenBEETLE Y ~ X %EG
-# -----------------------------------------------------------
+#__________________________________________
+# Figure 3: DenBEETLE Y ~ X %EG----
+#__________________________________________
 
 p<-ggplot(vegB.df,aes(x=PerEG_BA, y=density))+
   geom_smooth(method = 'lm', formula = 'y ~ x') +
@@ -2164,9 +2162,9 @@ pdf("/Users/yourfilepath/Desktop/Model_Graphs/Den_PerEG.pdf", width = 7, height 
 plot(p)
 dev.off()
 
-# -----------------------------------------------------------
-# Quick plot - perEG ~ Beetle
-# -----------------------------------------------------------
+#__________________________________________
+# Plot - perEG ~ Beetle diversity----
+#__________________________________________
 #simpsonB ~ PerEG_BA
 p<-ggplot(vegB.df,aes(x=PerEG_BA, y=ShannonBeetle))+
   geom_smooth(method = 'lm', formula = 'y ~ x') + 
@@ -2192,9 +2190,9 @@ plot(p)
 dev.off()
 }
 
-# -----------------------------------------------------------
-#  species abundance figures and stats
-# -----------------------------------------------------------
+#__________________________________________
+#  species abundance figures and stats----
+#__________________________________________
 if(TRUE){
 
   #harv
@@ -2244,7 +2242,7 @@ if(TRUE){
                  data = speciesDensityPlotYr_TALL.df);summary(m); shapiro.test(resid(m))
   m <- nlme::lme(logDICDIL5density ~ PerEG_BA, random = ~1|plotID, 
                  data = speciesDensityPlotYr_TALL.df);summary(m); shapiro.test(resid(m))
-  
+
   
 p1<-ggplot(speciesDensityPlotYr_HARV.df,aes(x=PerEG_BA, y=CARGORdensity))+
   geom_smooth(method = 'lm', formula = 'y ~ x') +
@@ -2524,6 +2522,8 @@ p10<-ggplot(speciesDensityPlotYr_TALL.df,aes(x=PerEG_BA, y=DICDIL5density))+
 p10
 #cow plot to stack them 
 
+#most abundant species plot----
+
 Harv.plot<-plot_grid(p1,p2,p3,p4,p5, ncol = 1)
 Harv.plot
 Tall.plot<-plot_grid(p6,p7,p8,p9,p10, ncol = 1)
@@ -2538,216 +2538,3 @@ dev.off()
 
 vegB.df
 write_csv(vegB.df, "/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/vegB.df.csv")
-
-# -----------------------------------------------------------
-#  ordination
-# -----------------------------------------------------------
-
-#save files needed for ordination
-#write_csv(paraTax_TALL, "/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/Ordination/paraTax_TALL.csv")
-
-#write_csv(allTALL.df, "/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/Ordination/allTALL.df.csv")
-
-#write_csv(paraTax_HARV, "/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/Ordination/paraTax_HARV.csv")
-
-#write_csv(BasalAreaHARV.df, "/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/Ordination/BasalAreaHARV.df.csv")
-
-ordinationTALL.df
-write_csv(ordinationTALL.df, "/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/ordinationTALL.df.csv")
-ordinationHARV.df
-write_csv(ordinationHARV.df, "/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/ordinationHARV.df.csv")
-
-
-rm(ordinationTALL.df)
-if(TRUE){
-#ord stats and figures 
-ordinationTALL.df<-paraTax_TALL%>%                                               
-  select(taxonID.y,
-         individualCount,
-         plotID)%>%
-  group_by(plotID, taxonID.y)%>%                                        
-  pivot_wider(names_from = "taxonID.y", values_from = "individualCount", values_fn = length, values_fill = 0)
-
-veg.df<-allTALL.df
-
-ordinationTALL.df<-allTALL.df%>%
-  select(plotID,
-         nlcdClass,
-         PerEG_BA,
-         Shan_BA)%>%
-  left_join(ordinationTALL.df, by = "plotID")
-#remove species that are 0? because in some cases veg is missing?
-
-ordinationTALL.df<-ordinationTALL.df%>%
-  select(!STEPLE)%>%
-  select(!CICPUN)%>%
-  select(!TETCAR2)%>%
-  select(!CRADUB)%>%
-  select(!AMBMEX)%>%
-  select(!TETVIR)%>%
-  select(!HARKAT)%>%
-  select(!ACUTES)%>%
-  select(!NOTSAY)%>%
-  select(!NOTTER)%>%
-  select(!LEBPUL)%>%
-  select(!SELFOS)%>%
-  select(!SELFAT)%>%
-  select(!SELPAL)%>%
-  select(!SELCON2)
-species.df<-ordinationTALL.df[,5:37]                        
-
-my_nmds_result <- species.df%>% 
-  vegan::metaMDS()
-
-# plot stress
-my_nmds_result$stress ## [1] 0.0773343 great (>0.05 is excellen <.2 is poor)
-
-
-data.scores = as.data.frame(scores(my_nmds_result))
-data.scores$plotID = ordinationTALL.df$plotID #need for plot
-
-ordinationTALL.df<-ordinationTALL.df%>%
-  select(!nlcdClass)%>%
-  select(!PerEG_BA)%>%
-  select(!Shan_BA)
-
-en = envfit(my_nmds_result, ordinationTALL.df, permutations = 999, na.rm = TRUE)
-
-en_coord_cont = as.data.frame(scores(en, "vectors")) * ordiArrowMul(en) #ordiarrowmul = for arrows
-en_coord_cat = as.data.frame(scores(en, "factors")) * ordiArrowMul(en) #plotID - need to keep nlcdClass off
-
-data.scores<-veg.df%>%
-  select(plotID,
-         nlcdClass,
-         PerEG_BA)%>%
-  left_join(., data.scores)
-
-
-#with o lines
-gg3 = ggplot(data = data.scores, aes(x = NMDS1, y = NMDS2)) + 
-  geom_point(data = data.scores, aes(colour = PerEG_BA, shape = nlcdClass), size = 3)+ #per EG
-  scale_fill_gradient2()+ 
-  #geom_point(data = en_coord_cont, aes(x = NMDS1, y = NMDS2), size = .5, colour = "red")+
-  geom_text(data = en_coord_cont, aes(x = NMDS1, y = NMDS2), colour = "red", #species name
-            fontface = "bold", label = row.names(en_coord_cont), size = 2, check_overlap= TRUE) + 
-  theme(axis.title = element_text(size = 10, face = "bold", colour = "grey30"), 
-        panel.background = element_blank(), panel.border = element_rect(fill = NA, colour = "grey30"), 
-        axis.ticks = element_blank(), axis.text = element_blank(), legend.key = element_blank(), 
-        legend.title = element_text(size = 10, face = "bold", colour = "grey30"), 
-        legend.text = element_text(size = 9, colour = "grey30")) +
-  labs(colour = "Percent Evergreen", shape = "Site ID")+
-  guides(colour = guide_colourbar(order = 1),
-         shape = guide_legend(order = 2))
-gg3
-pdf("/Users/yourfilepath/Desktop/Model_Graphs/TALL_Ord3.pdf", width = 7, height = 7)
-plot(gg3)
-dev.off()
-
-# PERMANOVA 
-per1<- adonis2(species.df ~ PerEG_BA, data = data.scores, permutations = 999, method="bray")
-per1 # sig
-per2<- adonis2(species.df ~ plotID, data = data.scores, permutations = 999, method="bray")
-per2
-
-#print
-ordinationTALL.df$siteID<-"TALL"
-
-
-ordinationHARV.df<-paraTax_HARV%>%                                               
-  select(taxonID.y,
-         individualCount,
-         plotID)%>%
-  group_by(plotID, taxonID.y)%>%                                        
-  pivot_wider(names_from = "taxonID.y", values_from = "individualCount", values_fn = length, values_fill = 0)
-species.df<-ordinationHARV.df[,2:34]                                            # 2388 species
-
-
-veg.df<-BasalAreaHARV.df
-ordinationHARV.df<-ordinationHARV.df%>%
-  left_join(veg.df, by = "plotID")
-
-my_nmds_result <- species.df%>% 
-  vegan::metaMDS()
-
-# plot stress
-my_nmds_result$stress ## [1] 0.1066321 ok (>0.05 is excellen <.2 is poor)
-goodness(my_nmds_result)
-inertcomp(my_nmds_result)
-#
-ordinationHARV.df<-ordinationHARV.df%>%
-  select(!perECM)%>%
-  select(!ShannonPlant)%>%
-  select(!SimpsonPlant)%>%
-  select(!totalBA)
-
-ordinationHARV.df<-ordinationHARV.df%>%
-  select(!Deciduous)%>%
-  select(!Evergreen)%>%
-  select(!AM)
-
-ordinationHARV.df <- ordinationHARV.df%>%
-  select(!nlcdClass)
-
-ordinationHARV.df <- ordinationHARV.df%>%
-  select(!ECM)
-
-ordinationHARV.df <- ordinationHARV.df%>%
-  select(!perEvergreen)
-
-
-data.scores = as.data.frame(scores(my_nmds_result))
-data.scores$plotID = ordinationHARV.df$plotID #need for plot
-
-en = envfit(my_nmds_result, ordinationHARV.df, permutations = 999, na.rm = TRUE)
-
-en_coord_cont = as.data.frame(scores(en, "vectors")) * ordiArrowMul(en) #ordiarrowmul = for arrows
-en_coord_cat = as.data.frame(scores(en, "factors")) * ordiArrowMul(en) #plotID - need to keep nlcdClass off
-
-data.scores<-veg.df%>%
-  select(plotID,
-         nlcdClass,
-         perEvergreen)%>%
-  left_join(., data.scores)%>%
-  filter(!plotID=="HARV_025")
-
-
-#with o lines
-gg3 = ggplot(data = data.scores, aes(x = NMDS1, y = NMDS2)) + 
-  geom_point(data = data.scores, aes(colour = perEvergreen, shape = nlcdClass), size = 3)+ #per EG
-  scale_fill_gradient2()+ 
-  #geom_point(data = en_coord_cont, aes(x = NMDS1, y = NMDS2), size = .5, colour = "red")+
-  geom_text(data = en_coord_cont, aes(x = NMDS1, y = NMDS2), colour = "red", #species name
-            fontface = "bold", label = row.names(en_coord_cont), size = 2, check_overlap= TRUE) + 
-  theme(axis.title = element_text(size = 10, face = "bold", colour = "grey30"), 
-        panel.background = element_blank(), panel.border = element_rect(fill = NA, colour = "grey30"), 
-        axis.ticks = element_blank(), axis.text = element_blank(), legend.key = element_blank(), 
-        legend.title = element_text(size = 10, face = "bold", colour = "grey30"), 
-        legend.text = element_text(size = 9, colour = "grey30")) +
-  labs(colour = "Percent Evergreen", shape = "Site ID")+
-  guides(colour = guide_colourbar(order = 1),
-         shape = guide_legend(order = 2))
-gg3
-pdf("/Users/yourfilepath/Desktop/Model_Graphs/HARV_Ord3.pdf", width = 7, height = 7)
-plot(gg3)
-dev.off()
-
-# PERMANOVA 
-per1<- adonis2(species.df ~ perEvergreen, data = data.scores, permutations = 999, method="bray")
-per1
-#no sig
-per2<- adonis2(species.df ~ plotID, data = data.scores, permutations = 999, method="bray")
-per2
-#no sig
-
-
-#print
-ordinationHARV.df$siteID<-"HARV"
-
-
-#species driving site distribution
-spp.fit <- envfit(my_nmds_result, ordinationHARV.df, permutations = 999)
-head(spp.fit)
-}
-
-
-write.csv(vegB.df, "/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/vegB.csv")
