@@ -2079,7 +2079,7 @@ p1<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=CARGOR_relabun))+
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'Carabus goryi', color='plotID')+
+  labs(x = NULL, y = 'CARGOR', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
@@ -2109,7 +2109,7 @@ p2<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=SYNIMP_relabun))+
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'Synuchus impunctatus', color='plotID')+
+  labs(x = NULL, y = 'SYNIMP', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
@@ -2137,7 +2137,7 @@ p3<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=SPHSTE3_relabun))+
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'Sphaeroderus stenostomus', color='plotID')+
+  labs(x = NULL, y = 'SPHSTE3', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
@@ -2164,7 +2164,7 @@ p4<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=PTETRI3_relabun))+
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'Pterostichus tristis', color='plotID')+
+  labs(x = NULL, y = 'PTETRI3', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
@@ -2191,7 +2191,7 @@ p5<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=PTEPEN_relabun))+
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = 'Relative Abundance\n of Evergreen Trees (%)', y = 'Pterostichus pensylvanicus', color='plotID')+
+  labs(x = 'Relative Abundance\n of Evergreen Trees (%)', y = 'PTEPEN', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
@@ -2219,7 +2219,7 @@ p6<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=CYCCON2_relabun))+
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'Cyclotrachelus convivus', color='plotID')+
+  labs(x = NULL, y = 'CYCCON2', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
@@ -2249,7 +2249,7 @@ p7<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=DICDIL5_relabun))+
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'Dicaelus dilatatus', color='plotID')+
+  labs(x = NULL, y = 'DICDIL5', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
@@ -2276,7 +2276,7 @@ p8<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=CYCFRE_relabun))+
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'Cyclotrachelus freitagi', color='plotID')+
+  labs(x = NULL, y = 'CYCFRE', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
@@ -2303,7 +2303,7 @@ p9<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=ANIHAP_relabun))+
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'Anisodactylus haplomus', color='plotID')+
+  labs(x = NULL, y = 'ANIHAP', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
@@ -2330,7 +2330,7 @@ p10<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=PASDEP_relabun))+
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = 'Relative Abundance\n of Evergreen Trees (%)', y = 'Pasimachus depressus', color='plotID')+
+  labs(x = 'Relative Abundance\n of Evergreen Trees (%)', y = 'PASDEP', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
@@ -2375,7 +2375,7 @@ p1<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=CARGOR_den))+
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'Carabus goryi', color='plotID')+
+  labs(x = NULL, y = 'CARGOR', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
@@ -2405,7 +2405,7 @@ p2<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=SYNIMP_den))+
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'Synuchus impunctatus', color='plotID')+
+  labs(x = NULL, y = 'SYNIMP', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
@@ -2433,7 +2433,7 @@ p3<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=SPHSTE3_den))+
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'Sphaeroderus stenostomus', color='plotID')+
+  labs(x = NULL, y = 'SPHSTE3', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
@@ -2460,7 +2460,7 @@ p4<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=PTETRI3_den))+
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'Pterostichus tristis', color='plotID')+
+  labs(x = NULL, y = 'PTETRI3', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
@@ -2487,7 +2487,7 @@ p5<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=PTEPEN_den))+
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = 'Relative Abundance\n of Evergreen Trees (%)', y = 'Pterostichus pensylvanicus', color='plotID')+
+  labs(x = 'Relative Abundance\n of Evergreen Trees (%)', y = 'PTEPEN', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
@@ -2515,7 +2515,7 @@ p6<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=CYCCON2_den))+
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'Cyclotrachelus convivus', color='plotID')+
+  labs(x = NULL, y = 'CYCCON2', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
@@ -2545,7 +2545,7 @@ p7<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=DICDIL5_den))+
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'Dicaelus dilatatus', color='plotID')+
+  labs(x = NULL, y = 'DICDIL5', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
@@ -2572,7 +2572,7 @@ p8<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=CYCFRE_den))+
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'Cyclotrachelus freitagi', color='plotID')+
+  labs(x = NULL, y = 'CYCFRE', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
@@ -2599,7 +2599,7 @@ p9<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=ANIHAP_den))+
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'Anisodactylus haplomus', color='plotID')+
+  labs(x = NULL, y = 'ANIHAP', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
@@ -2626,7 +2626,7 @@ p10<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=PASDEP_den))+
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = 'Relative Abundance\n of Evergreen Trees (%)', y = 'Pasimachus depressus', color='plotID')+
+  labs(x = 'Relative Abundance\n of Evergreen Trees (%)', y = 'PASDEP', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
