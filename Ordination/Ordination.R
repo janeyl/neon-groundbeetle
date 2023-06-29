@@ -178,7 +178,7 @@ species.df<-ordinationTALL.df[,5:37]
   gg2 = ggplot(data = data.scores, aes(x = NMDS1, y = NMDS2)) + 
     geom_polygon(data=data.scores,aes(x=NMDS1,y=NMDS2,fill=nlcdClass),alpha=0.30) + # add the convex hulls
     geom_point(data = data.scores, aes(shape = nlcdClass), size = 3)+ 
-    geom_text(data = en_coord_cont, aes(x = NMDS1, y = NMDS2), colour = "red", #species name
+    geom_text_repel(data = en_coord_cont, aes(x = NMDS1, y = NMDS2), colour = "red", #species name
               fontface = "bold", label = row.names(en_coord_cont), size = 2, check_overlap= FALSE) + 
     theme(axis.title = element_text(size = 10, face = "bold", colour = "grey30"), 
           panel.background = element_blank(), panel.border = element_rect(fill = NA, colour = "grey30"), 
@@ -251,8 +251,8 @@ species.df<-ordinationTALL.df[,5:37]
   gg3 = ggplot(data = data.scores, aes(x = NMDS1, y = NMDS2)) + 
     geom_polygon(data=data.scores,aes(x=NMDS1,y=NMDS2,fill=nlcdClass),alpha=0.30) + # add the convex hulls
     geom_point(data = data.scores, aes(shape = nlcdClass), size = 3)+ 
-    geom_text(data = en_coord_cont, aes(x = NMDS1, y = NMDS2), colour = "red", #species name
-              fontface = "bold", label = row.names(en_coord_cont), size = 2, check_overlap= FALSE) + 
+    geom_text_repel(data = en_coord_cont, aes(x = NMDS1, y = NMDS2), colour = "red", #species name
+              fontface = "bold", label = row.names(en_coord_cont), size = 2, max.overlaps = getOption("ggrepel.max.overlaps", default = 15)) + 
     theme(axis.title = element_text(size = 10, face = "bold", colour = "grey30"), 
           panel.background = element_blank(), panel.border = element_rect(fill = NA, colour = "grey30"), 
           axis.ticks = element_blank(), axis.text = element_blank(), legend.key = element_blank(), 
@@ -318,8 +318,8 @@ species.df<-ordinationTALL.df[,5:37]
   gg4 = ggplot(data = data.scores, aes(x = NMDS1, y = NMDS2)) + 
     geom_polygon(data=data.scores,aes(x=NMDS1,y=NMDS2,fill=nlcdClass),alpha=0.30) + # add the convex hulls
     geom_point(data = data.scores, aes(shape = nlcdClass), size = 3)+ 
-    geom_text(data = en_coord_cont, aes(x = NMDS1, y = NMDS2), colour = "red", #species name
-              fontface = "bold", label = row.names(en_coord_cont), size = 2, check_overlap= F) + 
+    geom_text_repel(data = en_coord_cont, aes(x = NMDS1, y = NMDS2), colour = "red", #species name
+              fontface = "bold", label = row.names(en_coord_cont), size = 2) + 
     theme(axis.title = element_text(size = 10, face = "bold", colour = "grey30"), 
           panel.background = element_blank(), panel.border = element_rect(fill = NA, colour = "grey30"), 
           axis.ticks = element_blank(), axis.text = element_blank(), legend.key = element_blank(), 
