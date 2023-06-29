@@ -5,16 +5,16 @@
 # library----
 #__________________________________________
 
-library(tidyverse)
 library(car)       #Anova (not anova)
 library(RColorBrewer)
 library(neonUtilities)
 library(vegan)
-library(dplyr)
 library(plotrix) #std.error function
 library(lubridate)
 library(cowplot)
 library(emmeans) #lsmeans to compare 
+library(tidyverse)
+library(dplyr)
 
 # Set global option to NOT convert all character variables to factors
 options(stringsAsFactors=F)
@@ -23,28 +23,31 @@ options(stringsAsFactors=F)
 # Read in relevant raw data sets----
 #__________________________________________
 
-PlantHARV <-loadByProduct(dpID="DP1.10098.001", site="HARV", 
-                          package="expanded", check.size=T)
+#PlantHARV <-loadByProduct(dpID="DP1.10098.001", site="HARV", #This is the file path to download from NEON directly, but I've saved the files in our GitHib to make it easier
+ #                         package="expanded", check.size=T)
 
-BeetleHARV<- loadByProduct(dpID="DP1.10022.001", site="HARV", 
-                           package="expanded", check.size=T) 
+#BeetleHARV<- loadByProduct(dpID="DP1.10022.001", site="HARV", 
+ #                          package="expanded", check.size=T) 
 
-PlantBART <-loadByProduct(dpID="DP1.10098.001", site="BART", 
-                          package="expanded", check.size=T)
+#PlantBART <-loadByProduct(dpID="DP1.10098.001", site="BART", 
+ #                         package="expanded", check.size=T)
 
-BeetleBART<- loadByProduct(dpID="DP1.10022.001", site="BART", 
-                           package="expanded", check.size=T) 
+#BeetleBART<- loadByProduct(dpID="DP1.10022.001", site="BART", 
+ #                          package="expanded", check.size=T) 
 
-PlantTALL <-loadByProduct(dpID="DP1.10098.001", site="TALL", 
-                          package="expanded", check.size=T)
+#PlantTALL <-loadByProduct(dpID="DP1.10098.001", site="TALL", 
+ #                         package="expanded", check.size=T)
 
-BeetleTALL<- loadByProduct(dpID="DP1.10022.001", site="TALL", 
-                           package="expanded", check.size=T) 
+#BeetleTALL<- loadByProduct(dpID="DP1.10022.001", site="TALL", 
+ #                          package="expanded", check.size=T) 
 
-BeetleJERC<- loadByProduct(dpID="DP1.10022.001", site="JERC", 
-                           package="expanded", check.size=T) 
+#BeetleJERC<- loadByProduct(dpID="DP1.10022.001", site="JERC", 
+ #                          package="expanded", check.size=T) 
 #no plant for JERC
-Mycorrhizal.df<-read.csv ("plantSpecies.csv", header=TRUE)
+
+#Load NEONdata.RData directly from GitHub Repository into your Environment
+
+Mycorrhizal.df<-read.csv ("plantSpecies.csv", header=TRUE) #this is also already in the GitHub Repository
 
 #__________________________________________
 # Create new tidy data sets HARV----
@@ -1872,11 +1875,8 @@ m <- nlme::lme(log(density) ~ totalStems + PerEG_BA+PerECM_BA, random = ~1| site
                  data = TALL_data.df);summary(m); shapiro.test(resid(m));Anova(m)
   
 #__________________________________________
-# Figure 1: Shan/Sim/ D BEETLE Y ~ X nlcdClass----
+# Figure 1: Three panel of Beetle Shan/Sim/ Density ~ forest cover (nlcdClass) ----
 #__________________________________________
-
-#if(TRUE){
-
 
 
 p1 <- ggplot(vegB1.df, aes(x=nlcdClass, y=ShannonBeetle, fill=nlcdClass)) + 
@@ -1979,7 +1979,7 @@ plot(fig1)
 dev.off()
 
 #__________________________________________
-# Figure 2: ShanBEETLE Y ~ X %EG----
+# Figure 2: Three panel of Beetle diversity/density ~ %EG----
 #__________________________________________
 
 p1<-ggplot(vegB2.df,aes(x=PerEG_BA, y=ShannonBeetle))+
@@ -2011,9 +2011,6 @@ p1<-ggplot(vegB2.df,aes(x=PerEG_BA, y=ShannonBeetle))+
   scale_y_continuous(breaks=c(0.0,.25,1,1.25,2))
 p1
 
-pdf("/Users/JaneyLienau/Desktop/Model_Graphs/ShanB_PerEF.pdf", width = 7, height = 7)
-plot(p)
-dev.off()
 
 p2<-ggplot(vegB2.df,aes(x=PerEG_BA, y=SimpsonBeetle))+
   #geom_smooth(method = 'lm', formula = 'y ~ x') +
@@ -2035,37 +2032,8 @@ p2<-ggplot(vegB2.df,aes(x=PerEG_BA, y=SimpsonBeetle))+
   guides(color=FALSE)
 p2
 
-#__________________________________________
-# Figure 2: Den/shan/sim BEETLE Y ~ X %EG----
-#__________________________________________
 
-p<-ggplot(vegB2.df,aes(x=PerEG_BA, y=density))+
-  geom_smooth(method = 'lm', formula = 'y ~ x') +
-  geom_point(aes(color = siteID, shape = siteID))+
-  theme(legend.position = "right")+
-  scale_fill_brewer(palette="Dark2")+
-  labs(x = 'Relative Abundance of Evergreen Trees (%)', y = 'Ground Beetle Density\n(Individuals/Cup)', color='Site')+
-  theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
-        axis.title.y = element_text(margin = margin(l = 5, r=5)), 
-        axis.text.x=element_text(margin = margin(t=10)), 
-        axis.text.y=element_text(margin = margin(r = 10)))+
-  theme(axis.title.x=element_text(size=16), 
-        axis.title.y=element_text(size=16), 
-        axis.text.x=element_text(size=12), 
-        axis.text.y=element_text(size=12))+
-  theme(axis.ticks.length=unit(-0.25, "cm"))+
-  theme(axis.ticks = element_line(colour = "black", size = 0.4))+
-  theme(axis.ticks.x = element_blank())+
-  labs(shape = "Site ID")+
-  guides(color=FALSE)
-p
-
-pdf("/Users/yourfilepath/Desktop/Model_Graphs/Den_PerEG.pdf", width = 7, height = 7)
-plot(p)
-dev.off()
-
-#testing
-p3<-ggplot(vegB2log.df,aes(x=PerEG_BA, y=log(density)))+
+p3<-ggplot(vegB2.df,aes(x=PerEG_BA, y=log(density)))+
   geom_smooth(method = 'lm', formula = 'y ~ x') +
   geom_point(aes(color = siteID, shape = siteID), show.legend = FALSE)+
   theme(legend.position = "right")+
@@ -2092,9 +2060,7 @@ p3<-ggplot(vegB2log.df,aes(x=PerEG_BA, y=log(density)))+
   guides(color=FALSE)+
   scale_y_continuous(breaks=c(-2.5,-1.0,0,1.0,2.5))
 p3
-pdf("/Users/JaneyLienau/Desktop/Model_Graphs/Den_PerEG.pdf", width = 7, height = 7)
-plot(p)
-dev.off()
+
 
 fig2<-plot_grid(p1, p2, p3, labels = c('A', 'B', 'C'), label_size = 20, ncol = 1)
 fig2
@@ -2102,39 +2068,9 @@ pdf("/Users/JaneyLienau/Desktop/Model_Graphs/fig2.pdf", width = 7, height = 21)
 plot(fig2)
 dev.off()
 
-
 #__________________________________________
-# Plot - perEG ~ Beetle diversity---- all plots are color coded
+#  Supplemental Figures 2 -- relative abundance of top 10 species ~ evergreen tree abundance
 #__________________________________________
-#simpsonB ~ PerEG_BA
-p<-ggplot(vegB2.df,aes(x=PerEG_BA, y=ShannonBeetle))+
-  geom_smooth(method = 'lm', formula = 'y ~ x') + 
-  geom_point(aes(color = plotID))+
-  theme(legend.position = "right")+
-  scale_fill_brewer(palette="Dark2")+
-  labs(x = 'Relative Abundance of Evergreen Trees (%)', y = 'Ground Beetle Diversity\n(Shannon Index)', color='Plot')+
-  theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
-        axis.title.y = element_text(margin = margin(l = 5, r=5)), 
-        axis.text.x=element_text(margin = margin(t=10)), 
-        axis.text.y=element_text(margin = margin(r = 10)))+
-  theme(axis.title.x=element_text(size=16), 
-        axis.title.y=element_text(size=16), 
-        axis.text.x=element_text(size=12), 
-        axis.text.y=element_text(size=12))+
-  theme(axis.ticks.length=unit(-0.25, "cm"))+
-  theme(axis.ticks = element_line(colour = "black", size = 0.4))+
-  theme(axis.ticks.x = element_blank())
-p
-
-pdf("/Users/yourfilepath/Desktop/Model_Graphs/Div_PerEGallplot.pdf", width = 7, height = 7)
-plot(p)
-dev.off()
-}
-
-#__________________________________________
-#  species abundance figures and stats----
-#__________________________________________
-
 
 names(HARV_data.df)
 #plot 1
@@ -2162,7 +2098,7 @@ p1<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=CARGOR_relabun))+
     legend.text=element_text(size=rel(1.5)),
     legend.position="right",
     legend.direction="vertical")+
-  guides(color=FALSE)+
+  guides(color=none)+
   ggtitle("HARV")+
   theme(title=element_text(size=20))+
   theme(plot.title = element_text(hjust = 0.5))
@@ -2192,7 +2128,7 @@ p2<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=SYNIMP_relabun))+
     legend.text=element_text(size=rel(1.5)),
     legend.position="right",
     legend.direction="vertical")+
-  guides(color=FALSE)
+  guides(color=none)
 p2
 
 
@@ -2220,7 +2156,7 @@ p3<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=SPHSTE3_relabun))+
     legend.text=element_text(size=rel(1.5)),
     legend.position="right",
     legend.direction="vertical")+
-  guides(color=FALSE)
+  guides(color=none)
 p3
 
 p4<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=PTETRI3_relabun))+
@@ -2247,7 +2183,7 @@ p4<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=PTETRI3_relabun))+
     legend.text=element_text(size=rel(1.5)),
     legend.position="right",
     legend.direction="vertical")+
-  guides(color=FALSE)
+  guides(color=none)
 p4
 
 p5<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=PTEPEN_relabun))+
@@ -2274,7 +2210,7 @@ p5<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=PTEPEN_relabun))+
     legend.text=element_text(size=rel(1.5)),
     legend.position="right",
     legend.direction="vertical")+
-  guides(color=FALSE)
+  guides(color=none)
 p5
 #tall
 names(TALL_data.df)
@@ -2302,7 +2238,7 @@ p6<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=CYCCON2_relabun))+
     legend.text=element_text(size=rel(1.5)),
     legend.position="right",
     legend.direction="vertical")+
-  guides(color=FALSE)+
+  guides(color=none)+
   ggtitle("TALL")+
   theme(title=element_text(size=20))+
   theme(plot.title = element_text(hjust = 0.5))
@@ -2332,7 +2268,7 @@ p7<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=DICDIL5_relabun))+
     legend.text=element_text(size=rel(1.5)),
     legend.position="right",
     legend.direction="vertical")+
-  guides(color=FALSE)
+  guides(color=none)
 p7
 
 p8<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=CYCFRE_relabun))+
@@ -2359,7 +2295,7 @@ p8<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=CYCFRE_relabun))+
     legend.text=element_text(size=rel(1.5)),
     legend.position="right",
     legend.direction="vertical")+
-  guides(color=FALSE)
+  guides(color=none)
 p8
 
 p9<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=ANIHAP_relabun))+
@@ -2386,7 +2322,7 @@ p9<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=ANIHAP_relabun))+
     legend.text=element_text(size=rel(1.5)),
     legend.position="right",
     legend.direction="vertical")+
-  guides(color=FALSE)
+  guides(color=none)
 p9
 
 p10<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=PASDEP_relabun))+
@@ -2413,7 +2349,7 @@ p10<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=PASDEP_relabun))+
     legend.text=element_text(size=rel(1.5)),
     legend.position="right",
     legend.direction="vertical")+
-  guides(color=FALSE)
+  guides(color=none)
 p10
 #cow plot to stack them 
 
@@ -2424,12 +2360,14 @@ Harv.plot
 Tall.plot<-plot_grid(p6,p7,p8,p9,p10, ncol = 1, labels = c('f', 'g', 'h', 'i','j'), label_size = 16)
 speciesgrid<-plot_grid(Harv.plot, Tall.plot, ncol = 2)
 speciesgrid
-pdf("/Users/JaneyLienau/Desktop/Model_Graphs/species_grid_relAbun.pdf", width = 10, height = 21)
+pdf("/Users/JaneyLienau/Desktop/Model_Graphs/Supp3_species_grid_relAbun.pdf", width = 10, height = 21)
 plot(speciesgrid)
 dev.off()
 
+#__________________________________________
+#  Supplemental Figures 3: density of top 10 species ~ evergreen tree abundance)
+#__________________________________________
 
-#--------Density versions------#
 #plot 1
 names(HARV_data.df)
 p1<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=CARGOR_den))+
@@ -2456,7 +2394,7 @@ p1<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=CARGOR_den))+
     legend.text=element_text(size=rel(1.5)),
     legend.position="right",
     legend.direction="vertical")+
-  guides(color=FALSE)+
+  guides(color=none)+
   ggtitle("HARV")+
   theme(title=element_text(size=20))+
   theme(plot.title = element_text(hjust = 0.5))
@@ -2486,7 +2424,7 @@ p2<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=SYNIMP_den))+
     legend.text=element_text(size=rel(1.5)),
     legend.position="right",
     legend.direction="vertical")+
-  guides(color=FALSE)
+  guides(color=none)
 p2
 
 
@@ -2514,7 +2452,7 @@ p3<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=SPHSTE3_den))+
     legend.text=element_text(size=rel(1.5)),
     legend.position="right",
     legend.direction="vertical")+
-  guides(color=FALSE)
+  guides(color=none)
 p3
 
 p4<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=PTETRI3_den))+
@@ -2541,7 +2479,7 @@ p4<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=PTETRI3_den))+
     legend.text=element_text(size=rel(1.5)),
     legend.position="right",
     legend.direction="vertical")+
-  guides(color=FALSE)
+  guides(color=none)
 p4
 
 p5<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=PTEPEN_den))+
@@ -2568,7 +2506,7 @@ p5<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=PTEPEN_den))+
     legend.text=element_text(size=rel(1.5)),
     legend.position="right",
     legend.direction="vertical")+
-  guides(color=FALSE)
+  guides(color=none)
 p5
 #tall
 names(TALL_data.df)
@@ -2596,7 +2534,7 @@ p6<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=CYCCON2_den))+
     legend.text=element_text(size=rel(1.5)),
     legend.position="right",
     legend.direction="vertical")+
-  guides(color=FALSE)+
+  guides(color=none)+
   ggtitle("TALL")+
   theme(title=element_text(size=20))+
   theme(plot.title = element_text(hjust = 0.5))
@@ -2626,7 +2564,7 @@ p7<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=DICDIL5_den))+
     legend.text=element_text(size=rel(1.5)),
     legend.position="right",
     legend.direction="vertical")+
-  guides(color=FALSE)
+  guides(color=none)
 p7
 
 p8<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=CYCFRE_den))+
@@ -2653,7 +2591,7 @@ p8<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=CYCFRE_den))+
     legend.text=element_text(size=rel(1.5)),
     legend.position="right",
     legend.direction="vertical")+
-  guides(color=FALSE)
+  guides(color=none)
 p8
 
 p9<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=ANIHAP_den))+
@@ -2680,7 +2618,7 @@ p9<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=ANIHAP_den))+
     legend.text=element_text(size=rel(1.5)),
     legend.position="right",
     legend.direction="vertical")+
-  guides(color=FALSE)
+  guides(color=none)
 p9
 
 p10<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=PASDEP_den))+
@@ -2707,7 +2645,7 @@ p10<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=PASDEP_den))+
     legend.text=element_text(size=rel(1.5)),
     legend.position="right",
     legend.direction="vertical")+
-  guides(color=FALSE)
+  guides(color=none)
 p10
 #cow plot to stack them 
 
@@ -2718,9 +2656,6 @@ Harv.plot
 Tall.plot<-plot_grid(p6,p7,p8,p9,p10, ncol = 1, labels = c('f', 'g', 'h', 'i','j'), label_size = 16)
 speciesgrid<-plot_grid(Harv.plot, Tall.plot, ncol = 2)
 speciesgrid
-pdf("/Users/JaneyLienau/Desktop/Model_Graphs/species_grid_Density.pdf", width = 10, height = 21)
+pdf("/Users/JaneyLienau/Desktop/Model_Graphs/Supp2_species_grid_density.pdf", width = 10, height = 21)
 plot(speciesgrid)
 dev.off()
-}
-write_csv(HARV_data.df, "/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/Functional-Ecology/HARV_data.csv")
-write_csv(TALL_data.df, "/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/TALL_data.csv")
