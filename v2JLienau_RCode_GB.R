@@ -2028,7 +2028,301 @@ plot(fig2)
 dev.off()
 
 #__________________________________________
-#  Supplemental Figures 2 -- relative abundance of top 10 species ~ evergreen tree abundance
+#  Supplemental Figures 2: density of top 10 species ~ evergreen tree abundance)
+#__________________________________________
+
+p1<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=CARGOR_den))+
+  #geom_smooth(method = 'lm', formula = 'y ~ x') +
+  geom_point()+
+  theme(legend.position = "right")+
+  scale_fill_brewer(palette="Dark2")+
+  labs(x = NULL, y = 'CARGOR', color='plotID')+
+  theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
+        axis.title.y = element_text(margin = margin(l = 5, r=5)), 
+        axis.text.x=element_text(margin = margin(t=10)), 
+        axis.text.y=element_text(margin = margin(r = 10)))+
+  theme(axis.title.x=element_text(size=20), 
+        axis.title.y=element_text(size=20), 
+        axis.text.x=element_text(size=18), 
+        axis.text.y=element_text(size=18))+
+  theme(axis.ticks.length=unit(-0.25, "cm"))+
+  theme(axis.ticks = element_line(colour = "black", size = 0.4))+
+  theme(axis.ticks.x = element_blank())+
+  labs(shape = "Site ID")+
+  theme(
+    axis.text=element_blank(),
+    title=element_text(size=rel(1.5)),
+    legend.text=element_text(size=rel(1.5)),
+    legend.position="right",
+    legend.direction="vertical")+
+  guides(color=none)+
+  ggtitle("HARV")+
+  theme(title=element_text(size=20))+
+  theme(plot.title = element_text(hjust = 0.5))
+p1
+
+p2<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=SYNIMP_den))+
+  #geom_smooth(method = 'lm', formula = 'y ~ x') +
+  geom_point()+
+  theme(legend.position = "right")+
+  scale_fill_brewer(palette="Dark2")+
+  labs(x = NULL, y = 'SYNIMP', color='plotID')+
+  theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
+        axis.title.y = element_text(margin = margin(l = 5, r=5)), 
+        axis.text.x=element_text(margin = margin(t=10)), 
+        axis.text.y=element_text(margin = margin(r = 10)))+
+  theme(axis.title.x=element_text(size=20), 
+        axis.title.y=element_text(size=20), 
+        axis.text.x=element_text(size=18), 
+        axis.text.y=element_text(size=18))+
+  theme(axis.ticks.length=unit(-0.25, "cm"))+
+  theme(axis.ticks = element_line(colour = "black", size = 0.4))+
+  theme(axis.ticks.x = element_blank())+
+  labs(shape = "Site ID")+
+  theme(
+    axis.text=element_blank(),
+    title=element_text(size=rel(1.5)),
+    legend.text=element_text(size=rel(1.5)),
+    legend.position="right",
+    legend.direction="vertical")+
+  guides(color=none)
+p2
+
+
+p3<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=SPHSTE3_den))+
+  #geom_smooth(method = 'lm', formula = 'y ~ x') +
+  geom_point()+
+  theme(legend.position = "right")+
+  scale_fill_brewer(palette="Dark2")+
+  labs(x = NULL, y = 'SPHSTE3', color='plotID')+
+  theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
+        axis.title.y = element_text(margin = margin(l = 5, r=5)), 
+        axis.text.x=element_text(margin = margin(t=10)), 
+        axis.text.y=element_text(margin = margin(r = 10)))+
+  theme(axis.title.x=element_text(size=20), 
+        axis.title.y=element_text(size=20), 
+        axis.text.x=element_text(size=18), 
+        axis.text.y=element_text(size=18))+
+  theme(axis.ticks.length=unit(-0.25, "cm"))+
+  theme(axis.ticks = element_line(colour = "black", size = 0.4))+
+  theme(axis.ticks.x = element_blank())+
+  labs(shape = "Site ID")+
+  theme(
+    axis.text=element_blank(),
+    title=element_text(size=rel(1.5)),
+    legend.text=element_text(size=rel(1.5)),
+    legend.position="right",
+    legend.direction="vertical")+
+  guides(color=none)
+p3
+
+p4<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=PTETRI3_den))+
+  #  geom_smooth(method = 'lm', formula = 'y ~ x') +
+  geom_point()+
+  theme(legend.position = "right")+
+  scale_fill_brewer(palette="Dark2")+
+  labs(x = NULL, y = 'PTETRI3', color='plotID')+
+  theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
+        axis.title.y = element_text(margin = margin(l = 5, r=5)), 
+        axis.text.x=element_text(margin = margin(t=10)), 
+        axis.text.y=element_text(margin = margin(r = 10)))+
+  theme(axis.title.x=element_text(size=20), 
+        axis.title.y=element_text(size=20), 
+        axis.text.x=element_text(size=18), 
+        axis.text.y=element_text(size=18))+
+  theme(axis.ticks.length=unit(-0.25, "cm"))+
+  theme(axis.ticks = element_line(colour = "black", size = 0.4))+
+  theme(axis.ticks.x = element_blank())+
+  labs(shape = "Site ID")+
+  theme(
+    axis.text=element_blank(),
+    title=element_text(size=rel(1.5)),
+    legend.text=element_text(size=rel(1.5)),
+    legend.position="right",
+    legend.direction="vertical")+
+  guides(color=none)
+p4
+
+p5<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=PTEPEN_den))+
+  # geom_smooth(method = 'lm', formula = 'y ~ x') +
+  geom_point()+
+  theme(legend.position = "right")+
+  scale_fill_brewer(palette="Dark2")+
+  labs(x = 'Relative Abundance\n of Evergreen Trees (%)', y = 'PTEPEN', color='plotID')+
+  theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
+        axis.title.y = element_text(margin = margin(l = 5, r=5)), 
+        axis.text.x=element_text(margin = margin(t=10)), 
+        axis.text.y=element_text(margin = margin(r = 10)))+
+  theme(axis.title.x=element_text(size=20), 
+        axis.title.y=element_text(size=20), 
+        axis.text.x=element_text(size=18), 
+        axis.text.y=element_text(size=18))+
+  theme(axis.ticks.length=unit(-0.25, "cm"))+
+  theme(axis.ticks = element_line(colour = "black", size = 0.4))+
+  theme(axis.ticks.x = element_blank())+
+  labs(shape = "Site ID")+
+  theme(
+    axis.text=element_blank(),
+    title=element_text(size=rel(1.5)),
+    legend.text=element_text(size=rel(1.5)),
+    legend.position="right",
+    legend.direction="vertical")+
+  guides(color=none)
+p5
+#tall
+names(TALL_data.df)
+p6<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=CYCCON2_den))+
+  #geom_smooth(method = 'lm', formula = 'y ~ x') +
+  geom_point()+
+  theme(legend.position = "right")+
+  scale_fill_brewer(palette="Dark2")+
+  labs(x = NULL, y = 'CYCCON2', color='plotID')+
+  theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
+        axis.title.y = element_text(margin = margin(l = 5, r=5)), 
+        axis.text.x=element_text(margin = margin(t=10)), 
+        axis.text.y=element_text(margin = margin(r = 10)))+
+  theme(axis.title.x=element_text(size=20), 
+        axis.title.y=element_text(size=20), 
+        axis.text.x=element_text(size=18), 
+        axis.text.y=element_text(size=18))+
+  theme(axis.ticks.length=unit(-0.25, "cm"))+
+  theme(axis.ticks = element_line(colour = "black", size = 0.4))+
+  theme(axis.ticks.x = element_blank())+
+  labs(shape = "Site ID")+
+  theme(
+    axis.text=element_blank(),
+    title=element_text(size=rel(1.5)),
+    legend.text=element_text(size=rel(1.5)),
+    legend.position="right",
+    legend.direction="vertical")+
+  guides(color=none)+
+  ggtitle("TALL")+
+  theme(title=element_text(size=20))+
+  theme(plot.title = element_text(hjust = 0.5))
+p6
+
+p7<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=DICDIL5_den))+
+  geom_smooth(method = 'lm', formula = 'y ~ x') +
+  geom_point()+
+  theme(legend.position = "right")+
+  scale_fill_brewer(palette="Dark2")+
+  labs(x = NULL, y = 'DICDIL5', color='plotID')+
+  theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
+        axis.title.y = element_text(margin = margin(l = 5, r=5)), 
+        axis.text.x=element_text(margin = margin(t=10)), 
+        axis.text.y=element_text(margin = margin(r = 10)))+
+  theme(axis.title.x=element_text(size=20), 
+        axis.title.y=element_text(size=20), 
+        axis.text.x=element_text(size=18), 
+        axis.text.y=element_text(size=18))+
+  theme(axis.ticks.length=unit(-0.25, "cm"))+
+  theme(axis.ticks = element_line(colour = "black", size = 0.4))+
+  theme(axis.ticks.x = element_blank())+
+  labs(shape = "Site ID")+
+  theme(
+    axis.text=element_blank(),
+    title=element_text(size=rel(1.5)),
+    legend.text=element_text(size=rel(1.5)),
+    legend.position="right",
+    legend.direction="vertical")+
+  guides(color=none)
+p7
+
+p8<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=CYCFRE_den))+
+  # geom_smooth(method = 'lm', formula = 'y ~ x') +
+  geom_point()+
+  theme(legend.position = "right")+
+  scale_fill_brewer(palette="Dark2")+
+  labs(x = NULL, y = 'CYCFRE', color='plotID')+
+  theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
+        axis.title.y = element_text(margin = margin(l = 5, r=5)), 
+        axis.text.x=element_text(margin = margin(t=10)), 
+        axis.text.y=element_text(margin = margin(r = 10)))+
+  theme(axis.title.x=element_text(size=20), 
+        axis.title.y=element_text(size=20), 
+        axis.text.x=element_text(size=18), 
+        axis.text.y=element_text(size=18))+
+  theme(axis.ticks.length=unit(-0.25, "cm"))+
+  theme(axis.ticks = element_line(colour = "black", size = 0.4))+
+  theme(axis.ticks.x = element_blank())+
+  labs(shape = "Site ID")+
+  theme(
+    axis.text=element_blank(),
+    title=element_text(size=rel(1.5)),
+    legend.text=element_text(size=rel(1.5)),
+    legend.position="right",
+    legend.direction="vertical")+
+  guides(color=none)
+p8
+
+p9<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=ANIHAP_den))+
+  # geom_smooth(method = 'lm', formula = 'y ~ x') +
+  geom_point()+
+  theme(legend.position = "right")+
+  scale_fill_brewer(palette="Dark2")+
+  labs(x = NULL, y = 'ANIHAP', color='plotID')+
+  theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
+        axis.title.y = element_text(margin = margin(l = 5, r=5)), 
+        axis.text.x=element_text(margin = margin(t=10)), 
+        axis.text.y=element_text(margin = margin(r = 10)))+
+  theme(axis.title.x=element_text(size=20), 
+        axis.title.y=element_text(size=20), 
+        axis.text.x=element_text(size=18), 
+        axis.text.y=element_text(size=18))+
+  theme(axis.ticks.length=unit(-0.25, "cm"))+
+  theme(axis.ticks = element_line(colour = "black", size = 0.4))+
+  theme(axis.ticks.x = element_blank())+
+  labs(shape = "Site ID")+
+  theme(
+    axis.text=element_blank(),
+    title=element_text(size=rel(1.5)),
+    legend.text=element_text(size=rel(1.5)),
+    legend.position="right",
+    legend.direction="vertical")+
+  guides(color=none)
+p9
+
+p10<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=PASDEP_den))+
+  #geom_smooth(method = 'lm', formula = 'y ~ x') +
+  geom_point()+
+  theme(legend.position = "right")+
+  scale_fill_brewer(palette="Dark2")+
+  labs(x = 'Relative Abundance\n of Evergreen Trees (%)', y = 'PASDEP', color='plotID')+
+  theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
+        axis.title.y = element_text(margin = margin(l = 5, r=5)), 
+        axis.text.x=element_text(margin = margin(t=10)), 
+        axis.text.y=element_text(margin = margin(r = 10)))+
+  theme(axis.title.x=element_text(size=20), 
+        axis.title.y=element_text(size=20), 
+        axis.text.x=element_text(size=18), 
+        axis.text.y=element_text(size=18))+
+  theme(axis.ticks.length=unit(-0.25, "cm"))+
+  theme(axis.ticks = element_line(colour = "black", size = 0.4))+
+  theme(axis.ticks.x = element_blank())+
+  labs(shape = "Site ID")+
+  theme(
+    axis.text=element_blank(),
+    title=element_text(size=rel(1.5)),
+    legend.text=element_text(size=rel(1.5)),
+    legend.position="right",
+    legend.direction="vertical")+
+  guides(color=none)
+p10
+#cow plot to stack them 
+
+#most abundant species plot----relative abundance currently in graphs, change as needed
+
+Harv.plot<-plot_grid(p1,p2,p3,p4,p5, ncol = 1, labels = c('a', 'b', 'c', 'd','e'), label_size = 16)
+Harv.plot
+Tall.plot<-plot_grid(p6,p7,p8,p9,p10, ncol = 1, labels = c('f', 'g', 'h', 'i','j'), label_size = 16)
+speciesgrid<-plot_grid(Harv.plot, Tall.plot, ncol = 2)
+speciesgrid
+pdf("/Users/JaneyLienau/Desktop/Model_Graphs/Supp2_species_grid_density.pdf", width = 10, height = 21)
+plot(speciesgrid)
+dev.off()
+
+#__________________________________________
+#  Supplemental Figures 3 -- relative abundance of top 10 species ~ evergreen tree abundance
 #__________________________________________
 
 names(HARV_data.df)
@@ -2323,298 +2617,3 @@ pdf("/Users/JaneyLienau/Desktop/Model_Graphs/Supp3_species_grid_relAbun.pdf", wi
 plot(speciesgrid)
 dev.off()
 
-#__________________________________________
-#  Supplemental Figures 3: density of top 10 species ~ evergreen tree abundance)
-#__________________________________________
-
-#plot 1
-names(HARV_data.df)
-p1<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=CARGOR_den))+
-  #geom_smooth(method = 'lm', formula = 'y ~ x') +
-  geom_point()+
-  theme(legend.position = "right")+
-  scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'CARGOR', color='plotID')+
-  theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
-        axis.title.y = element_text(margin = margin(l = 5, r=5)), 
-        axis.text.x=element_text(margin = margin(t=10)), 
-        axis.text.y=element_text(margin = margin(r = 10)))+
-  theme(axis.title.x=element_text(size=20), 
-        axis.title.y=element_text(size=20), 
-        axis.text.x=element_text(size=18), 
-        axis.text.y=element_text(size=18))+
-  theme(axis.ticks.length=unit(-0.25, "cm"))+
-  theme(axis.ticks = element_line(colour = "black", size = 0.4))+
-  theme(axis.ticks.x = element_blank())+
-  labs(shape = "Site ID")+
-  theme(
-    axis.text=element_blank(),
-    title=element_text(size=rel(1.5)),
-    legend.text=element_text(size=rel(1.5)),
-    legend.position="right",
-    legend.direction="vertical")+
-  guides(color=none)+
-  ggtitle("HARV")+
-  theme(title=element_text(size=20))+
-  theme(plot.title = element_text(hjust = 0.5))
-p1
-
-p2<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=SYNIMP_den))+
-  #geom_smooth(method = 'lm', formula = 'y ~ x') +
-  geom_point()+
-  theme(legend.position = "right")+
-  scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'SYNIMP', color='plotID')+
-  theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
-        axis.title.y = element_text(margin = margin(l = 5, r=5)), 
-        axis.text.x=element_text(margin = margin(t=10)), 
-        axis.text.y=element_text(margin = margin(r = 10)))+
-  theme(axis.title.x=element_text(size=20), 
-        axis.title.y=element_text(size=20), 
-        axis.text.x=element_text(size=18), 
-        axis.text.y=element_text(size=18))+
-  theme(axis.ticks.length=unit(-0.25, "cm"))+
-  theme(axis.ticks = element_line(colour = "black", size = 0.4))+
-  theme(axis.ticks.x = element_blank())+
-  labs(shape = "Site ID")+
-  theme(
-    axis.text=element_blank(),
-    title=element_text(size=rel(1.5)),
-    legend.text=element_text(size=rel(1.5)),
-    legend.position="right",
-    legend.direction="vertical")+
-  guides(color=none)
-p2
-
-
-p3<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=SPHSTE3_den))+
-  #geom_smooth(method = 'lm', formula = 'y ~ x') +
-  geom_point()+
-  theme(legend.position = "right")+
-  scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'SPHSTE3', color='plotID')+
-  theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
-        axis.title.y = element_text(margin = margin(l = 5, r=5)), 
-        axis.text.x=element_text(margin = margin(t=10)), 
-        axis.text.y=element_text(margin = margin(r = 10)))+
-  theme(axis.title.x=element_text(size=20), 
-        axis.title.y=element_text(size=20), 
-        axis.text.x=element_text(size=18), 
-        axis.text.y=element_text(size=18))+
-  theme(axis.ticks.length=unit(-0.25, "cm"))+
-  theme(axis.ticks = element_line(colour = "black", size = 0.4))+
-  theme(axis.ticks.x = element_blank())+
-  labs(shape = "Site ID")+
-  theme(
-    axis.text=element_blank(),
-    title=element_text(size=rel(1.5)),
-    legend.text=element_text(size=rel(1.5)),
-    legend.position="right",
-    legend.direction="vertical")+
-  guides(color=none)
-p3
-
-p4<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=PTETRI3_den))+
-  #  geom_smooth(method = 'lm', formula = 'y ~ x') +
-  geom_point()+
-  theme(legend.position = "right")+
-  scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'PTETRI3', color='plotID')+
-  theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
-        axis.title.y = element_text(margin = margin(l = 5, r=5)), 
-        axis.text.x=element_text(margin = margin(t=10)), 
-        axis.text.y=element_text(margin = margin(r = 10)))+
-  theme(axis.title.x=element_text(size=20), 
-        axis.title.y=element_text(size=20), 
-        axis.text.x=element_text(size=18), 
-        axis.text.y=element_text(size=18))+
-  theme(axis.ticks.length=unit(-0.25, "cm"))+
-  theme(axis.ticks = element_line(colour = "black", size = 0.4))+
-  theme(axis.ticks.x = element_blank())+
-  labs(shape = "Site ID")+
-  theme(
-    axis.text=element_blank(),
-    title=element_text(size=rel(1.5)),
-    legend.text=element_text(size=rel(1.5)),
-    legend.position="right",
-    legend.direction="vertical")+
-  guides(color=none)
-p4
-
-p5<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=PTEPEN_den))+
-  # geom_smooth(method = 'lm', formula = 'y ~ x') +
-  geom_point()+
-  theme(legend.position = "right")+
-  scale_fill_brewer(palette="Dark2")+
-  labs(x = 'Relative Abundance\n of Evergreen Trees (%)', y = 'PTEPEN', color='plotID')+
-  theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
-        axis.title.y = element_text(margin = margin(l = 5, r=5)), 
-        axis.text.x=element_text(margin = margin(t=10)), 
-        axis.text.y=element_text(margin = margin(r = 10)))+
-  theme(axis.title.x=element_text(size=20), 
-        axis.title.y=element_text(size=20), 
-        axis.text.x=element_text(size=18), 
-        axis.text.y=element_text(size=18))+
-  theme(axis.ticks.length=unit(-0.25, "cm"))+
-  theme(axis.ticks = element_line(colour = "black", size = 0.4))+
-  theme(axis.ticks.x = element_blank())+
-  labs(shape = "Site ID")+
-  theme(
-    axis.text=element_blank(),
-    title=element_text(size=rel(1.5)),
-    legend.text=element_text(size=rel(1.5)),
-    legend.position="right",
-    legend.direction="vertical")+
-  guides(color=none)
-p5
-#tall
-names(TALL_data.df)
-p6<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=CYCCON2_den))+
-  #geom_smooth(method = 'lm', formula = 'y ~ x') +
-  geom_point()+
-  theme(legend.position = "right")+
-  scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'CYCCON2', color='plotID')+
-  theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
-        axis.title.y = element_text(margin = margin(l = 5, r=5)), 
-        axis.text.x=element_text(margin = margin(t=10)), 
-        axis.text.y=element_text(margin = margin(r = 10)))+
-  theme(axis.title.x=element_text(size=20), 
-        axis.title.y=element_text(size=20), 
-        axis.text.x=element_text(size=18), 
-        axis.text.y=element_text(size=18))+
-  theme(axis.ticks.length=unit(-0.25, "cm"))+
-  theme(axis.ticks = element_line(colour = "black", size = 0.4))+
-  theme(axis.ticks.x = element_blank())+
-  labs(shape = "Site ID")+
-  theme(
-    axis.text=element_blank(),
-    title=element_text(size=rel(1.5)),
-    legend.text=element_text(size=rel(1.5)),
-    legend.position="right",
-    legend.direction="vertical")+
-  guides(color=none)+
-  ggtitle("TALL")+
-  theme(title=element_text(size=20))+
-  theme(plot.title = element_text(hjust = 0.5))
-p6
-
-p7<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=DICDIL5_den))+
-  geom_smooth(method = 'lm', formula = 'y ~ x') +
-  geom_point()+
-  theme(legend.position = "right")+
-  scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'DICDIL5', color='plotID')+
-  theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
-        axis.title.y = element_text(margin = margin(l = 5, r=5)), 
-        axis.text.x=element_text(margin = margin(t=10)), 
-        axis.text.y=element_text(margin = margin(r = 10)))+
-  theme(axis.title.x=element_text(size=20), 
-        axis.title.y=element_text(size=20), 
-        axis.text.x=element_text(size=18), 
-        axis.text.y=element_text(size=18))+
-  theme(axis.ticks.length=unit(-0.25, "cm"))+
-  theme(axis.ticks = element_line(colour = "black", size = 0.4))+
-  theme(axis.ticks.x = element_blank())+
-  labs(shape = "Site ID")+
-  theme(
-    axis.text=element_blank(),
-    title=element_text(size=rel(1.5)),
-    legend.text=element_text(size=rel(1.5)),
-    legend.position="right",
-    legend.direction="vertical")+
-  guides(color=none)
-p7
-
-p8<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=CYCFRE_den))+
-  # geom_smooth(method = 'lm', formula = 'y ~ x') +
-  geom_point()+
-  theme(legend.position = "right")+
-  scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'CYCFRE', color='plotID')+
-  theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
-        axis.title.y = element_text(margin = margin(l = 5, r=5)), 
-        axis.text.x=element_text(margin = margin(t=10)), 
-        axis.text.y=element_text(margin = margin(r = 10)))+
-  theme(axis.title.x=element_text(size=20), 
-        axis.title.y=element_text(size=20), 
-        axis.text.x=element_text(size=18), 
-        axis.text.y=element_text(size=18))+
-  theme(axis.ticks.length=unit(-0.25, "cm"))+
-  theme(axis.ticks = element_line(colour = "black", size = 0.4))+
-  theme(axis.ticks.x = element_blank())+
-  labs(shape = "Site ID")+
-  theme(
-    axis.text=element_blank(),
-    title=element_text(size=rel(1.5)),
-    legend.text=element_text(size=rel(1.5)),
-    legend.position="right",
-    legend.direction="vertical")+
-  guides(color=none)
-p8
-
-p9<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=ANIHAP_den))+
-  # geom_smooth(method = 'lm', formula = 'y ~ x') +
-  geom_point()+
-  theme(legend.position = "right")+
-  scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'ANIHAP', color='plotID')+
-  theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
-        axis.title.y = element_text(margin = margin(l = 5, r=5)), 
-        axis.text.x=element_text(margin = margin(t=10)), 
-        axis.text.y=element_text(margin = margin(r = 10)))+
-  theme(axis.title.x=element_text(size=20), 
-        axis.title.y=element_text(size=20), 
-        axis.text.x=element_text(size=18), 
-        axis.text.y=element_text(size=18))+
-  theme(axis.ticks.length=unit(-0.25, "cm"))+
-  theme(axis.ticks = element_line(colour = "black", size = 0.4))+
-  theme(axis.ticks.x = element_blank())+
-  labs(shape = "Site ID")+
-  theme(
-    axis.text=element_blank(),
-    title=element_text(size=rel(1.5)),
-    legend.text=element_text(size=rel(1.5)),
-    legend.position="right",
-    legend.direction="vertical")+
-  guides(color=none)
-p9
-
-p10<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=PASDEP_den))+
-  #geom_smooth(method = 'lm', formula = 'y ~ x') +
-  geom_point()+
-  theme(legend.position = "right")+
-  scale_fill_brewer(palette="Dark2")+
-  labs(x = 'Relative Abundance\n of Evergreen Trees (%)', y = 'PASDEP', color='plotID')+
-  theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
-        axis.title.y = element_text(margin = margin(l = 5, r=5)), 
-        axis.text.x=element_text(margin = margin(t=10)), 
-        axis.text.y=element_text(margin = margin(r = 10)))+
-  theme(axis.title.x=element_text(size=20), 
-        axis.title.y=element_text(size=20), 
-        axis.text.x=element_text(size=18), 
-        axis.text.y=element_text(size=18))+
-  theme(axis.ticks.length=unit(-0.25, "cm"))+
-  theme(axis.ticks = element_line(colour = "black", size = 0.4))+
-  theme(axis.ticks.x = element_blank())+
-  labs(shape = "Site ID")+
-  theme(
-    axis.text=element_blank(),
-    title=element_text(size=rel(1.5)),
-    legend.text=element_text(size=rel(1.5)),
-    legend.position="right",
-    legend.direction="vertical")+
-  guides(color=none)
-p10
-#cow plot to stack them 
-
-#most abundant species plot----relative abundance currently in graphs, change as needed
-
-Harv.plot<-plot_grid(p1,p2,p3,p4,p5, ncol = 1, labels = c('a', 'b', 'c', 'd','e'), label_size = 16)
-Harv.plot
-Tall.plot<-plot_grid(p6,p7,p8,p9,p10, ncol = 1, labels = c('f', 'g', 'h', 'i','j'), label_size = 16)
-speciesgrid<-plot_grid(Harv.plot, Tall.plot, ncol = 2)
-speciesgrid
-pdf("/Users/JaneyLienau/Desktop/Model_Graphs/Supp2_species_grid_density.pdf", width = 10, height = 21)
-plot(speciesgrid)
-dev.off()
