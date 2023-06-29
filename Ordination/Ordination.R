@@ -4,7 +4,10 @@ library(tidyverse)
 library(vegan)
 library(cowplot)
 #Load data-------------------------------------------------
-
+HARV_data.df <- read.csv("HARV_data.csv")
+TALL_data.df <- read.csv("TALL_data.csv")
+JERC_data.df <- read.csv("JERC_data.csv")
+BART_data.df <- read.csv("BART_data.csv")
 
 #TALL-------------------------------------------------
   #ord stats and figures 

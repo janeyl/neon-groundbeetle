@@ -2617,3 +2617,8 @@ pdf("/Users/JaneyLienau/Desktop/Model_Graphs/Supp3_species_grid_relAbun.pdf", wi
 plot(speciesgrid)
 dev.off()
 
+#saving key data frames for functional analysis and ordination
+write_csv(HARV_data.df, "/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/HARV_data.csv")
+write_csv(TALL_data.df, "/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/TALL_data.csv")
+write_csv(JERC_data.df, "/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/JERC_data.csv")
+write_csv(BART_data.df, "/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/BART_data.csv")
