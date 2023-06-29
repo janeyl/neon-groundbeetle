@@ -1,5 +1,5 @@
-#clean work area
 #rm(list=ls(all=TRUE))
+#clean work area
 
 #__________________________________________
 # library----
@@ -633,6 +633,8 @@ expertTax_HARV <- BeetleHARV$bet_expertTaxonomistIDProcessed%>%
   transform(scientificName=paste(genus, specificEpithet))%>%                   # renaming all species to be only genus and specific Epithet (helpful later)
   select(individualID,
          taxonID)
+#write_csv(expertTax_HARV, "/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/expertTax_HARV.csv")
+#quickly write a version with scientific name
 
   paraTax_HARV <- BeetleHARV$bet_parataxonomistID%>%
     filter(collectDate < "2019-12-31",
@@ -1019,6 +1021,8 @@ expertTax_TALL <- BeetleTALL$bet_expertTaxonomistIDProcessed%>%
   transform(scientificName=paste(genus, specificEpithet))%>%                   #this code will convert subspecies names to the species name 
   select(individualID,
          taxonID)
+#write_csv(expertTax_TALL, "/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/expertTax_TALL.csv")
+#saved a version with the scientific name
 
 paraTax_TALL <- BeetleTALL$bet_parataxonomistID%>%
   filter(collectDate < "2019-12-31",                                         #remove 2020 data: incomplete data 
