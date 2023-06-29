@@ -9,6 +9,10 @@ TALL_data.df <- read.csv("TALL_data.csv")
 JERC_data.df <- read.csv("JERC_data.csv")
 BART_data.df <- read.csv("BART_data.csv")
 
+allTALL.df <- read.csv("/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/allTALL.csv")
+allHARV.df <- read.csv("/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/allHARV.csv")
+BasalAreaHARV.df <- read.csv("/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/Ordination/data/BasalAreaHARV.df.csv")
+
 #TALL-------------------------------------------------
   #ord stats and figures 
 ordinationTALL.df <- TALL_data.df%>%
@@ -44,8 +48,7 @@ species.df<-ordinationTALL.df[,5:37]
   ordinationTALL.df<-ordinationTALL.df%>%
     select(!nlcdClass)%>%
     select(!PerEG_BA)%>%
-    select(!Shan_BA) %>%
-    select(!totalBA)
+    select(!Shan_BA)
   
   en = envfit(my_nmds_result, ordinationTALL.df, permutations = 999, na.rm = TRUE)
   
@@ -74,18 +77,18 @@ species.df<-ordinationTALL.df[,5:37]
     labs(shape = "Site ID", fill = "Site ID", title = "Talledega Stress = 0.084")+
     theme(plot.title = element_text(hjust = 0.5))
   gg1
-  pdf("/Users/JaneyLienau/Desktop/Model_Graphs/TALL_Ord.pdf", width = 7, height = 7)
-  plot(gg1)
-  dev.off()
+  #pdf("/Users/JaneyLienau/Desktop/Model_Graphs/TALL_Ord.pdf", width = 7, height = 7)
+  #plot(gg1)
+  #dev.off()
   
   # PERMANOVA 
   per1<- adonis2(species.df ~ PerEG_BA, data = data.scores, permutations = 999, method="bray")
-  per1 # sig 0.07 PerEG_BA
+  per1 # sig 0.068 PerEG_BA
   per2<- adonis2(species.df ~ plotID, data = data.scores, permutations = 999, method="bray")
   per2
   
   per3<- adonis2(species.df ~ EG, data = data.scores %>% mutate(EG = nlcdClass == "evergreenForest"), permutations = 999, method="bray")
-  per3 #sig EG 0.032
+  per3 #sig EG 0.026
   
   #print
   ordinationTALL.df$siteID<-"TALL"
@@ -185,13 +188,13 @@ species.df<-ordinationTALL.df[,5:37]
     theme(plot.title = element_text(hjust = 0.5))
   
   gg2
-  pdf("/Users/JaneyLienau/Desktop/Model_Graphs/HARV_Ord.pdf", width = 7, height = 7)
-  plot(gg2)
-  dev.off()
+  #pdf("/Users/JaneyLienau/Desktop/Model_Graphs/HARV_Ord.pdf", width = 7, height = 7)
+  #plot(gg2)
+  #dev.off()
   
   # PERMANOVA 
   per4<- adonis2(species.df ~ EG, data = data.scores %>% mutate(EG = nlcdClass == "evergreenForest"), permutations = 999, method="bray")
-  per4 #sig EG 0.045
+  per4 #sig EG 0.042
 
   
   
@@ -257,14 +260,14 @@ species.df<-ordinationTALL.df[,5:37]
     labs(shape = "Site ID", fill = "Site ID", title = "The Jones Center At Ichauway Stress = 0.087")+
     theme(plot.title = element_text(hjust = 0.5))
   gg3
-  pdf("/Users/JaneyLienau/Desktop/Model_Graphs/JERC_Ord.pdf", width = 7, height = 7)
-  plot(gg3)
-  dev.off()
+  #pdf("/Users/JaneyLienau/Desktop/Model_Graphs/JERC_Ord.pdf", width = 7, height = 7)
+  #plot(gg3)
+  #dev.off()
   
 
   
   per4<- adonis2(species.df ~ EG, data = data.scores %>% mutate(EG = nlcdClass == "evergreenForest"), permutations = 999, method="bray")
-  per4 #not sig EG 0.603
+  per4 #not sig EG 0.64
   
   #print
   ordinationJERC.df$siteID<-"JERC"
@@ -324,13 +327,13 @@ species.df<-ordinationTALL.df[,5:37]
     labs(shape = "Site ID", fill = "Site ID", title = "Bartlett Stress = 0.102")+
     theme(plot.title = element_text(hjust = 0.5))
   gg4
-  pdf("/Users/JaneyLienau/Desktop/Model_Graphs/BART_Ord.pdf", width = 7, height = 7)
-  plot(gg4)
-  dev.off()
+  #pdf("/Users/JaneyLienau/Desktop/Model_Graphs/BART_Ord.pdf", width = 7, height = 7)
+  #plot(gg4)
+  #dev.off()
   
 
   per4<- adonis2(species.df ~ EG, data = data.scores %>% mutate(EG = nlcdClass == "evergreenForest"), permutations = 999, method="bray")
-  per4 #not sig EG 0.113
+  per4 #not sig EG 0.116
   
   #print
   ordinationBART.df$siteID<-"BART"
@@ -361,12 +364,52 @@ species.df<-ordinationTALL.df[,5:37]
   p <-  plot_grid(prow, legend, rel_widths = c(2, .4))
   p
   #PDF-------------------------------------------------------------
-  pdf("/Users/JaneyLienau/Desktop/Model_Graphs/hlepsupp.pdf", width = 14, height = 10)
+  pdf("/Users/JaneyLienau/Desktop/Model_Graphs/allNMDS-notFig.pdf", width = 14, height = 10)
   plot(p)
   dev.off()
   
   
   
-  #------Trying JERC and BART
+  #------Figure 3: NMDS of HARV and TALl 
   
+  prow1 <- plot_grid(
+    gg1 + theme(legend.position="none"),
+    gg2 + theme(legend.position="none"),
+    align = 'hv',
+    labels = c("A", "B"),
+    hjust = -1,
+    ncol  = 2
+  )
+  prow1
+  
+  # add the legend to the row we made earlier. Give it one-third of 
+  # the width of one plot (via rel_widths).
+  p1 <-  plot_grid(prow1, legend, rel_widths = c(2, .4))
+  p1
+  
+  pdf("/Users/JaneyLienau/Desktop/Model_Graphs/fig3.pdf", width = 12, height = 7)
+  plot(p1)
+  dev.off()
+  
+  
+  #------Supplemental Figure 1: NMDS of BART and JERC
+  
+  prow2 <- plot_grid(
+    gg3+ theme(legend.position="none"),
+    gg4 + theme(legend.position="none"),
+    align = 'hv',
+    labels = c("A", "B"),
+    hjust = -1,
+    ncol  = 2
+  )
+  prow2
+  
+  # add the legend to the row we made earlier. Give it one-third of 
+  # the width of one plot (via rel_widths).
+  p2 <-  plot_grid(prow2, legend, rel_widths = c(2, .4))
+  p2
+  
+  pdf("/Users/JaneyLienau/Desktop/Model_Graphs/Supp1_BARTandJERC_NMDS.pdf", width = 12, height = 7)
+  plot(p2)
+  dev.off()
   
