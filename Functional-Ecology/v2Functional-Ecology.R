@@ -118,7 +118,8 @@ infospp <- harvtall.df%>%
   summarise(across(everything(), sum))%>%
   rowwise()%>%
   left_join(., function.df)
-sum(infospp$count)#4250
+sum(infospp$count)#4250 #6 species we don't have feeding data for 
+#90.16667 don't have info 90.16667/4250*100 =2.121569%
 
 #TRIAUT 31.16667 indi no info
 #ANIHAP 27.50000 indi no info :(
@@ -445,6 +446,16 @@ m <- nlme::lme(PerOmnivoreDensity ~ Shan_BA + PerEG_BA+PerECM_BA, random = ~1| s
 m <- nlme::lme(PerPredatorDensity ~ Shan_BA + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
                data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
 
+m <- nlme::lme(PerOmnivoreDensity ~ totalBA + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
+               data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
+m <- nlme::lme(PerPredatorDensity ~ totalBA + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
+               data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
+
+m <- nlme::lme(PerOmnivoreDensity ~ totalStems + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
+               data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
+m <- nlme::lme(PerPredatorDensity ~ totalStems + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
+               data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
+
 
 p7<-ggplot(harvtall.df,aes(x=PerEG_BA, y=PerOmnivoreDensity))+
   geom_smooth(method = 'lm', formula = 'y ~ x') +
@@ -545,6 +556,7 @@ JERC.df <- pivot_longer(JERC.df, 2:49, values_to = "count")%>% #reformatting dat
 sum(JERC.df$count) #410
 
 speciestable.df <- rbind(HARV.df, TALL.df, BART.df, JERC.df)
+
 testspecies <- speciestable.df%>%
   select(-plotIDyear, -plotID)
 testspecies$count <-   trunc(testspecies$count)
