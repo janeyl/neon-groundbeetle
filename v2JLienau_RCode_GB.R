@@ -1869,7 +1869,8 @@ p1 <- ggplot(vegB1.df, aes(x=nlcdClass, y=ShannonBeetle, fill=nlcdClass)) +
     legend.text=element_text(size=rel(1.5)),
     legend.position="top",
     legend.direction="horizontal")+
-  ylim(0, 2.5)
+  ylim(0, 2.5)+
+    scale_y_continuous(breaks=c(0,.25,.5,.75,1,1.25,1.5,1.75,2,2.25))
 p1
 
 
@@ -1971,7 +1972,7 @@ p1<-ggplot(vegB2.df,aes(x=PerEG_BA, y=ShannonBeetle))+
     legend.position="top",
     legend.direction="horizontal")+
   guides(color=FALSE)+
-  scale_y_continuous(breaks=c(0.0,.25,1,1.25,2))
+  scale_y_continuous(breaks=c(0.0,0.5,1,1.5,2,2.25)) #0.0,.25,0.5,1,1.25,1.5,2
 p1
 
 
@@ -2001,7 +2002,7 @@ p3<-ggplot(vegB2.df,aes(x=PerEG_BA, y=log(density)))+
   geom_point(aes(color = siteID, shape = siteID), show.legend = FALSE)+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = 'Relative Abundance\n of Evergreen Trees (%)', y = 'Ground Beetle Density (log)\n(Individuals/Cup)', color='Site')+
+  labs(x = 'Evergreen Trees\nRelative Abundance (%)', y = 'Ground Beetle Density (log)\n(Individuals/Cup)', color='Site')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
@@ -2040,15 +2041,15 @@ p1<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=CARGOR_den))+
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'CARGOR', color='plotID')+
+  labs(x = NULL, y = 'CARGOR\n(Individuals/Cup)', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
         axis.text.y=element_text(margin = margin(r = 10)))+
-  theme(axis.title.x=element_text(size=20), 
-        axis.title.y=element_text(size=20), 
-        axis.text.x=element_text(size=18), 
-        axis.text.y=element_text(size=18))+
+  theme(axis.title.x=element_text(size=18), 
+        axis.title.y=element_text(size=18), 
+        axis.text.x=element_text(size=16), 
+        axis.text.y=element_text(size=16))+
   theme(axis.ticks.length=unit(-0.25, "cm"))+
   theme(axis.ticks = element_line(colour = "black", size = 0.4))+
   theme(axis.ticks.x = element_blank())+
@@ -2066,19 +2067,19 @@ p1<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=CARGOR_den))+
 p1
 
 p2<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=SYNIMP_den))+
-  #geom_smooth(method = 'lm', formula = 'y ~ x') +
+  geom_smooth(method = 'lm', formula = 'y ~ x') +
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'SYNIMP', color='plotID')+
+  labs(x = NULL, y = 'SYNIMP\n(Individuals/Cup)', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
         axis.text.y=element_text(margin = margin(r = 10)))+
-  theme(axis.title.x=element_text(size=20), 
-        axis.title.y=element_text(size=20), 
-        axis.text.x=element_text(size=18), 
-        axis.text.y=element_text(size=18))+
+  theme(axis.title.x=element_text(size=18), 
+        axis.title.y=element_text(size=18), 
+        axis.text.x=element_text(size=16), 
+        axis.text.y=element_text(size=16))+
   theme(axis.ticks.length=unit(-0.25, "cm"))+
   theme(axis.ticks = element_line(colour = "black", size = 0.4))+
   theme(axis.ticks.x = element_blank())+
@@ -2098,15 +2099,15 @@ p3<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=SPHSTE3_den))+
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'SPHSTE3', color='plotID')+
+  labs(x = NULL, y = 'SPHSTE3\n(Individuals/Cup)', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
         axis.text.y=element_text(margin = margin(r = 10)))+
-  theme(axis.title.x=element_text(size=20), 
-        axis.title.y=element_text(size=20), 
-        axis.text.x=element_text(size=18), 
-        axis.text.y=element_text(size=18))+
+  theme(axis.title.x=element_text(size=18), 
+        axis.title.y=element_text(size=18), 
+        axis.text.x=element_text(size=16), 
+        axis.text.y=element_text(size=16))+
   theme(axis.ticks.length=unit(-0.25, "cm"))+
   theme(axis.ticks = element_line(colour = "black", size = 0.4))+
   theme(axis.ticks.x = element_blank())+
@@ -2125,15 +2126,15 @@ p4<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=PTETRI3_den))+
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'PTETRI3', color='plotID')+
+  labs(x = NULL, y = 'PTETRI3\n(Individuals/Cup)', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
         axis.text.y=element_text(margin = margin(r = 10)))+
-  theme(axis.title.x=element_text(size=20), 
-        axis.title.y=element_text(size=20), 
-        axis.text.x=element_text(size=18), 
-        axis.text.y=element_text(size=18))+
+  theme(axis.title.x=element_text(size=18), 
+        axis.title.y=element_text(size=18), 
+        axis.text.x=element_text(size=16), 
+        axis.text.y=element_text(size=16))+
   theme(axis.ticks.length=unit(-0.25, "cm"))+
   theme(axis.ticks = element_line(colour = "black", size = 0.4))+
   theme(axis.ticks.x = element_blank())+
@@ -2152,15 +2153,15 @@ p5<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=PTEPEN_den))+
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = 'Relative Abundance\n of Evergreen Trees (%)', y = 'PTEPEN', color='plotID')+
+  labs(x = 'Evergreen Trees\nRelative Abundance (%)', y = 'PTEPEN\n(Individuals/Cup)', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
         axis.text.y=element_text(margin = margin(r = 10)))+
-  theme(axis.title.x=element_text(size=20), 
-        axis.title.y=element_text(size=20), 
-        axis.text.x=element_text(size=18), 
-        axis.text.y=element_text(size=18))+
+  theme(axis.title.x=element_text(size=18), 
+        axis.title.y=element_text(size=18), 
+        axis.text.x=element_text(size=16), 
+        axis.text.y=element_text(size=16))+
   theme(axis.ticks.length=unit(-0.25, "cm"))+
   theme(axis.ticks = element_line(colour = "black", size = 0.4))+
   theme(axis.ticks.x = element_blank())+
@@ -2180,15 +2181,15 @@ p6<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=CYCCON2_den))+
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'CYCCON2', color='plotID')+
+  labs(x = NULL, y = 'CYCCON2\n(Individuals/Cup)', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
         axis.text.y=element_text(margin = margin(r = 10)))+
-  theme(axis.title.x=element_text(size=20), 
-        axis.title.y=element_text(size=20), 
-        axis.text.x=element_text(size=18), 
-        axis.text.y=element_text(size=18))+
+  theme(axis.title.x=element_text(size=18), 
+        axis.title.y=element_text(size=18), 
+        axis.text.x=element_text(size=16), 
+        axis.text.y=element_text(size=16))+
   theme(axis.ticks.length=unit(-0.25, "cm"))+
   theme(axis.ticks = element_line(colour = "black", size = 0.4))+
   theme(axis.ticks.x = element_blank())+
@@ -2210,15 +2211,15 @@ p7<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=DICDIL5_den))+
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'DICDIL5', color='plotID')+
+  labs(x = NULL, y = 'DICDIL5\n(Individuals/Cup)', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
         axis.text.y=element_text(margin = margin(r = 10)))+
-  theme(axis.title.x=element_text(size=20), 
-        axis.title.y=element_text(size=20), 
-        axis.text.x=element_text(size=18), 
-        axis.text.y=element_text(size=18))+
+  theme(axis.title.x=element_text(size=18), 
+        axis.title.y=element_text(size=18), 
+        axis.text.x=element_text(size=16), 
+        axis.text.y=element_text(size=16))+
   theme(axis.ticks.length=unit(-0.25, "cm"))+
   theme(axis.ticks = element_line(colour = "black", size = 0.4))+
   theme(axis.ticks.x = element_blank())+
@@ -2237,15 +2238,15 @@ p8<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=CYCFRE_den))+
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'CYCFRE', color='plotID')+
+  labs(x = NULL, y = 'CYCFRE\n(Individuals/Cup)', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
         axis.text.y=element_text(margin = margin(r = 10)))+
-  theme(axis.title.x=element_text(size=20), 
-        axis.title.y=element_text(size=20), 
-        axis.text.x=element_text(size=18), 
-        axis.text.y=element_text(size=18))+
+  theme(axis.title.x=element_text(size=18), 
+        axis.title.y=element_text(size=18), 
+        axis.text.x=element_text(size=16), 
+        axis.text.y=element_text(size=16))+
   theme(axis.ticks.length=unit(-0.25, "cm"))+
   theme(axis.ticks = element_line(colour = "black", size = 0.4))+
   theme(axis.ticks.x = element_blank())+
@@ -2264,15 +2265,15 @@ p9<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=ANIHAP_den))+
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'ANIHAP', color='plotID')+
+  labs(x = NULL, y = 'ANIHAP\n(Individuals/Cup)', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
         axis.text.y=element_text(margin = margin(r = 10)))+
-  theme(axis.title.x=element_text(size=20), 
-        axis.title.y=element_text(size=20), 
-        axis.text.x=element_text(size=18), 
-        axis.text.y=element_text(size=18))+
+  theme(axis.title.x=element_text(size=18), 
+        axis.title.y=element_text(size=18), 
+        axis.text.x=element_text(size=16), 
+        axis.text.y=element_text(size=16))+
   theme(axis.ticks.length=unit(-0.25, "cm"))+
   theme(axis.ticks = element_line(colour = "black", size = 0.4))+
   theme(axis.ticks.x = element_blank())+
@@ -2291,15 +2292,15 @@ p10<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=PASDEP_den))+
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = 'Relative Abundance\n of Evergreen Trees (%)', y = 'PASDEP', color='plotID')+
+  labs(x = 'Evergreen Trees\nRelative Abundance (%)', y = 'PASDEP\n(Individuals/Cup)', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
         axis.text.y=element_text(margin = margin(r = 10)))+
-  theme(axis.title.x=element_text(size=20), 
-        axis.title.y=element_text(size=20), 
-        axis.text.x=element_text(size=18), 
-        axis.text.y=element_text(size=18))+
+  theme(axis.title.x=element_text(size=18), 
+        axis.title.y=element_text(size=18), 
+        axis.text.x=element_text(size=16), 
+        axis.text.y=element_text(size=16))+
   theme(axis.ticks.length=unit(-0.25, "cm"))+
   theme(axis.ticks = element_line(colour = "black", size = 0.4))+
   theme(axis.ticks.x = element_blank())+
@@ -2332,19 +2333,19 @@ dev.off()
 names(HARV_data.df)
 #plot 1
 p1<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=CARGOR_relabun))+
-  #geom_smooth(method = 'lm', formula = 'y ~ x') +
+  geom_smooth(method = 'lm', formula = 'y ~ x') +
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'CARGOR', color='plotID')+
+  labs(x = NULL, y = 'CARGOR\nRelative Abundance (%)', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
         axis.text.y=element_text(margin = margin(r = 10)))+
-  theme(axis.title.x=element_text(size=20), 
-        axis.title.y=element_text(size=20), 
-        axis.text.x=element_text(size=18), 
-        axis.text.y=element_text(size=18))+
+  theme(axis.title.x=element_text(size=18), 
+        axis.title.y=element_text(size=18), 
+        axis.text.x=element_text(size=16), 
+        axis.text.y=element_text(size=16))+
   theme(axis.ticks.length=unit(-0.25, "cm"))+
   theme(axis.ticks = element_line(colour = "black", size = 0.4))+
   theme(axis.ticks.x = element_blank())+
@@ -2366,15 +2367,15 @@ p2<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=SYNIMP_relabun))+
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'SYNIMP', color='plotID')+
+  labs(x = NULL, y = 'SYNIMP\nRelative Abundance (%)', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
         axis.text.y=element_text(margin = margin(r = 10)))+
-  theme(axis.title.x=element_text(size=20), 
-        axis.title.y=element_text(size=20), 
-        axis.text.x=element_text(size=18), 
-        axis.text.y=element_text(size=18))+
+  theme(axis.title.x=element_text(size=18), 
+        axis.title.y=element_text(size=18), 
+        axis.text.x=element_text(size=16), 
+        axis.text.y=element_text(size=16))+
   theme(axis.ticks.length=unit(-0.25, "cm"))+
   theme(axis.ticks = element_line(colour = "black", size = 0.4))+
   theme(axis.ticks.x = element_blank())+
@@ -2394,15 +2395,15 @@ p3<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=SPHSTE3_relabun))+
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'SPHSTE3', color='plotID')+
+  labs(x = NULL, y = 'SPHSTE3\nRelative Abundance (%)', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
         axis.text.y=element_text(margin = margin(r = 10)))+
-  theme(axis.title.x=element_text(size=20), 
-        axis.title.y=element_text(size=20), 
-        axis.text.x=element_text(size=18), 
-        axis.text.y=element_text(size=18))+
+  theme(axis.title.x=element_text(size=18), 
+        axis.title.y=element_text(size=18), 
+        axis.text.x=element_text(size=16), 
+        axis.text.y=element_text(size=16))+
   theme(axis.ticks.length=unit(-0.25, "cm"))+
   theme(axis.ticks = element_line(colour = "black", size = 0.4))+
   theme(axis.ticks.x = element_blank())+
@@ -2421,15 +2422,15 @@ p4<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=PTETRI3_relabun))+
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'PTETRI3', color='plotID')+
+  labs(x = NULL, y = 'PTETRI3\nRelative Abundance (%)', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
         axis.text.y=element_text(margin = margin(r = 10)))+
-  theme(axis.title.x=element_text(size=20), 
-        axis.title.y=element_text(size=20), 
-        axis.text.x=element_text(size=18), 
-        axis.text.y=element_text(size=18))+
+  theme(axis.title.x=element_text(size=18), 
+        axis.title.y=element_text(size=18), 
+        axis.text.x=element_text(size=16), 
+        axis.text.y=element_text(size=16))+
   theme(axis.ticks.length=unit(-0.25, "cm"))+
   theme(axis.ticks = element_line(colour = "black", size = 0.4))+
   theme(axis.ticks.x = element_blank())+
@@ -2448,15 +2449,15 @@ p5<-ggplot(HARV_data.df,aes(x=PerEG_BA, y=PTEPEN_relabun))+
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = 'Relative Abundance\n of Evergreen Trees (%)', y = 'PTEPEN', color='plotID')+
+  labs(x = 'Evergreen Trees\nRelative Abundance (%)', y = 'PTEPEN\nRelative Abundance (%)', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
         axis.text.y=element_text(margin = margin(r = 10)))+
-  theme(axis.title.x=element_text(size=20), 
-        axis.title.y=element_text(size=20), 
-        axis.text.x=element_text(size=18), 
-        axis.text.y=element_text(size=18))+
+  theme(axis.title.x=element_text(size=18), 
+        axis.title.y=element_text(size=18), 
+        axis.text.x=element_text(size=16), 
+        axis.text.y=element_text(size=16))+
   theme(axis.ticks.length=unit(-0.25, "cm"))+
   theme(axis.ticks = element_line(colour = "black", size = 0.4))+
   theme(axis.ticks.x = element_blank())+
@@ -2476,15 +2477,15 @@ p6<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=CYCCON2_relabun))+
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'CYCCON2', color='plotID')+
+  labs(x = NULL, y = 'CYCCON2\nRelative Abundance (%)', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
         axis.text.y=element_text(margin = margin(r = 10)))+
-  theme(axis.title.x=element_text(size=20), 
-        axis.title.y=element_text(size=20), 
-        axis.text.x=element_text(size=18), 
-        axis.text.y=element_text(size=18))+
+  theme(axis.title.x=element_text(size=18), 
+        axis.title.y=element_text(size=18), 
+        axis.text.x=element_text(size=16), 
+        axis.text.y=element_text(size=16))+
   theme(axis.ticks.length=unit(-0.25, "cm"))+
   theme(axis.ticks = element_line(colour = "black", size = 0.4))+
   theme(axis.ticks.x = element_blank())+
@@ -2506,15 +2507,15 @@ p7<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=DICDIL5_relabun))+
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'DICDIL5', color='plotID')+
+  labs(x = NULL, y = 'DICDIL5\nRelative Abundance (%)', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
         axis.text.y=element_text(margin = margin(r = 10)))+
-  theme(axis.title.x=element_text(size=20), 
-        axis.title.y=element_text(size=20), 
-        axis.text.x=element_text(size=18), 
-        axis.text.y=element_text(size=18))+
+  theme(axis.title.x=element_text(size=18), 
+        axis.title.y=element_text(size=18), 
+        axis.text.x=element_text(size=16), 
+        axis.text.y=element_text(size=16))+
   theme(axis.ticks.length=unit(-0.25, "cm"))+
   theme(axis.ticks = element_line(colour = "black", size = 0.4))+
   theme(axis.ticks.x = element_blank())+
@@ -2533,15 +2534,15 @@ p8<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=CYCFRE_relabun))+
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'CYCFRE', color='plotID')+
+  labs(x = NULL, y = 'CYCFRE\nRelative Abundance (%)', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
         axis.text.y=element_text(margin = margin(r = 10)))+
-  theme(axis.title.x=element_text(size=20), 
-        axis.title.y=element_text(size=20), 
-        axis.text.x=element_text(size=18), 
-        axis.text.y=element_text(size=18))+
+  theme(axis.title.x=element_text(size=18), 
+        axis.title.y=element_text(size=18), 
+        axis.text.x=element_text(size=16), 
+        axis.text.y=element_text(size=16))+
   theme(axis.ticks.length=unit(-0.25, "cm"))+
   theme(axis.ticks = element_line(colour = "black", size = 0.4))+
   theme(axis.ticks.x = element_blank())+
@@ -2560,15 +2561,15 @@ p9<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=ANIHAP_relabun))+
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'ANIHAP', color='plotID')+
+  labs(x = NULL, y = 'ANIHAP\nRelative Abundance (%)', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
         axis.text.y=element_text(margin = margin(r = 10)))+
-  theme(axis.title.x=element_text(size=20), 
-        axis.title.y=element_text(size=20), 
-        axis.text.x=element_text(size=18), 
-        axis.text.y=element_text(size=18))+
+  theme(axis.title.x=element_text(size=18), 
+        axis.title.y=element_text(size=18), 
+        axis.text.x=element_text(size=16), 
+        axis.text.y=element_text(size=16))+
   theme(axis.ticks.length=unit(-0.25, "cm"))+
   theme(axis.ticks = element_line(colour = "black", size = 0.4))+
   theme(axis.ticks.x = element_blank())+
@@ -2587,15 +2588,15 @@ p10<-ggplot(TALL_data.df,aes(x=PerEG_BA, y=PASDEP_relabun))+
   geom_point()+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = 'Relative Abundance\n of Evergreen Trees (%)', y = 'PASDEP', color='plotID')+
+  labs(x = 'Evergreen Trees\nRelative Abundance (%)', y = 'PASDEP\nRelative Abundance (%)', color='plotID')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
         axis.text.y=element_text(margin = margin(r = 10)))+
-  theme(axis.title.x=element_text(size=20), 
-        axis.title.y=element_text(size=20), 
-        axis.text.x=element_text(size=18), 
-        axis.text.y=element_text(size=18))+
+  theme(axis.title.x=element_text(size=18), 
+        axis.title.y=element_text(size=18), 
+        axis.text.x=element_text(size=16), 
+        axis.text.y=element_text(size=16))+
   theme(axis.ticks.length=unit(-0.25, "cm"))+
   theme(axis.ticks = element_line(colour = "black", size = 0.4))+
   theme(axis.ticks.x = element_blank())+

@@ -270,7 +270,7 @@ p3<-ggplot(harvtall.df,aes(x=PerEG_BA, y=OmnDensity))+
   geom_point(aes(color = siteID, shape =siteID))+
   theme(legend.position = "top")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'Omnivore Species Density', color='Site')+
+  labs(x = NULL, y = 'Omnivore Species Density\n(Individuals/Cup)', color='Site')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
@@ -282,14 +282,13 @@ p3<-ggplot(harvtall.df,aes(x=PerEG_BA, y=OmnDensity))+
   theme(axis.ticks.length=unit(-0.25, "cm"))+
   theme(axis.ticks = element_line(colour = "black", size = 0.4))+
   theme(axis.ticks.x = element_blank())+
-  labs(shape = "Site ID")+
+  labs(shape = "Site ID", color = "Site ID")+
   theme(
     axis.text=element_blank(),
     title=element_text(size=rel(1.5)),
     legend.text=element_text(size=rel(1.5)),
     legend.position="top",
     legend.direction="horizontal")+
-  guides(color=FALSE)+
   scale_y_continuous(breaks = seq(0, 4, by = .5))
 p3
 
@@ -298,7 +297,7 @@ p4<-ggplot(harvtall.df,aes(x=PerEG_BA, y=PreDensity))+
   geom_point(aes(color = siteID, shape = siteID))+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = 'Relative Abundance\n of Evergreen Trees (%)', y = 'Predator Species Density', color='Site')+
+  labs(x = 'Evergreen Trees\nRelative Abundance (%)', y = 'Predator Species Density\n(Individuals/Cup)', color='Site')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
@@ -316,7 +315,6 @@ p4<-ggplot(harvtall.df,aes(x=PerEG_BA, y=PreDensity))+
     legend.text=element_text(size=rel(1.5)),
     legend.position="none",
     legend.direction="vertical")+
-  guides(color=FALSE)+
   scale_y_continuous(breaks = seq(0, 4, by = .5))
 p4
 
@@ -392,7 +390,7 @@ m <- nlme::lme(log(density) ~totalBA, random = ~1| siteID/plotID.x,
 #________________________________________________________________________
 p5<-ggplot(harvtall.df,aes(x=totalBA, y=density))+
   geom_smooth(method = 'lm', formula = 'y ~ x') +
-  geom_point(aes(color = siteID))+
+  geom_point(aes(color = siteID, shape = siteID))+
   theme(legend.position = "top")+
   scale_fill_brewer(palette="Dark2")+
   labs(x = 'Relative Abundance of Trees\n (Basal Area)', y = 'Ground Beetle Density', color='Site')+
@@ -406,7 +404,8 @@ p5<-ggplot(harvtall.df,aes(x=totalBA, y=density))+
         axis.text.y=element_text(size=18))+
   theme(axis.ticks.length=unit(-0.25, "cm"))+
   theme(axis.ticks = element_line(colour = "black", size = 0.4))+
-  theme(axis.ticks.x = element_blank())
+  theme(axis.ticks.x = element_blank())+
+    labs(shape = "Site ID", color = "Site ID")
 p5
 
 pdf("/Users/JaneyLienau/Desktop/Model_Graphs/p5.pdf", width = 7, height = 7)
@@ -416,7 +415,7 @@ dev.off()
 
 p6<-ggplot(harvtall.df,aes(x=totalStems, y=density))+
   geom_smooth(method = 'lm', formula = 'y ~ x') +
-  geom_point(aes(color = siteID))+
+  geom_point(aes(color = siteID, shape= siteID))+
   theme(legend.position = "top")+
   scale_fill_brewer(palette="Dark2")+
   labs(x = 'Relative Abundance of Trees\n (Total Stems)', y = 'Ground Beetle Density', color='Site')+
@@ -430,7 +429,8 @@ p6<-ggplot(harvtall.df,aes(x=totalStems, y=density))+
         axis.text.y=element_text(size=18))+
   theme(axis.ticks.length=unit(-0.25, "cm"))+
   theme(axis.ticks = element_line(colour = "black", size = 0.4))+
-  theme(axis.ticks.x = element_blank())
+  theme(axis.ticks.x = element_blank())+
+  labs(shape = "Site ID", color = "Site ID")
 p6
 
 pdf("/Users/JaneyLienau/Desktop/p6.pdf", width = 7, height = 7)
@@ -459,10 +459,10 @@ m <- nlme::lme(PerPredatorDensity ~ totalStems + PerEG_BA+PerECM_BA, random = ~1
 
 p7<-ggplot(harvtall.df,aes(x=PerEG_BA, y=PerOmnivoreDensity))+
   geom_smooth(method = 'lm', formula = 'y ~ x') +
-  geom_point(aes(color = siteID))+
+  geom_point(aes(color = siteID, shape = siteID))+
   theme(legend.position = "right")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = NULL, y = 'Proportion of Omnivore Density\n (Proportion (%))', color='Site')+
+  labs(x = NULL, y = 'Omnivore\nRelative Abundance (%)', color='Site')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
@@ -474,7 +474,7 @@ p7<-ggplot(harvtall.df,aes(x=PerEG_BA, y=PerOmnivoreDensity))+
   theme(axis.ticks.length=unit(-0.25, "cm"))+
   theme(axis.ticks = element_line(colour = "black", size = 0.4))+
   theme(axis.ticks.x = element_blank())+
-  labs(shape = "Site ID")+
+  labs(shape = "Site ID", color = "Site ID")+
   theme(
     axis.text=element_blank(),
     title=element_text(size=rel(1.5)),
@@ -485,7 +485,7 @@ p7<-ggplot(harvtall.df,aes(x=PerEG_BA, y=PerOmnivoreDensity))+
 p7
 
 #________________________________________________________________________
-# Figure 3: Prop. of Predators ~ %EG 
+# Figure 4: Prop. of Predators ~ %EG 
 #________________________________________________________________________
 
 p8<-ggplot(harvtall.df,aes(x=PerEG_BA, y=PerPredatorDensity))+
@@ -493,7 +493,7 @@ p8<-ggplot(harvtall.df,aes(x=PerEG_BA, y=PerPredatorDensity))+
   geom_point(aes(color = siteID, shape = siteID))+
   theme(legend.position = "top")+
   scale_fill_brewer(palette="Dark2")+
-  labs(x = 'Relative Abundance\n of Evergreen Trees (%)', y = 'Proportion of Predator Density\n (Proportion %)', color='Site')+
+  labs(x = 'Evergreen Trees\nRelative Abundance (%)', y = 'Predator\nRelative Abundance (%)')+
   theme(axis.title.x = element_text(margin = margin(t = 5, b=5)), 
         axis.title.y = element_text(margin = margin(l = 5, r=5)), 
         axis.text.x=element_text(margin = margin(t=10)), 
@@ -505,14 +505,13 @@ p8<-ggplot(harvtall.df,aes(x=PerEG_BA, y=PerPredatorDensity))+
   theme(axis.ticks.length=unit(-0.25, "cm"))+
   theme(axis.ticks = element_line(colour = "black", size = 0.4))+
   theme(axis.ticks.x = element_blank())+
-  labs(shape = "Site ID")+
+  labs(color = "Site ID",shape = "Site ID")+
   theme(
     axis.text=element_blank(),
     title=element_text(size=rel(1.5)),
     legend.text=element_text(size=rel(1.5)),
     legend.position="top",
     legend.direction="horizontal")+
-  guides(color=FALSE)+
   scale_y_continuous(breaks = seq(0, 99, by = 10))
 p8
 
