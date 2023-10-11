@@ -5,14 +5,14 @@ library(vegan)
 library(cowplot)
 library(ggrepel)                   # makes data labels not overlap
 #Load data-------------------------------------------------
-HARV_data.df <- read.csv("/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/HARV_data.csv")
-TALL_data.df <- read.csv("/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/TALL_data.csv")
-JERC_data.df <- read.csv("/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/JERC_data.csv")
-BART_data.df <- read.csv("/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/BART_data.csv")
+HARV_data.df <- read.csv("/Users/JaneyLienau/Desktop/GitHubRepository/neon-groundbeetle/HARV_data.csv")
+TALL_data.df <- read.csv("/Users/JaneyLienau/Desktop/GitHubRepository/neon-groundbeetle/TALL_data.csv")
+JERC_data.df <- read.csv("/Users/JaneyLienau/Desktop/GitHubRepository/neon-groundbeetle/JERC_data.csv")
+BART_data.df <- read.csv("/Users/JaneyLienau/Desktop/GitHubRepository/neon-groundbeetle/BART_data.csv")
 
-allTALL.df <- read.csv("/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/allTALL.csv")
-allHARV.df <- read.csv("/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/allHARV.csv")
-BasalAreaHARV.df <- read.csv("/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/Ordination/data/BasalAreaHARV.df.csv")
+allTALL.df <- read.csv("/Users/JaneyLienau/Desktop/GitHubRepository/neon-groundbeetle/allTALL.csv")
+allHARV.df <- read.csv("/Users/JaneyLienau/Desktop/GitHubRepository/neon-groundbeetle/allHARV.csv")
+BasalAreaHARV.df <- read.csv("/Users/JaneyLienau/Desktop/GitHubRepository/neon-groundbeetle/Ordination/data/BasalAreaHARV.df.csv")
 
 #TALL-------------------------------------------------
   #ord stats and figures 
