@@ -93,8 +93,9 @@ species.df<-ordinationTALL.df[,5:37]
   TALL$siteID<-"TALL"
   #print
   ordinationTALL.df$siteID<-"TALL"
-  #testing variances
-  
+
+  #what does the data need to look like?
+  #are the variances conparable? variances of what?
  #mod <-  betadisper(en_coord_cat, data.scores$nlcdClass)
 
 #HARV-------------------------------------------------
@@ -429,9 +430,6 @@ species.df<-ordinationTALL.df[,5:37]
   
 SummaryStats<- rbind(TALL, BART, JERC, HARV)
 
-#make a change makeing more changes making changes jfjdjfsdjfka;ldj
 
-
-#helhjfjkdfja;lskd
 
 
