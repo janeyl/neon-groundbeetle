@@ -19,9 +19,9 @@ BART.df <- read.csv("BART_data.csv")
 
 JERC.df <- read.csv("JERC_data.csv")
 
-vegB.df <- read.csv("/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/vegB.csv")
+vegB.df <- read.csv("/Users/JaneyLienau/Desktop/GitHubRepository/neon-groundbeetle/vegB.csv")
 
-function.df <- read.csv("/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/Functional-Ecology/function-table-dec.csv")
+function.df <- read.csv("/Users/JaneyLienau/Desktop/GitHubRepository/neon-groundbeetle/Functional-Ecology/function-table-dec.csv")
 
 #________________________________________________________________________
 #Data Cleaning -----------------------------
@@ -666,6 +666,6 @@ sppTable.df <- left_join(sppTable.df, names.df, by = "taxonID")%>%
   filter(!taxonID == "HARPEN.HARTEX")%>%
   mutate(total = rowSums(.[4:7]))
 
-#write_csv(sppTable.df, "/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/sppTable.csv")
+#write_csv(sppTable.df, "/Users/JaneyLienau/Desktop/GitHubRepository/neon-groundbeetle/sppTable.csv")
 ###-------------------------------------END Table-----------------------------------##
 
