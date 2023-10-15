@@ -249,7 +249,7 @@ p2 <- ggplot(harvtall.df, aes(x=nlcdClass, y=PreDensity, fill=nlcdClass)) +
 p2
 
 #cow plot to stack omnivore/predator count plots
-p1p2<-plot_grid(p1, p2, labels = c('A', 'B'), label_size = 20, ncol = 1)
+p1p2<-cowplot::plot_grid(p1, p2, labels = c('A', 'B'), label_size = 20, ncol = 1)
 p1p2
 pdf("/Users/JaneyLienau/Desktop/Model_Graphs/p1p2.pdf", width = 7, height = 14)
 plot(p1p2)
@@ -296,7 +296,7 @@ p3<-ggplot(harvtall.df,aes(x=PerEG_BA, y=OmnDensity))+
         axis.text.x=element_text(size=18), 
         axis.text.y=element_text(size=18))+
   theme(axis.ticks.length=unit(-0.25, "cm"))+
-  theme(axis.ticks = element_line(colour = "black", size = 0.4))+
+  theme(axis.ticks = element_line(colour = "black", linewidth = 0.4))+
   theme(axis.ticks.x = element_blank())+
   labs(shape = "Site ID", color = "Site ID")+
   theme(
@@ -323,7 +323,7 @@ p4<-ggplot(harvtall.df,aes(x=PerEG_BA, y=PreDensity))+
         axis.text.x=element_text(size=18), 
         axis.text.y=element_text(size=18))+
   theme(axis.ticks.length=unit(-0.25, "cm"))+
-  theme(axis.ticks = element_line(colour = "black", size = 0.4))+
+  theme(axis.ticks = element_line(colour = "black", linewidth = 0.4))+
   theme(axis.ticks.x = element_blank())+
   theme(
     axis.text=element_blank(),
@@ -335,7 +335,7 @@ p4<-ggplot(harvtall.df,aes(x=PerEG_BA, y=PreDensity))+
 p4
 
 #cow plot to stack omnivore/predator percent plots
-p3p4<-plot_grid(p3, p4, labels = c('A', 'B'), label_size = 20, ncol = 1)
+p3p4<-cowplot::plot_grid(p3, p4, labels = c('A', 'B'), label_size = 20, ncol = 1)
 p3p4
 pdf("/Users/JaneyLienau/Desktop/Model_Graphs/Supp4_PredatorOmnivore_density.pdf", width = 7, height = 14)
 plot(p3p4)
@@ -426,7 +426,7 @@ p5<-ggplot(harvtall.df,aes(x=totalBA, y=density))+
         axis.text.x=element_text(size=18), 
         axis.text.y=element_text(size=18))+
   theme(axis.ticks.length=unit(-0.25, "cm"))+
-  theme(axis.ticks = element_line(colour = "black", size = 0.4))+
+  theme(axis.ticks = element_line(colour = "black", linewidth = 0.4))+
   theme(axis.ticks.x = element_blank())+
     labs(shape = "Site ID", color = "Site ID")
 p5
@@ -451,7 +451,7 @@ p6<-ggplot(harvtall.df,aes(x=totalStems, y=density))+
         axis.text.x=element_text(size=18), 
         axis.text.y=element_text(size=18))+
   theme(axis.ticks.length=unit(-0.25, "cm"))+
-  theme(axis.ticks = element_line(colour = "black", size = 0.4))+
+  theme(axis.ticks = element_line(colour = "black", linewidth = 0.4))+
   theme(axis.ticks.x = element_blank())+
   labs(shape = "Site ID", color = "Site ID")
 p6
@@ -538,7 +538,7 @@ p7<-ggplot(harvtall.df,aes(x=PerEG_BA, y=PerOmnivoreDensity))+
         axis.text.x=element_text(size=18), 
         axis.text.y=element_text(size=18))+
   theme(axis.ticks.length=unit(-0.25, "cm"))+
-  theme(axis.ticks = element_line(colour = "black", size = 0.4))+
+  theme(axis.ticks = element_line(colour = "black", linewidth = 0.4))+
   theme(axis.ticks.x = element_blank())+
   labs(shape = "Site ID", color = "Site ID")+
   theme(
@@ -588,7 +588,7 @@ dev.off()
 #fig with both in a panel------------------
 
 #cow plot to stack omnivore/predator count plots
-p7p8<-plot_grid(p7, p8, labels = c('A', 'B'), label_size = 20, ncol = 1)
+p7p8<-cowplot::plot_grid(p7, p8, labels = c('A', 'B'), label_size = 20, ncol = 1)
 p7p8
 pdf("/Users/JaneyLienau/Desktop/Model_Graphs/p7p8.pdf", width = 7, height = 14)
 plot(p7p8)
