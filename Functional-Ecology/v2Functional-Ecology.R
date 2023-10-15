@@ -7,7 +7,9 @@ library(tidyverse)
 library(car)   
 library(RColorBrewer)
 library(cowplot)
-
+library(sjPlot)#summary stats table
+library(sjmisc)#summary stats table
+library(sjlabelled)#summary stats table
 #________________________________________________________________________
 #Raw data-------------------
 #________________________________________________________________________
@@ -109,7 +111,7 @@ sum(harvtall.df$count)#4250
 harvtall.df <- left_join(harvtall.df, 
                          function.df, 
                          by = "taxonID")
-
+sum(harvtall.df$count)#4250
 #species that we need info:
 infospp <- harvtall.df%>%
   select(count,
@@ -123,9 +125,9 @@ sum(infospp$count)#4250 #6 species we don't have feeding data for
 
 #TRIAUT 31.16667 indi no info
 #ANIHAP 27.50000 indi no info :(
-
+sum(harvtall.df$count)#4250
 harvtall.df <- na.omit(harvtall.df) #remove a few obervations that didn't have functional data (these species also were <10 observations(low abundance) at each site)
-sum(harvtall.df$count)#2857 - lost 240 that we don't have food data for
+sum(harvtall.df$count)#4159.833 - lost 90 that we don't have food data for
 
 #joing with veg data
 harvtall.df <-  pivot_wider(harvtall.df, 
@@ -133,7 +135,7 @@ harvtall.df <-  pivot_wider(harvtall.df,
                             values_from = "count")%>%
   replace(is.na(.),0)
 
-sum(harvtall.df[,4:5])##4154.833
+sum(harvtall.df[,4:5])##4159.833
 #summarize table by plot year for each feeding mode
 #calculate percent omnivore and predator
 harvtall.df <- harvtall.df%>%
@@ -151,7 +153,7 @@ harvtall.df <- harvtall.df%>%
   mutate(., OmnDensity = Omnivore/cupNum, 
          PreDensity = Predator/cupNum)
 
-sum(harvtall.df$PreDensity)#90.26837
+sum(harvtall.df$PreDensity)#90.43572
 sum(harvtall.df$OmnDensity)#46.9515 - predators were  times more dense than omnivore speces
 
 ##proportion density
@@ -175,12 +177,14 @@ harvtall.df <- harvtall.df%>%
 #               data = harvtall.df,na.action = na.omit);summary(m); shapiro.test(resid(m));Anova(m)
 
 harvtall.df$LOGOmnDensity <- log(harvtall.df$OmnDensity)
-harvtall.df <- harvtall.df%>%
-  mutate(LOGOmnDensity = na_if(LOGOmnDensity, "-Inf"))
+harvtall.df <- harvtall.df %>%
+  mutate(LOGOmnDensity = as.numeric(LOGOmnDensity)) %>%
+  mutate(LOGOmnDensity = na_if(LOGOmnDensity, -Inf))
 
 harvtall.df$LOGPreDensity <- log(harvtall.df$PreDensity)
 harvtall.df <- harvtall.df%>%
-  mutate(LOGPreDensity = na_if(LOGPreDensity, "-Inf"))
+  mutate(LOGPreDensity = as.numeric(LOGPreDensity)) %>%
+  mutate(LOGPreDensity = na_if(LOGPreDensity, -Inf))
 #________________________________________________________________________
 ##nlcd class plots----
 #________________________________________________________________________
@@ -203,7 +207,7 @@ p1 <- ggplot(harvtall.df, aes(x=nlcdClass, y=OmnDensity, fill=nlcdClass)) +
         axis.text.x=element_text(size=18), 
         axis.text.y=element_text(size=18))+
   theme(axis.ticks.length=unit(-0.25, "cm"))+
-  theme(axis.ticks = element_line(colour = "black", size = 0.4))+
+  theme(axis.ticks = element_line(colour = "black", linewidth = 0.4))+
   theme(axis.ticks.x = element_blank())+
   labs(shape = "Site ID")+
   theme(
@@ -233,7 +237,7 @@ p2 <- ggplot(harvtall.df, aes(x=nlcdClass, y=PreDensity, fill=nlcdClass)) +
         axis.text.x=element_text(size=18), 
         axis.text.y=element_text(size=18))+
   theme(axis.ticks.length=unit(-0.25, "cm"))+
-  theme(axis.ticks = element_line(colour = "black", size = 0.4))+
+  theme(axis.ticks = element_line(colour = "black", linewidth = 0.4))+
   theme(axis.ticks.x = element_blank())+
   labs(shape = "Site ID")+
   theme(
@@ -254,15 +258,26 @@ dev.off()
 #Tree diversity lme----
 #3 variables ~ Tdiv, %EG, %ECM EG sig predictor of all version predator + omnivore except "Predator"
 #________________________________________________________________________
-m <- nlme::lme(OmnDensity ~ Shan_BA + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
-               data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
-m <- nlme::lme(PreDensity ~ Shan_BA + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
-               data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
+m1 <- nlme::lme(OmnDensity ~ Shan_BA + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
+               data = harvtall.df, na.action = na.omit);summary(m1); shapiro.test(resid(m1))
+m2 <- nlme::lme(PreDensity ~ Shan_BA + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
+               data = harvtall.df, na.action = na.omit);summary(m2); shapiro.test(resid(m2))
 
-m <- nlme::lme(LOGOmnDensity ~ Shan_BA + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
-               data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
-m <- nlme::lme(LOGPreDensity ~ Shan_BA + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
-               data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
+#m3 <- nlme::lme(LOGOmnDensity ~ Shan_BA + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
+             #  data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
+#m4 <- nlme::lme(LOGPreDensity ~ Shan_BA + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
+              # data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
+#________________________________________________________________________
+##Testing summary stats for model tables 
+#________________________________________________________________________
+
+tab_model(m1,m2, show.df = T,show.fstat = T, collapse.ci = TRUE,
+            pred.labels = c("Intercept", "Tree Diversity (Shannon Index)", "EG Trees Rel. Abundance (%)", "ECM Trees Rel. Abundance (%)"),
+            dv.labels = c("Omnivore Density", "Predator Density"),
+            string.ci = "Conf. Int (95%)",
+            string.p = "P-Value",
+          show.reflvl = TRUE
+          )
 #________________________________________________________________________
 ##%EG plot~----
 #________________________________________________________________________
@@ -332,60 +347,67 @@ dev.off()
 #________________________________________________________________________
 ##  Tden, %EG, %ECM ----
 #________________________________________________________________________
-m <- nlme::lme(OmnDensity ~ totalBA + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
-               data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
-m <- nlme::lme(LOGOmnDensity ~ totalBA + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
-               data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
-m <- nlme::lme(PreDensity ~ totalBA + PerEG_BA+PerECM_BA,random = ~1| siteID/plotID, 
-               data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
-m <- nlme::lme(LOGPreDensity ~ totalBA + PerEG_BA+PerECM_BA,random = ~1| siteID/plotID, 
-               data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
+#5m <- nlme::lme(OmnDensity ~ totalBA + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
+              # data = harvtall.df, na.action = na.omit);summary(m5); shapiro.test(resid(m5))
+m6 <- nlme::lme(LOGOmnDensity ~ totalBA + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
+               data = harvtall.df, na.action = na.omit);summary(m6); shapiro.test(resid(m6))
+#m7 <- nlme::lme(PreDensity ~ totalBA + PerEG_BA+PerECM_BA,random = ~1| siteID/plotID, 
+              # data = harvtall.df, na.action = na.omit);summary(m7); shapiro.test(resid(m7))
+m8 <- nlme::lme(LOGPreDensity ~ totalBA + PerEG_BA+PerECM_BA,random = ~1| siteID/plotID, 
+               data = harvtall.df, na.action = na.omit);summary(m8); shapiro.test(resid(m8))
 
 #samre results as total basal area
-m <- nlme::lme(OmnDensity ~ totalStems + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
-               data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
-m <- nlme::lme(LOGOmnDensity ~ totalStems + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
-               data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
+#m9 <- nlme::lme(OmnDensity ~ totalStems + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
+          #     data = harvtall.df, na.action = na.omit);summary(m9); shapiro.test(resid(m9))
+m10 <- nlme::lme(LOGOmnDensity ~ totalStems + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
+               data = harvtall.df, na.action = na.omit);summary(m10); shapiro.test(resid(m10))
 
-m <- nlme::lme(PreDensity ~ totalStems + PerEG_BA+PerECM_BA,random = ~1| siteID/plotID, 
-               data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
+#m11 <- nlme::lme(PreDensity ~ totalStems + PerEG_BA+PerECM_BA,random = ~1| siteID/plotID, 
+           #    data = harvtall.df, na.action = na.omit);summary(m11); shapiro.test(resid(m11))
 
-m <- nlme::lme(LOGPreDensity ~ totalStems + PerEG_BA+PerECM_BA,random = ~1| siteID/plotID, 
-               data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
+m12 <- nlme::lme(LOGPreDensity ~ totalStems + PerEG_BA+PerECM_BA,random = ~1| siteID/plotID, 
+               data = harvtall.df, na.action = na.omit);summary(m12); shapiro.test(resid(m12))
 
+tab_model(m6,m8,m10,m12, show.df = T,show.fstat = T, collapse.ci = TRUE,
+          pred.labels = c("Intercept", "ECM Trees Rel. Abundance (%)", "EG Trees Rel. Abundance (%)", "Tree Density (DBH)", "Tree Density (Num. Stems)"),
+          dv.labels = c("Omnivore Density (Log)", "Predator Density (Log)", "Omnivore Density (Log)", "Predator Density (Log)"),
+          string.ci = "Conf. Int (95%)",
+          string.p = "P-Value",
+          show.reflvl = TRUE
+)
 #________________________________________________________________________
-##  Tden----
+##  Tden----for reviews first round
 #________________________________________________________________________
-m <- nlme::lme(OmnDensity ~ totalBA,random = ~1| siteID/plotID, 
-               data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
-m <- nlme::lme(LOGOmnDensity ~ totalBA,random = ~1| siteID/plotID, 
-               data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
-m <- nlme::lme(PreDensity ~totalBA, random = ~1| siteID/plotID, 
-               data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
-m <- nlme::lme(LOGPreDensity ~totalBA, random = ~1| siteID/plotID, 
-               data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
+#m13 <- nlme::lme(OmnDensity ~ totalBA,random = ~1| siteID/plotID, 
+              # data = harvtall.df, na.action = na.omit);summary(m13); shapiro.test(resid(m13))
+#m14 <- nlme::lme(LOGOmnDensity ~ totalBA,random = ~1| siteID/plotID, 
+              # data = harvtall.df, na.action = na.omit);summary(m14); shapiro.test(resid(m14))
+#m15 <- nlme::lme(PreDensity ~totalBA, random = ~1| siteID/plotID, 
+               #data = harvtall.df, na.action = na.omit);summary(m15); shapiro.test(resid(m15))
+#m16 <- nlme::lme(LOGPreDensity ~totalBA, random = ~1| siteID/plotID, 
+               #data = harvtall.df, na.action = na.omit);summary(m16); shapiro.test(resid(m16))
 
-m <- nlme::lme(OmnDensity ~ totalStems,random = ~1| siteID/plotID, 
-               data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
-m <- nlme::lme(LOGOmnDensity ~ totalStems,random = ~1| siteID/plotID, 
-               data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
+#m17 <- nlme::lme(OmnDensity ~ totalStems,random = ~1| siteID/plotID, 
+               #data = harvtall.df, na.action = na.omit);summary(m17); shapiro.test(resid(m17))
+#m18 <- nlme::lme(LOGOmnDensity ~ totalStems,random = ~1| siteID/plotID, 
+              # data = harvtall.df, na.action = na.omit);summary(m18); shapiro.test(resid(m18))
 
-m <- nlme::lme(PreDensity ~totalStems, random = ~1| siteID/plotID, 
-               data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
-m <- nlme::lme(LOGPreDensity ~totalStems, random = ~1| siteID/plotID, 
-               data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
+#m19 <- nlme::lme(PreDensity ~totalStems, random = ~1| siteID/plotID, 
+               #data = harvtall.df, na.action = na.omit);summary(m19); shapiro.test(resid(m19))
+#m20 <- nlme::lme(LOGPreDensity ~totalStems, random = ~1| siteID/plotID, 
+               #data = harvtall.df, na.action = na.omit);summary(m20); shapiro.test(resid(m20))
 
 
 ##BEFORE YOU RUN THIS CODE!!! Make sure the harvtall.df you use is a version that doesn't exclude the species for the functional analysis
-m <- nlme::lme(density ~totalStems, random = ~1| siteID/plotID.x, 
-               data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m)) #ns
-m <- nlme::lme(log(density) ~totalStems, random = ~1| siteID/plotID.x, 
-               data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))#ns
+#m <- nlme::lme(density ~totalStems, random = ~1| siteID/plotID.x, 
+           #    data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m)) #ns
+#m <- nlme::lme(log(density) ~totalStems, random = ~1| siteID/plotID.x, 
+           #    data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))#ns
 
-m <- nlme::lme(density ~totalBA, random = ~1| siteID/plotID.x, 
-               data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m)) #ns
-m <- nlme::lme(log(density) ~totalBA, random = ~1| siteID/plotID.x, 
-               data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m)) #ns
+#m <- nlme::lme(density ~totalBA, random = ~1| siteID/plotID.x, 
+           #    data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m)) #ns
+#m <- nlme::lme(log(density) ~totalBA, random = ~1| siteID/plotID.x, 
+           #    data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m)) #ns
 #________________________________________________________________________
 ##Tden plot--------
 #________________________________________________________________________
@@ -442,22 +464,38 @@ dev.off()
 # Prop. by %EG plot----
 #________________________________________________________________________
 hist(log(harvtall.df$PerOmnivoreDensity))
-m <- nlme::lme(PerOmnivoreDensity ~ Shan_BA + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
-               data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
-m <- nlme::lme(PerPredatorDensity ~ Shan_BA + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
-               data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
+m21 <- nlme::lme(PerOmnivoreDensity ~ Shan_BA + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
+               data = harvtall.df, na.action = na.omit);summary(m21); shapiro.test(resid(m21))
+m22 <- nlme::lme(PerPredatorDensity ~ Shan_BA + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
+               data = harvtall.df, na.action = na.omit);summary(m22); shapiro.test(resid(m22))
 
-m <- nlme::lme(PerOmnivoreDensity ~ totalBA + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
-               data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
-m <- nlme::lme(PerPredatorDensity ~ totalBA + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
-               data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
+m23 <- nlme::lme(PerOmnivoreDensity ~ totalBA + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
+               data = harvtall.df, na.action = na.omit);summary(m23); shapiro.test(resid(m23))
+m24 <- nlme::lme(PerPredatorDensity ~ totalBA + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
+               data = harvtall.df, na.action = na.omit);summary(m24); shapiro.test(resid(m24))
 
-m <- nlme::lme(PerOmnivoreDensity ~ totalStems + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
-               data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
-m <- nlme::lme(PerPredatorDensity ~ totalStems + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
-               data = harvtall.df, na.action = na.omit);summary(m); shapiro.test(resid(m))
+m25 <- nlme::lme(PerOmnivoreDensity ~ totalStems + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
+               data = harvtall.df, na.action = na.omit);summary(m25); shapiro.test(resid(m25))
+m26 <- nlme::lme(PerPredatorDensity ~ totalStems + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
+               data = harvtall.df, na.action = na.omit);summary(m26); shapiro.test(resid(m26))
 
-
+tab_model(m21,m22,m23,m24,m25,m26, show.df = T, show.fstat = T, collapse.ci = TRUE,
+          pred.labels = c("Intercept", 
+                          "ECM Trees Rel. Abundance (%)",
+          "EG Trees Rel. Abundance (%)",
+          "Tree Diversity (Shannon Index)",
+          "Tree Density (DBH)", 
+          "Tree Density (Num. Stems)"),
+          dv.labels = c("Omnivore Rel. Abundance (%)", 
+                        "Predator Rel. Abundance (%)",
+                        "Omnivore Rel. Abundance (%)",
+                        "Predator Rel. Abundance (%)", 
+                        "Omnivore Rel. Abundance (%)",
+                        "Predator Rel. Abundance (%)"),
+          string.ci = "Conf. Int (95%)",
+          string.p = "P-Value",
+          show.reflvl = TRUE
+)
 p7<-ggplot(harvtall.df,aes(x=PerEG_BA, y=PerOmnivoreDensity))+
   geom_smooth(method = 'lm', formula = 'y ~ x') +
   geom_point(aes(color = siteID, shape = siteID))+
