@@ -162,19 +162,17 @@ harvtall.df <- harvtall.df%>%
 #________________________________________________________________________
 #lnlcd Class lme-----------------------------------------------------------
 #________________________________________________________________________
-
-#to do- compare to https://docs.google.com/spreadsheets/d/16Dbl_4_dGAeus8OKfUlz0e59W8NpHZX709ByScCUEHw/edit#gid=1470280887
 #green out models that we don't use- 
-#rename models and number to put in a table
-m <- nlme::lme(OmnDensity ~ nlcdClass, random = ~1| siteID/plotID, 
-               data = harvtall.df);summary(m); shapiro.test(resid(m));Anova(m)
-m <- nlme::lme(PreDensity ~ nlcdClass, random = ~1| siteID/plotID, 
-               data = harvtall.df);summary(m); shapiro.test(resid(m));Anova(m)
 
-m <- nlme::lme(LOGOmnDensity ~ nlcdClass, random = ~1| siteID/plotID, 
-               data = harvtall.df,na.action = na.omit);summary(m); shapiro.test(resid(m));Anova(m)
-m <- nlme::lme(LOGPreDensity ~ nlcdClass, random = ~1| siteID/plotID, 
-               data = harvtall.df,na.action = na.omit);summary(m); shapiro.test(resid(m));Anova(m)
+#m <- nlme::lme(OmnDensity ~ nlcdClass, random = ~1| siteID/plotID, 
+#               data = harvtall.df);summary(m); shapiro.test(resid(m));Anova(m)
+#m <- nlme::lme(PreDensity ~ nlcdClass, random = ~1| siteID/plotID, 
+#               data = harvtall.df);summary(m); shapiro.test(resid(m));Anova(m)
+
+#m <- nlme::lme(LOGOmnDensity ~ nlcdClass, random = ~1| siteID/plotID, 
+#               data = harvtall.df,na.action = na.omit);summary(m); shapiro.test(resid(m));Anova(m)
+#m <- nlme::lme(LOGPreDensity ~ nlcdClass, random = ~1| siteID/plotID, 
+#               data = harvtall.df,na.action = na.omit);summary(m); shapiro.test(resid(m));Anova(m)
 
 harvtall.df$LOGOmnDensity <- log(harvtall.df$OmnDensity)
 harvtall.df <- harvtall.df%>%
