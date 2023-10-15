@@ -271,7 +271,7 @@ m2 <- nlme::lme(PreDensity ~ Shan_BA + PerEG_BA+PerECM_BA, random = ~1| siteID/p
 ##Testing summary stats for model tables 
 #________________________________________________________________________
 
-tab_model(m1,m2, show.df = T,show.fstat = T, collapse.ci = TRUE,
+tab_model(m1,m2, show.df = T,show.fstat = T, collapse.ci = F,
             pred.labels = c("Intercept", "Tree Diversity (Shannon Index)", "EG Trees Rel. Abundance (%)", "ECM Trees Rel. Abundance (%)"),
             dv.labels = c("Omnivore Density", "Predator Density"),
             string.ci = "Conf. Int (95%)",
@@ -368,7 +368,7 @@ m10 <- nlme::lme(LOGOmnDensity ~ totalStems + PerEG_BA+PerECM_BA, random = ~1| s
 m12 <- nlme::lme(LOGPreDensity ~ totalStems + PerEG_BA+PerECM_BA,random = ~1| siteID/plotID, 
                data = harvtall.df, na.action = na.omit);summary(m12); shapiro.test(resid(m12))
 
-tab_model(m6,m8,m10,m12, show.df = T,show.fstat = T, collapse.ci = TRUE,
+tab_model(m6,m8,m10,m12, show.df = T,show.fstat = T, collapse.ci = F,
           pred.labels = c("Intercept", "ECM Trees Rel. Abundance (%)", "EG Trees Rel. Abundance (%)", "Tree Density (DBH)", "Tree Density (Num. Stems)"),
           dv.labels = c("Omnivore Density (Log)", "Predator Density (Log)", "Omnivore Density (Log)", "Predator Density (Log)"),
           string.ci = "Conf. Int (95%)",
@@ -479,7 +479,7 @@ m25 <- nlme::lme(PerOmnivoreDensity ~ totalStems + PerEG_BA+PerECM_BA, random = 
 m26 <- nlme::lme(PerPredatorDensity ~ totalStems + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
                data = harvtall.df, na.action = na.omit);summary(m26); shapiro.test(resid(m26))
 
-tab_model(m21,m22,m23,m24,m25,m26, show.df = T, show.fstat = T, collapse.ci = TRUE,
+tab_model(m21,m22,m23,m24,m25,m26, show.df = T, show.fstat = T, collapse.ci = F,
           pred.labels = c("Intercept", 
                           "ECM Trees Rel. Abundance (%)",
           "EG Trees Rel. Abundance (%)",
