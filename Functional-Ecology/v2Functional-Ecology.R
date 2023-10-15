@@ -496,6 +496,33 @@ tab_model(m21,m22,m23,m24,m25,m26, show.df = T, show.fstat = T, collapse.ci = F,
           string.p = "P-Value",
           show.reflvl = TRUE
 )
+
+
+##all functional together
+tab_model(m1,m2,m6,m8,m10,m12,m21,m22,m23,m24,m25,m26, show.df = T,show.fstat = T, collapse.ci = F,
+          pred.labels = c("Intercept", 
+          "ECM Trees Rel. Abundance (%)",
+          "EG Trees Rel. Abundance (%)",
+          "Tree Diversity (Shannon Index)",
+          "Tree Density (DBH)", 
+          "Tree Density (Num. Stems)"),
+          dv.labels = c("Omnivore Density", 
+                        "Predator Density",
+                        "Omnivore Density (Log)", 
+                        "Predator Density (Log)", 
+                        "Omnivore Density (Log)", 
+                        "Predator Density (Log)",
+                        "Omnivore Rel. Abundance (%)", 
+                        "Predator Rel. Abundance (%)",
+                        "Omnivore Rel. Abundance (%)",
+                        "Predator Rel. Abundance (%)", 
+                        "Omnivore Rel. Abundance (%)",
+                        "Predator Rel. Abundance (%)"),
+          string.ci = "Conf. Int (95%)",
+          string.p = "P-Value",
+          show.reflvl = TRUE
+)
+
 p7<-ggplot(harvtall.df,aes(x=PerEG_BA, y=PerOmnivoreDensity))+
   geom_smooth(method = 'lm', formula = 'y ~ x') +
   geom_point(aes(color = siteID, shape = siteID))+
