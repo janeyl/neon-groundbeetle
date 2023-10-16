@@ -96,8 +96,13 @@ species.df<-ordinationTALL.df[,5:37]
 
   #what does the data need to look like?
   #are the variances conparable? variances of what?
- #mod <-  betadisper(en_coord_cat, data.scores$nlcdClass)
-
+  
+       
+#removing mixed forest
+  d <- dist(species.df[-2,])
+ mod <-  betadisper(d, data.scores$nlcdClass[-2])
+mod
+anova(mod)#null should be variances are same, supports
 #HARV-------------------------------------------------
   ordinationHARV.df <- HARV_data.df%>%
     select(plotID,ACUHYD:TRIAUT)
@@ -213,6 +218,14 @@ species.df<-ordinationTALL.df[,5:37]
   spp.fit <- envfit(my_nmds_result, ordinationHARV.df, permutations = 999)
   head(spp.fit)
   
+  d <- dist(species.df)
+  mod <-  betadisper(d, data.scores$nlcdClass)
+  mod
+  anova(mod)#
+  permutest(mod, permutations = 99)
+  TukeyHSD(mod)
+  #showing that there is no evidence that they are unequal, there isn't evidence for different variances, so the tests are robust, 
+  #for the TALL forests, one only had 1 point, so we couldn't assess. In Harv, EG was a little less but test says ok
 
 #JERC-------------------------------------------------
   #ord stats and figures 
