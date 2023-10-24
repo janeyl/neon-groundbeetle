@@ -1754,33 +1754,69 @@ subset_df <- vegB1.df
 subset_df <- subset(subset_df, density != 0) #remove no observations
 
 m1 <- nlme::lme(ShannonBeetle ~ nlcdClass, random = ~1| siteID/plotID, 
-               data = subset_df);summary(m1); shapiro.test(resid(m1));Anova(m1)
-#m2 <- nlme::lme(SimpsonBeetle ~ nlcdClass,random = ~1| siteID/plotID, 
- #              data = vegB1.df);summary(m); shapiro.test(resid(m));Anova(m)
-m3 <- nlme::lme(log(density) ~ nlcdClass, random = ~1| siteID/plotID, 
-               data = subset_df);summary(m3); shapiro.test(resid(m3));Anova(m3);lsmeans(m3, pairwise~nlcdClass, adjust="tukey")   
+               data = subset_df);summary(m1);anova(m1); shapiro.test(resid(m1));
+a1 <- anova(m1)
 
+m2 <- nlme::lme(SimpsonBeetle ~ nlcdClass,random = ~1| siteID/plotID, 
+               data = vegB1.df);summary(m2);anova(m2);shapiro.test(resid(m2));
+a2 <- anova(m2)
+
+m3 <- nlme::lme(log(density) ~ nlcdClass, random = ~1| siteID/plotID, 
+               data = subset_df);summary(m3); shapiro.test(resid(m3));anova(m3);lsmeans(m3, pairwise~nlcdClass, adjust="tukey")   
+a3 <- anova(m3)
+
+library(kableExtra)
+library(tidyr)
+
+names(a1)
+a1$F_value <- format_p_value(a1$`F-value`, a1$`numDF`, a1$`denDF`, a1$`p-value`)
+a2$F_value <- format_p_value(a2$`F-value`, a2$`numDF`, a2$`denDF`, a2$`p-value`)
+a3$F_value <- format_p_value(a3$`F-value`, a3$`numDF`, a3$`denDF`, a3$`p-value`)
+
+# Add identifiers for the models
+a1$model <- "Model 1"
+a2$model <- "Model 2"
+a3$model <- "Model 3"
+
+# Create a data frame with terms from row names
+a1$term <- rownames(a1)
+a2$term <- rownames(a2)
+a3$term <- rownames(a3)
+
+# Combine the data frames
+combined_df <- rbind(a1, a2, a3)
+
+# Create a table using kableExtra
+table <- combined_df %>%
+  select(model, term, F_value) %>%
+  pivot_wider(names_from = "model", values_from = "F_value") %>%
+  kbl() %>%
+  kable_styling()
+
+# Print the table
+table
 #__________________________________________
 # 3 variables ~ Tree div, %EG, %ECM (TALL & HARV)
 #__________________________________________
 #Basal area models
 m4 <- nlme::lme(ShannonBeetle ~ Shan_BA + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
-               data = vegB2.df);summary(m4); shapiro.test(resid(m4));Anova(m4)
+               data = vegB2.df);summary(m4); shapiro.test(resid(m4))
+a4 <- anova(m4)
 m5 <- nlme::lme(SimpsonBeetle ~ Sim_BA + PerEG_BA+PerECM_BA,random = ~1| siteID/plotID, 
-               data = vegB2.df);summary(m5); shapiro.test(resid(m5));Anova(m5)
+               data = vegB2.df);summary(m5); shapiro.test(resid(m5));anova(m5)
 m6 <- nlme::lme(log(density) ~ totalBA + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
-               data = vegB2.df);summary(m6); shapiro.test(resid(m6));Anova(m6)
+               data = vegB2.df);summary(m6); shapiro.test(resid(m6));anova(m6)
 
 #removing no observations 
 subset2_df <- vegB2.df
 subset2_df <- subset(subset2_df, density != 0) #remove no observations
 #total stems models
 m7 <- nlme::lme(ShannonBeetle ~ Shan_ST + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
-               data = vegB2.df);summary(m7); shapiro.test(resid(m7));Anova(m7)
+               data = vegB2.df);summary(m7); shapiro.test(resid(m7));anova(m7)
 m8 <- nlme::lme(SimpsonBeetle ~ Sim_ST + PerEG_BA+PerECM_BA,random = ~1| siteID/plotID, 
-               data = vegB2.df);summary(m8); shapiro.test(resid(m8));Anova(m8)
+               data = vegB2.df);summary(m8); shapiro.test(resid(m8));anova(m8)
 m9 <- nlme::lme(log(density) ~ totalStems + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
-               data = subset2_df);summary(m9); shapiro.test(resid(m9));Anova(m9)
+               data = subset2_df);summary(m9); shapiro.test(resid(m9));anova(m9)
 
 
 #__________________________________________
@@ -1790,69 +1826,130 @@ m9 <- nlme::lme(log(density) ~ totalStems + PerEG_BA+PerECM_BA, random = ~1| sit
   #BA models
   
   m10 <- nlme::lme(logcCARGOR ~ totalBA + PerEG_BA+PerECM_BA, random = ~1|plotID, 
-                 data = HARV_data.df);summary(m10); shapiro.test(resid(m10));Anova(m10)
+                 data = HARV_data.df);summary(m10); shapiro.test(resid(m10));anova(m10)
   m11 <- nlme::lme(logSYN ~ totalBA + PerEG_BA+PerECM_BA, random = ~1|plotID, 
-                 data = HARV_data.df);summary(m11); shapiro.test(resid(m11));Anova(m11)
+                 data = HARV_data.df);summary(m11); shapiro.test(resid(m11));anova(m11)
   m12 <- nlme::lme(logSPHSTE3_den ~ totalBA + PerEG_BA+PerECM_BA, random = ~1|plotID, 
-                 data = HARV_data.df);summary(m12); shapiro.test(resid(m12));Anova(m12)
+                 data = HARV_data.df);summary(m12); shapiro.test(resid(m12));anova(m12)
   m13 <- nlme::lme(logPTETRI3 ~ totalBA + PerEG_BA+PerECM_BA, random = ~1|plotID, 
-                 data = HARV_data.df);summary(m13); shapiro.test(resid(m13));Anova(m13)
+                 data = HARV_data.df);summary(m13); shapiro.test(resid(m13));anova(m13)
   m14 <- nlme::lme(logPTEPEN_den ~ totalBA + PerEG_BA+PerECM_BA, random = ~1|plotID, 
-                 data = HARV_data.df);summary(m14); shapiro.test(resid(m14));Anova(m14)
+                 data = HARV_data.df);summary(m14); shapiro.test(resid(m14));anova(m14)
 
 #TALL - density models
   #BA models
   m15 <- nlme::lme(logCYCCON2 ~ totalBA + PerEG_BA+PerECM_BA, random = ~1|plotID, 
-                 data = TALL_data.df);summary(m15); shapiro.test(resid(m15));Anova(m15)
+                 data = TALL_data.df);summary(m15); shapiro.test(resid(m15));anova(m15)
   m16 <- nlme::lme(logDICDIL5 ~ totalBA + PerEG_BA+PerECM_BA, random = ~1|plotID,  #PerEG_BA p value is 0.04428 *
-                 data = TALL_data.df);summary(m16); shapiro.test(resid(m16));Anova(m16)
+                 data = TALL_data.df);summary(m16); shapiro.test(resid(m16));anova(m16)
   m17 <- nlme::lme(logCYCFRE ~ totalBA + PerEG_BA+PerECM_BA, random = ~1|plotID, 
-                 data = TALL_data.df);summary(m17); shapiro.test(resid(m17));Anova(m17)
+                 data = TALL_data.df);summary(m17); shapiro.test(resid(m17));anova(m17)
   m18 <- nlme::lme(logANIHAP ~ totalBA + PerEG_BA+PerECM_BA, random = ~1|plotID, 
-                 data = TALL_data.df);summary(m18); shapiro.test(resid(m18));Anova(m18)
+                 data = TALL_data.df);summary(m18); shapiro.test(resid(m18));anova(m18)
   m19 <- nlme::lme(logPASDEP ~ totalBA + PerEG_BA+PerECM_BA, random = ~1|plotID, 
-                 data = TALL_data.df);summary(m19); shapiro.test(resid(m19));Anova(m19)
+                 data = TALL_data.df);summary(m19); shapiro.test(resid(m19));anova(m19)
  
 
 #HARV - relative abundance models
   
   #BA models
   m20 <- nlme::lme(logCARGOR_relabun ~ totalBA + PerEG_BA+PerECM_BA, random = ~1|plotID, 
-                 data = HARV_data.df);summary(m20); shapiro.test(resid(m20));Anova(m20)
+                 data = HARV_data.df);summary(m20); shapiro.test(resid(m20));anova(m20)
   m21 <- nlme::lme(SYNIMP_relabun ~ totalBA + PerEG_BA+PerECM_BA, random = ~1|plotID, #PerEG_BA p value on the edge 0.0573 .
-                 data = HARV_data.df);summary(m21); shapiro.test(resid(m21));Anova(m21)
+                 data = HARV_data.df);summary(m21); shapiro.test(resid(m21));anova(m21)
   m22 <- nlme::lme(logSPHSTE3_relabun ~ totalBA + PerEG_BA+PerECM_BA, random = ~1|plotID, 
-                 data = HARV_data.df);summary(m22); shapiro.test(resid(m22));Anova(m22)
+                 data = HARV_data.df);summary(m22); shapiro.test(resid(m22));anova(m22)
   m23 <- nlme::lme(logPTETRI3_relabun ~ totalBA + PerEG_BA+PerECM_BA, random = ~1|plotID, 
-                 data = HARV_data.df);summary(m23); shapiro.test(resid(m23));Anova(m23)
+                 data = HARV_data.df);summary(m23); shapiro.test(resid(m23));anova(m23)
   m24 <- nlme::lme(logPTEPEN_relabun ~ totalBA + PerEG_BA+PerECM_BA, random = ~1|plotID, 
-                 data = HARV_data.df);summary(m24); shapiro.test(resid(m24));Anova(m24)
+                 data = HARV_data.df);summary(m24); shapiro.test(resid(m24));anova(m24)
   
 
 #TALL - relative abundance
   #BA models
   m25 <- nlme::lme(CYCCON2_relabun ~ totalBA + PerEG_BA+PerECM_BA, random = ~1|plotID, #Total BA NOT EG!! predicts abundnace (p= 0.04359 *)
-                 data = TALL_data.df);summary(m25); shapiro.test(resid(m25));Anova(m25)
+                 data = TALL_data.df);summary(m25); shapiro.test(resid(m25));anova(m25)
   m26 <- nlme::lme(logDICDIL5_relabun ~ totalBA + PerEG_BA+PerECM_BA, random = ~1|plotID, 
-                 data = TALL_data.df);summary(m26); shapiro.test(resid(m26));Anova(m26)
+                 data = TALL_data.df);summary(m26); shapiro.test(resid(m26));anova(m26)
   m27 <- nlme::lme(logCYCFRE_relabun ~ totalBA + PerEG_BA+PerECM_BA, random = ~1|plotID, 
-                 data = TALL_data.df);summary(m27); shapiro.test(resid(m27));Anova(m27)
+                 data = TALL_data.df);summary(m27); shapiro.test(resid(m27));anova(m27)
   m28 <- nlme::lme(logANIHAP_relabun ~ totalBA + PerEG_BA+PerECM_BA, random = ~1|plotID, 
-                 data = TALL_data.df);summary(m28); shapiro.test(resid(m28));Anova(m28)
+                 data = TALL_data.df);summary(m28); shapiro.test(resid(m28));anova(m28)
   m29 <- nlme::lme(PASDEP_relabun ~ totalBA + PerEG_BA+PerECM_BA, random = ~1|plotID, 
-                 data = TALL_data.df);summary(m29); shapiro.test(resid(m29));Anova(m29)
+                 data = TALL_data.df);summary(m29); shapiro.test(resid(m29));anova(m29)
+#_____________________________________
+#TOP FIVE Stem models
+  #HARV - density models
+  #Stem models
+  
+  m30 <- nlme::lme(logcCARGOR ~ totalStems + PerEG_BA+PerECM_BA, random = ~1|plotID, 
+                   data = HARV_data.df);summary( m30); shapiro.test(resid( m30));anova(m30)
+  m31 <- nlme::lme(logSYN ~ totalStems + PerEG_BA+PerECM_BA, random = ~1|plotID, 
+                   data = HARV_data.df);summary(m31); shapiro.test(resid(m31));anova(m31)
+  m32 <- nlme::lme(logSPHSTE3_den ~ totalStems + PerEG_BA+PerECM_BA, random = ~1|plotID, 
+                   data = HARV_data.df);summary(m32); shapiro.test(resid(m32));anova(m32)
+  m33 <- nlme::lme(logPTETRI3 ~ totalStems + PerEG_BA+PerECM_BA, random = ~1|plotID, 
+                   data = HARV_data.df);summary(m33); shapiro.test(resid(m33));anova(m33)
+  m34 <- nlme::lme(logPTEPEN_den ~ totalStems + PerEG_BA+PerECM_BA, random = ~1|plotID, 
+                   data = HARV_data.df);summary(m34); shapiro.test(resid(m34));anova(m34)
+  
+  #TALL - density models
+  #Stem models
+  m35 <- nlme::lme(logCYCCON2 ~ totalStems + PerEG_BA+PerECM_BA, random = ~1|plotID, 
+                   data = TALL_data.df);summary(m35); shapiro.test(resid(m35));anova(m35)
+  m36 <- nlme::lme(logDICDIL5 ~ totalStems + PerEG_BA+PerECM_BA, random = ~1|plotID,  #PerEG_BA p value is 0.04428 *
+                   data = TALL_data.df);summary(m36); shapiro.test(resid(m36));anova(m36)
+  m37 <- nlme::lme(logCYCFRE ~ totalStems + PerEG_BA+PerECM_BA, random = ~1|plotID, 
+                   data = TALL_data.df);summary(m37); shapiro.test(resid(m37));anova(m37)
+  m38 <- nlme::lme(logANIHAP ~ totalStems + PerEG_BA+PerECM_BA, random = ~1|plotID, 
+                   data = TALL_data.df);summary(m38); shapiro.test(resid(m38));anova(m38)
+  m39 <- nlme::lme(logPASDEP ~ totalStems + PerEG_BA+PerECM_BA, random = ~1|plotID, 
+                   data = TALL_data.df);summary(m39); shapiro.test(resid(m39));anova(m39)
+  
+  
+  #HARV - relative abundance models
+  
+  #Stem models
+  m40 <- nlme::lme(logCARGOR_relabun ~ totalStems + PerEG_BA+PerECM_BA, random = ~1|plotID, 
+                   data = HARV_data.df);summary(m40); shapiro.test(resid(m40));anova(m40)
+  m41 <- nlme::lme(SYNIMP_relabun ~ totalStems + PerEG_BA+PerECM_BA, random = ~1|plotID, #PerEG_BA p value on the edge 0.0573 .
+                   data = HARV_data.df);summary(m41); shapiro.test(resid(m41));anova(m41)
+  m42 <- nlme::lme(logSPHSTE3_relabun ~ totalStems + PerEG_BA+PerECM_BA, random = ~1|plotID, 
+                   data = HARV_data.df);summary(m42); shapiro.test(resid(m42));anova(m42)
+  m43 <- nlme::lme(logPTETRI3_relabun ~ totalStems + PerEG_BA+PerECM_BA, random = ~1|plotID, 
+                   data = HARV_data.df);summary(m43); shapiro.test(resid(m43));anova(m43)
+  m44 <- nlme::lme(logPTEPEN_relabun ~ totalStems + PerEG_BA+PerECM_BA, random = ~1|plotID, 
+                   data = HARV_data.df);summary(m44); shapiro.test(resid(m44));anova(m44)
+  
+  
+  #TALL - relative abundance
+  #Stem models
+  m45 <- nlme::lme(CYCCON2_relabun ~ totalStems + PerEG_BA+PerECM_BA, random = ~1|plotID, #Total BA NOT EG!! predicts abundnace (p= 0.04359 *)
+                   data = TALL_data.df);summary(m45); shapiro.test(resid(m45));anova(m45)
+  m46 <- nlme::lme(logDICDIL5_relabun ~ totalStems + PerEG_BA+PerECM_BA, random = ~1|plotID, 
+                   data = TALL_data.df);summary(m46); shapiro.test(resid(m46));anova(m46)
+  m47 <- nlme::lme(logCYCFRE_relabun ~ totalStems + PerEG_BA+PerECM_BA, random = ~1|plotID, 
+                   data = TALL_data.df);summary(m47); shapiro.test(resid(m47));anova(m47)
+  m48 <- nlme::lme(logANIHAP_relabun ~ totalStems + PerEG_BA+PerECM_BA, random = ~1|plotID, 
+                   data = TALL_data.df);summary(m48); shapiro.test(resid(m48));anova(m48)
+  m49 <- nlme::lme(PASDEP_relabun ~ totalStems + PerEG_BA+PerECM_BA, random = ~1|plotID, 
+                   data = TALL_data.df);summary(m49); shapiro.test(resid(m49));anova(m49)  
+
+
+
   library(sjPlot)#summary stats table
   library(sjmisc)#summary stats table
   library(sjlabelled)#summary stats table
-    ##all models together
-  tab_model(m1,m3,m4,m5,m6,m7,m8,m9,m10,m11,m12,m13,m14,m15,m16,m17,
-            m18,m19,m20,m21,m22,m23,m24,m25,m26,m27,m28,m29,
+  library(car)
+  ##all models together
+  tab_model(m1,m2,m3,m4,m5,m6,m7,m8,m9,m10,m11,m12,m13,m14,m15,m16,m17,
+            m18,m19,m20,m21,m22,m23,m24,m25,m26,m27,m28,m29,m30,m31,m32,m33,m34,m35,m36,m37,m38,m39,m40,m41,m42,m43,m44,m45,m46,m47,m48,m49,
             show.df = T,show.fstat = T, collapse.ci = F,
             string.ci = "Conf. Int (95%)",
             string.p = "P-Value",
             show.reflvl = TRUE
   )
-  
+
 #__________________________________________
 # Figure 1: Three panel of Beetle Shan/Sim/ Density ~ forest cover (nlcdClass) ----
 #__________________________________________
