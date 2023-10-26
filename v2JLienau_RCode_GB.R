@@ -1754,54 +1754,18 @@ subset_df <- vegB1.df
 subset_df <- subset(subset_df, density != 0) #remove no observations
 
 m1 <- nlme::lme(ShannonBeetle ~ nlcdClass, random = ~1| siteID/plotID, 
-               data = subset_df);summary(m1);anova(m1); shapiro.test(resid(m1));
-a1 <- anova(m1)
-
+               data = vegB1.df);summary(m1);anova(m1); shapiro.test(resid(m1));
 m2 <- nlme::lme(SimpsonBeetle ~ nlcdClass,random = ~1| siteID/plotID, 
                data = vegB1.df);summary(m2);anova(m2);shapiro.test(resid(m2));
-a2 <- anova(m2)
-
 m3 <- nlme::lme(log(density) ~ nlcdClass, random = ~1| siteID/plotID, 
                data = subset_df);summary(m3); shapiro.test(resid(m3));anova(m3);lsmeans(m3, pairwise~nlcdClass, adjust="tukey")   
-a3 <- anova(m3)
 
-library(kableExtra)
-library(tidyr)
-
-names(a1)
-a1$F_value <- format_p_value(a1$`F-value`, a1$`numDF`, a1$`denDF`, a1$`p-value`)
-a2$F_value <- format_p_value(a2$`F-value`, a2$`numDF`, a2$`denDF`, a2$`p-value`)
-a3$F_value <- format_p_value(a3$`F-value`, a3$`numDF`, a3$`denDF`, a3$`p-value`)
-
-# Add identifiers for the models
-a1$model <- "Model 1"
-a2$model <- "Model 2"
-a3$model <- "Model 3"
-
-# Create a data frame with terms from row names
-a1$term <- rownames(a1)
-a2$term <- rownames(a2)
-a3$term <- rownames(a3)
-
-# Combine the data frames
-combined_df <- rbind(a1, a2, a3)
-
-# Create a table using kableExtra
-table <- combined_df %>%
-  select(model, term, F_value) %>%
-  pivot_wider(names_from = "model", values_from = "F_value") %>%
-  kbl() %>%
-  kable_styling()
-
-# Print the table
-table
 #__________________________________________
 # 3 variables ~ Tree div, %EG, %ECM (TALL & HARV)
 #__________________________________________
 #Basal area models
 m4 <- nlme::lme(ShannonBeetle ~ Shan_BA + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
                data = vegB2.df);summary(m4); shapiro.test(resid(m4))
-a4 <- anova(m4)
 m5 <- nlme::lme(SimpsonBeetle ~ Sim_BA + PerEG_BA+PerECM_BA,random = ~1| siteID/plotID, 
                data = vegB2.df);summary(m5); shapiro.test(resid(m5));anova(m5)
 m6 <- nlme::lme(log(density) ~ totalBA + PerEG_BA+PerECM_BA, random = ~1| siteID/plotID, 
@@ -1935,20 +1899,6 @@ m9 <- nlme::lme(log(density) ~ totalStems + PerEG_BA+PerECM_BA, random = ~1| sit
   m49 <- nlme::lme(PASDEP_relabun ~ totalStems + PerEG_BA+PerECM_BA, random = ~1|plotID, 
                    data = TALL_data.df);summary(m49); shapiro.test(resid(m49));anova(m49)  
 
-
-
-  library(sjPlot)#summary stats table
-  library(sjmisc)#summary stats table
-  library(sjlabelled)#summary stats table
-  library(car)
-  ##all models together
-  tab_model(m1,m2,m3,m4,m5,m6,m7,m8,m9,m10,m11,m12,m13,m14,m15,m16,m17,
-            m18,m19,m20,m21,m22,m23,m24,m25,m26,m27,m28,m29,m30,m31,m32,m33,m34,m35,m36,m37,m38,m39,m40,m41,m42,m43,m44,m45,m46,m47,m48,m49,
-            show.df = T,show.fstat = T, collapse.ci = F,
-            string.ci = "Conf. Int (95%)",
-            string.p = "P-Value",
-            show.reflvl = TRUE
-  )
 
 #__________________________________________
 # Figure 1: Three panel of Beetle Shan/Sim/ Density ~ forest cover (nlcdClass) ----
