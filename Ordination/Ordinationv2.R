@@ -251,7 +251,7 @@ anova(mod)#null should be variances are same, supports
     vegan::metaMDS()
   
   # plot stress
-  my_nmds_result$stress ## [1] 0.08736128 great (>0.05 is excellen <.2 is poor)
+  my_nmds_result$stress ## [1] 0.08736129 great (>0.05 is excellen <.2 is poor)
   
   data.scores = as.data.frame(scores(my_nmds_result, display = "sites", "species"))
   data.scores$plotID = ordinationJERC.df$plotID #need for plot
@@ -277,7 +277,7 @@ anova(mod)#null should be variances are same, supports
           axis.ticks = element_blank(), axis.text = element_blank(), legend.key = element_blank(), 
           legend.title = element_text(size = 10, face = "bold", colour = "grey30"), 
           legend.text = element_text(size = 9, colour = "grey30")) +
-    labs(shape = "NLCD Forest Cover Class", fill = "NLCD Forest Cover Class", title = "The Jones Center At Ichauway Stress = 0.087")+ #0.08736128
+    labs(shape = "NLCD Forest Cover Class", fill = "NLCD Forest Cover Class", title = "The Jones Center At Ichauway Stress = 0.087")+ #0.08736129
     theme(plot.title = element_text(hjust = 0.5))
   gg3
   #pdf("/Users/JaneyLienau/Desktop/Model_Graphs/JERC_Ord.pdf", width = 7, height = 7)
@@ -320,7 +320,7 @@ anova(mod)#null should be variances are same, supports
     vegan::metaMDS()
   
   # plot stress
-  my_nmds_result$stress ## [1] 0.1024312 great (>0.05 is excellen <.2 is poor)
+  my_nmds_result$stress ## [1] 0.1024429 great (>0.05 is excellen <.2 is poor)
   
   data.scores = as.data.frame(scores(my_nmds_result, display = "sites", "species"))
   data.scores$plotID = ordinationBART.df$plotID #need for plot
@@ -346,7 +346,7 @@ anova(mod)#null should be variances are same, supports
           axis.ticks = element_blank(), axis.text = element_blank(), legend.key = element_blank(), 
           legend.title = element_text(size = 10, face = "bold", colour = "grey30"), 
           legend.text = element_text(size = 9, colour = "grey30")) +
-    labs(shape = "NLCD Forest Cover Class", fill = "NLCD Forest Cover Class", title = "Bartlett Stress = 0.102")+ #0.1024312
+    labs(shape = "NLCD Forest Cover Class", fill = "NLCD Forest Cover Class", title = "Bartlett Stress = 0.102")+ #0.1024429
     theme(plot.title = element_text(hjust = 0.5))
   gg4
   #pdf("/Users/JaneyLienau/Desktop/Model_Graphs/BART_Ord.pdf", width = 7, height = 7)
@@ -398,8 +398,8 @@ anova(mod)#null should be variances are same, supports
   #------Figure 3: NMDS of HARV and TALl 
   
   prow1 <- plot_grid(
-    gg1 + theme(legend.position="none"),
     gg2 + theme(legend.position="none"),
+    gg1 + theme(legend.position="none"),
     align = 'hv',
     labels = c("A", "B"),
     hjust = -1,
@@ -420,8 +420,8 @@ anova(mod)#null should be variances are same, supports
   #------Supplemental Figure 1: NMDS of BART and JERC
   
   prow2 <- plot_grid(
-    gg3+ theme(legend.position="none"),
     gg4 + theme(legend.position="none"),
+    gg3+ theme(legend.position="none"),
     align = 'hv',
     labels = c("A", "B"),
     hjust = -1,
