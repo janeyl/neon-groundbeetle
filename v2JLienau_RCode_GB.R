@@ -23,7 +23,7 @@ options(stringsAsFactors=F)
 # Read in relevant raw data sets----
 #__________________________________________
 
-#PlantHARV <-loadByProduct(dpID="DP1.10098.001", site="HARV", #This is the file path to download from NEON directly, but I've saved the files in our GitHib to make it easier
+#PlantHARV <-loadByProduct(dpID="DP1.10098.001", site="HARV", #This is the file path to download from NEON directly, but I've saved the data in "NEONdata.RData" files in the GitHib. This is to ensure you can run tests on the exact data and dates we used for this paper because NEON continues to add data to these datasets each year.
  #                         package="expanded", check.size=T)
 
 #BeetleHARV<- loadByProduct(dpID="DP1.10022.001", site="HARV", 
@@ -45,12 +45,12 @@ options(stringsAsFactors=F)
  #                          package="expanded", check.size=T) 
 #no plant for JERC
 
-#Load NEONdata.RData directly from GitHub Repository into your Environment
+#Load "NEONdata.RData" directly from GitHub Repository into your Environment to access the same dataset we used
 
 Mycorrhizal.df<-read.csv ("plantSpecies.csv", header=TRUE) #this is also already in the GitHub Repository
 
 #__________________________________________
-# Create new tidy data sets HARV----
+# Create new tidy data sets from the HARV site of both Beetle and tree data----
 #__________________________________________
 if(TRUE){
   Mycorrhizal.df<-Mycorrhizal.df%>%                                            #dataset with leaf habit and fungal association by taxonID
@@ -2686,10 +2686,10 @@ plot(speciesgrid)
 dev.off()
 
 #saving key data frames for functional analysis and ordination
-write_csv(HARV_data.df, "/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/HARV_data.csv")
-write_csv(TALL_data.df, "/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/TALL_data.csv")
-write_csv(JERC_data.df, "/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/JERC_data.csv")
-write_csv(BART_data.df, "/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/BART_data.csv")
+write_csv(HARV_data.df, "/Users/JaneyLienau/Desktop/GitHubRepository/neon-groundbeetle/HARV_data.csv")
+write_csv(TALL_data.df, "/Users/JaneyLienau/Desktop/GitHubRepository/neon-groundbeetle/TALL_data.csv")
+write_csv(JERC_data.df, "/Users/JaneyLienau/Desktop/GitHubRepository/neon-groundbeetle/JERC_data.csv")
+write_csv(BART_data.df, "/Users/JaneyLienau/Desktop/GitHubRepository/neon-groundbeetle/BART_data.csv")
 
-write_csv(allHARV.df, "/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/allHARV.csv")
-write_csv(allTALL.df, "/Users/JaneyLienau/Desktop/GitHubRepository/Evergreen-abundance-drives-ground-beetle-diversity-and-density-in-eastern-temperate-forests/allTALL.csv")
+write_csv(allHARV.df, "/Users/JaneyLienau/Desktop/GitHubRepository/neon-groundbeetle/allHARV.csv")
+write_csv(allTALL.df, "/Users/JaneyLienau/Desktop/GitHubRepository/neon-groundbeetle/allTALL.csv")

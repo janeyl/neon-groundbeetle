@@ -1,7 +1,6 @@
 ##making a stats table
 #rename log(density), and then manually make the names for each model
-### VEG Practice
-#library(broom)# use this next time you do stats!
+### 
 
 library(kableExtra)
 library(tidyr)

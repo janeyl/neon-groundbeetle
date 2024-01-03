@@ -69,14 +69,14 @@ species.df<-ordinationTALL.df[,5:37]
     geom_polygon(data=data.scores,aes(x=NMDS1,y=NMDS2,fill=nlcdClass),alpha=0.30) + # add the convex hulls
     geom_point(data = data.scores, aes(shape = nlcdClass), size = 5)+ 
     geom_text_repel(data = en_coord_cont, aes(x = NMDS1, y = NMDS2), colour = "grey30", #species name
-              fontface = "bold", label = row.names(en_coord_cont), size = 2, max.overlaps = 20) + 
-    theme(axis.title = element_text(size = 10, face = "bold", colour = "grey30"), 
+              fontface = "bold", label = row.names(en_coord_cont), size = 3, max.overlaps = 20) + 
+    theme(axis.title = element_text(size = 12, face = "bold", colour = "grey30"), 
           panel.background = element_blank(), panel.border = element_rect(fill = NA, colour = "grey30"), 
           axis.ticks = element_blank(), axis.text = element_blank(), legend.key = element_blank(), 
-          legend.title = element_text(size = 10, face = "bold", colour = "grey30"), 
-          legend.text = element_text(size = 9, colour = "grey30")) +
-    labs(shape = "NLCD Forest Cover Class", 
-         fill = "NLCD Forest Cover Class", 
+          legend.title = element_text(size = 12, face = "bold", colour = "grey30"), 
+          legend.text = element_text(size = 12, colour = "grey30")) +
+    labs(shape = "NLCD Forest Class", 
+         fill = "NLCD Forest Class", 
          title = "Talledega Stress = 0.084",#0.08367846
          )+
     theme(plot.title = element_text(hjust = 0.5))
@@ -188,14 +188,14 @@ anova(mod)#null should be variances are same, supports
     geom_polygon(data=data.scores,aes(x=NMDS1,y=NMDS2,fill=nlcdClass),alpha=0.30) + # add the convex hulls
     geom_point(data = data.scores, aes(shape = nlcdClass), size = 5)+ 
     geom_text_repel(data = en_coord_cont, aes(x = NMDS1, y = NMDS2), colour = "grey30", #species name
-              fontface = "bold", label = row.names(en_coord_cont), size = 2, check_overlap= FALSE) + 
-    theme(axis.title = element_text(size = 10, face = "bold", colour = "grey30"), 
+              fontface = "bold", label = row.names(en_coord_cont), size = 3, check_overlap= FALSE) + 
+    theme(axis.title = element_text(size = 12, face = "bold", colour = "grey30"), 
           panel.background = element_blank(), panel.border = element_rect(fill = NA, colour = "grey30"), 
           axis.ticks = element_blank(), axis.text = element_blank(), legend.key = element_blank(), 
-          legend.title = element_text(size = 10, face = "bold", colour = "grey30"), 
-          legend.text = element_text(size = 9, colour = "grey30")) +
-    labs(shape = "NLCD Forest Cover Class", 
-         fill = "NLCD Forest Cover Class", 
+          legend.title = element_text(size = 12, face = "bold", colour = "grey30"), 
+          legend.text = element_text(size = 12, colour = "grey30")) +
+    labs(shape = "NLCD Forest Class", 
+         fill = "NLCD Forest Class", 
          title = "Harvard Stress = 0.130")+ #0.1295496
     theme(plot.title = element_text(hjust = 0.5))
   gg2
@@ -271,13 +271,13 @@ anova(mod)#null should be variances are same, supports
     geom_polygon(data=data.scores,aes(x=NMDS1,y=NMDS2,fill=nlcdClass),alpha=0.30) + # add the convex hulls
     geom_point(data = data.scores, aes(shape = nlcdClass), size = 5)+ 
     geom_text_repel(data = en_coord_cont, aes(x = NMDS1, y = NMDS2), colour = "grey30", #species name
-              fontface = "bold", label = row.names(en_coord_cont), size = 2, max.overlaps = getOption("ggrepel.max.overlaps", default = 20)) + 
-    theme(axis.title = element_text(size = 10, face = "bold", colour = "grey30"), 
+              fontface = "bold", label = row.names(en_coord_cont), size = 3, max.overlaps = getOption("ggrepel.max.overlaps", default = 20)) + 
+    theme(axis.title = element_text(size = 12, face = "bold", colour = "grey30"), 
           panel.background = element_blank(), panel.border = element_rect(fill = NA, colour = "grey30"), 
           axis.ticks = element_blank(), axis.text = element_blank(), legend.key = element_blank(), 
-          legend.title = element_text(size = 10, face = "bold", colour = "grey30"), 
-          legend.text = element_text(size = 9, colour = "grey30")) +
-    labs(shape = "NLCD Forest Cover Class", fill = "NLCD Forest Cover Class", title = "The Jones Center At Ichauway Stress = 0.087")+ #0.08736129
+          legend.title = element_text(size = 12, face = "bold", colour = "grey30"), 
+          legend.text = element_text(size = 12, colour = "grey30")) +
+    labs(shape = "NLCD Forest Class", fill = "NLCD Forest Class", title = "The Jones Center At Ichauway Stress = 0.087")+ #0.08736129
     theme(plot.title = element_text(hjust = 0.5))
   gg3
   #pdf("/Users/JaneyLienau/Desktop/Model_Graphs/JERC_Ord.pdf", width = 7, height = 7)
@@ -340,13 +340,13 @@ anova(mod)#null should be variances are same, supports
     geom_polygon(data=data.scores,aes(x=NMDS1,y=NMDS2,fill=nlcdClass),alpha=0.30) + # add the convex hulls
     geom_point(data = data.scores, aes(shape = nlcdClass), size = 5)+ 
     geom_text_repel(data = en_coord_cont, aes(x = NMDS1, y = NMDS2), colour = "grey30", #species name
-              fontface = "bold", label = row.names(en_coord_cont), size = 2) + 
-    theme(axis.title = element_text(size = 10, face = "bold", colour = "grey30"), 
+              fontface = "bold", label = row.names(en_coord_cont), size = 3) + 
+    theme(axis.title = element_text(size = 12, face = "bold", colour = "grey30"), 
           panel.background = element_blank(), panel.border = element_rect(fill = NA, colour = "grey30"), 
           axis.ticks = element_blank(), axis.text = element_blank(), legend.key = element_blank(), 
-          legend.title = element_text(size = 10, face = "bold", colour = "grey30"), 
-          legend.text = element_text(size = 9, colour = "grey30")) +
-    labs(shape = "NLCD Forest Cover Class", fill = "NLCD Forest Cover Class", title = "Bartlett Stress = 0.102")+ #0.1024429
+          legend.title = element_text(size = 12, face = "bold", colour = "grey30"), 
+          legend.text = element_text(size = 12, colour = "grey30")) +
+    labs(shape = "NLCD Forest Class", fill = "NLCD Forest Class", title = "Bartlett Stress = 0.102")+ #0.1024429
     theme(plot.title = element_text(hjust = 0.5))
   gg4
   #pdf("/Users/JaneyLienau/Desktop/Model_Graphs/BART_Ord.pdf", width = 7, height = 7)
